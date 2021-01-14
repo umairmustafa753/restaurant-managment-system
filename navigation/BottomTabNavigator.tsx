@@ -1,13 +1,21 @@
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import HomeScreen from "../screens/HomeScreen";
-import MenuScreen from "../screens/MenuScreen";
-import { BottomTabParamList, HomeParamList, MenuParamList } from "../types";
+import HomeScreen from "../screens/Home/HomeScreen";
+import MenuScreen from "../screens/Menu/MenuScreen";
+import ReservationScreen from "../screens/Reservation/Reservation";
+import AccountScreen from "../screens/Account/Account";
+import {
+  BottomTabParamList,
+  HomeParamList,
+  MenuParamList,
+  ReservationParamList,
+  AccountParamList
+} from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -24,7 +32,7 @@ export default function BottomTabNavigator() {
         component={HomeScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="home-work" color={color} />
           )
         }}
       />
@@ -33,7 +41,25 @@ export default function BottomTabNavigator() {
         component={MenuScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="restaurant-menu" color={color} />
+          )
+        }}
+      />
+      <BottomTab.Screen
+        name="Reservation"
+        component={ReservationScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="dinner-dining" color={color} />
+          )
+        }}
+      />
+      <BottomTab.Screen
+        name="Account"
+        component={AccountStackScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="account-circle" color={color} />
           )
         }}
       />
@@ -44,7 +70,7 @@ export default function BottomTabNavigator() {
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 function TabBarIcon(props: { name: string; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialIcons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -74,5 +100,33 @@ function MenuScreenNavigator() {
         options={{ headerTitle: "Menu" }}
       />
     </MenuStack.Navigator>
+  );
+}
+
+const ReservationStack = createStackNavigator<ReservationParamList>();
+
+function ReservationScreenNavigator() {
+  return (
+    <ReservationStack.Navigator>
+      <ReservationStack.Screen
+        name="ReservationScreen"
+        component={ReservationScreen}
+        options={{ headerTitle: "Reservation" }}
+      />
+    </ReservationStack.Navigator>
+  );
+}
+
+const AccountStack = createStackNavigator<AccountParamList>();
+
+function AccountStackScreenNavigator() {
+  return (
+    <AccountStack.Navigator>
+      <AccountStack.Screen
+        name="AccountScreen"
+        component={AccountScreen}
+        options={{ headerTitle: "Account" }}
+      />
+    </AccountStack.Navigator>
   );
 }

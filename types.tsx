@@ -6,6 +6,8 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   Home: undefined;
   Menu: undefined;
+  Reservation: undefined;
+  Account: undefined;
 };
 
 export type HomeParamList = {
@@ -14,4 +16,12 @@ export type HomeParamList = {
 
 export type MenuParamList = {
   MenuScreen: undefined;
+};
+
+export type ReservationParamList = {
+  ReservationScreen: undefined;
+};
+
+export type AccountParamList = {
+  AccountScreen: undefined;
 };
