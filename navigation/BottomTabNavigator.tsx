@@ -76,7 +76,13 @@ function HomeScreenNavigator() {
       <HomeStack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{ headerTitle: "Home" }}
+        options={{
+          headerTitle: "Home",
+          headerShown: false,
+          headerTitleStyle: {
+            color: "#8e8f8e"
+          }
+        }}
       />
     </HomeStack.Navigator>
   );
@@ -90,7 +96,13 @@ function MenuScreenNavigator() {
       <MenuStack.Screen
         name="MenuScreen"
         component={MenuScreen}
-        options={{ headerTitle: "Menu" }}
+        options={{
+          headerTitle: "Menu",
+          headerShown: false,
+          headerTitleStyle: {
+            color: "#8e8f8e"
+          }
+        }}
       />
     </MenuStack.Navigator>
   );
@@ -104,7 +116,13 @@ function ReservationScreenNavigator() {
       <ReservationStack.Screen
         name="ReservationScreen"
         component={ReservationScreen}
-        options={{ headerTitle: "Reservation" }}
+        options={{
+          headerTitle: "Reservation",
+          headerShown: false,
+          headerTitleStyle: {
+            color: "#8e8f8e"
+          }
+        }}
       />
     </ReservationStack.Navigator>
   );
@@ -118,7 +136,12 @@ function AccountStackScreenNavigator() {
       <AccountStack.Screen
         name="AccountScreen"
         component={AccountScreen}
-        options={{ headerTitle: "Account" }}
+        options={{
+          headerTitle: "Account",
+          headerTitleStyle: {
+            color: "#8e8f8e"
+          }
+        }}
       />
     </AccountStack.Navigator>
   );
