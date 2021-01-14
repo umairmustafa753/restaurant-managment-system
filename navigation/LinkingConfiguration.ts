@@ -8,12 +8,22 @@ export default {
         screens: {
           Home: {
             screens: {
-              HomeScreen: "one"
+              HomeScreen: "home"
             }
           },
           Menu: {
             screens: {
-              MenuScreen: "two"
+              MenuScreen: "menu"
+            }
+          },
+          Reservation: {
+            screens: {
+              MenuScreen: "reservation"
+            }
+          },
+          Account: {
+            screens: {
+              MenuScreen: "Account"
             }
           }
         }
