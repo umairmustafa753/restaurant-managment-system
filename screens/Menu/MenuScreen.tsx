@@ -1,29 +1,71 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import { Text, View } from "../../components/Themed";
+import { Text } from "../../components/Themed";
+import Separator from "../../components/Separator";
+import HorizontalList from "../../components/horizentalList";
 
-export default function MenuScreen() {
+const staticData = [
+  {
+    title: "Karahi",
+    value: "8,984",
+    unit: "Rs",
+    imageSource: require("../../assets/images/favicon.png")
+  },
+  {
+    title: "Kabab",
+    value: "2.6",
+    unit: "Rs",
+    imageSource: require("../../assets/images/favicon.png")
+  },
+  {
+    title: "Tikka",
+    value: "9501",
+    unit: "Rs",
+    imageSource: require("../../assets/images/favicon.png")
+  }
+];
+
+const MenuScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Menu</Text>
-    </View>
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      <Separator topMargin={50} />
+      <Text style={styles.title}>Vegtarian</Text>
+      <HorizontalList data={staticData} />
+      <Text style={styles.title}>Non Vegtarian</Text>
+      <HorizontalList data={staticData} />
+      <Text style={styles.title}>Drinks</Text>
+      <HorizontalList data={staticData} />
+    </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    flexGrow: 1,
+    backgroundColor: "white"
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold"
+    marginHorizontal: 20,
+    marginTop: 10,
+    fontWeight: "bold",
+    color: "#8e8f8e"
+  },
+  itemContainerStyle: {
+    backgroundColor: "#f2f2f2"
+  },
+  itemTextColor: {
+    color: "#adadad"
   },
   separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%"
+    marginVertical: 20
   }
 });
+
+export default MenuScreen;
