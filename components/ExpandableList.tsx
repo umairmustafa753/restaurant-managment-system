@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   Platform
 } from "react-native";
-import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
 const ExpandableComponent = ({ item, onClickFunction }) => {
   //Custom Component for the Expandable List
