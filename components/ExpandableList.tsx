@@ -24,7 +24,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
   }, [item.isExpanded]);
 
   return (
-    <View style={styles.listContainer}>
+    <View style={styles.padding}>
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={onClickFunction}
@@ -120,9 +120,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white"
   },
-  listContainer: {
-    backgroundColor: "#f2f2f2"
-  },
   innerContainer: {
     flexDirection: "row",
     padding: 10
@@ -151,9 +148,11 @@ const styles = StyleSheet.create({
     color: "#606070",
     padding: 10
   },
+  padding: {
+    padding: 20
+  },
   content: {
     paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: "#f7f7f7"
+    paddingRight: 10
   }
 });

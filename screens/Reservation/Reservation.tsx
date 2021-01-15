@@ -100,14 +100,14 @@ export default function ReservationScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />
-      <Text style={styles.title}>Reservation Info</Text>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={30}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
+          <Text style={styles.title}>Reservation Info</Text>
+          <View style={styles.padding}>
             <Fumi
               label={"Full Name"}
               iconClass={FontAwesomeIcon}
@@ -217,6 +217,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center"
+  },
+  padding: {
+    padding: 30
   },
   separator: {
     marginVertical: 30,

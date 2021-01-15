@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, SafeAreaView, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { Text } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
 import HorizontalList from "../../components/HorizentalList";
 import Separator from "../../components/Separator";
 
@@ -38,40 +38,42 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>New Arrivals</Text>
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+        <View styles={styles.padding}>
+          <Text style={styles.title}>New Arrivals</Text>
+          <HorizontalList
+            data={entries}
+            type="default"
+            style={styles.listStyle}
+            width={200}
+          />
 
-        <Separator margin={50} />
-        <Text style={styles.title}>Specialities</Text>
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+          <Separator margin={50} />
+          <Text style={styles.title}>Specialities</Text>
+          <HorizontalList
+            data={entries}
+            type="default"
+            style={styles.listStyle}
+            width={200}
+          />
 
-        <Separator margin={50} />
-        <Text style={styles.title}>Top Deals</Text>
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+          <Separator margin={50} />
+          <Text style={styles.title}>Top Deals</Text>
+          <HorizontalList
+            data={entries}
+            type="default"
+            style={styles.listStyle}
+            width={200}
+          />
 
-        <Separator margin={50} />
-        <Text style={styles.title}>Birthday Sepical</Text>
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+          <Separator margin={50} />
+          <Text style={styles.title}>Birthday Sepical</Text>
+          <HorizontalList
+            data={entries}
+            type="default"
+            style={styles.listStyle}
+            width={200}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -92,6 +94,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     height: 170
+  },
+  padding: {
+    padding: 20
   }
 });
 
