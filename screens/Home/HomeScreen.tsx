@@ -1,70 +1,97 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, SafeAreaView, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { Text } from "../../components/Themed";
+import HorizontalList from "../../components/HorizentalList";
 import Separator from "../../components/Separator";
-import HorizontalList from "../../components/horizentalList";
 
-const staticData = [
+const entries = [
   {
-    title: "Karahi",
-    value: "8,984",
-    unit: "Rs",
-    imageSource: require("../../assets/images/favicon.png")
+    title: "Biryani",
+    text: "Rs 250",
+    image: require("../../assets/images/restaurant.png")
   },
   {
-    title: "Kabab",
-    value: "2.6",
-    unit: "Rs",
-    imageSource: require("../../assets/images/favicon.png")
+    title: "Biryani",
+    text: "Rs 250",
+    image: require("../../assets/images/restaurant.png")
   },
   {
-    title: "Tikka",
-    value: "9501",
-    unit: "Rs",
-    imageSource: require("../../assets/images/favicon.png")
+    title: "Biryani",
+    text: "Rs 250",
+    image: require("../../assets/images/restaurant.png")
+  },
+  {
+    title: "Biryani",
+    text: "Rs 250",
+    image: require("../../assets/images/restaurant.png")
+  },
+  {
+    title: "Biryani",
+    text: "Rs 250",
+    image: require("../../assets/images/restaurant.png")
   }
 ];
 
 const HomeScreen = () => {
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
-      <Separator topMargin={50} />
-      <Text style={styles.title}>Vegtarian</Text>
-      <HorizontalList data={staticData} />
-      <Text style={styles.title}>Non Vegtarian</Text>
-      <HorizontalList data={staticData} />
-      <Text style={styles.title}>Drinks</Text>
-      <HorizontalList data={staticData} />
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>New Arrivals</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
+
+        <Separator margin={50} />
+        <Text style={styles.title}>Specialities</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
+
+        <Separator margin={50} />
+        <Text style={styles.title}>Top Deals</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
+
+        <Separator margin={50} />
+        <Text style={styles.title}>Birthday Sepical</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: "white"
+    flex: 1,
+    backgroundColor: "white",
+    paddingTop: 50
   },
   title: {
     fontSize: 20,
     marginHorizontal: 20,
-    marginTop: 10,
-    fontWeight: "bold",
-    color: "#8e8f8e"
+    fontWeight: "bold"
   },
-  itemContainerStyle: {
-    backgroundColor: "#f2f2f2"
-  },
-  itemTextColor: {
-    color: "#adadad"
-  },
-  separator: {
-    marginVertical: 20
+  listStyle: {
+    flexDirection: "row",
+    justifyContent: "center",
+    height: 170
   }
 });
 

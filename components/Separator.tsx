@@ -1,8 +1,8 @@
 import * as React from "react";
 import { View } from "./Themed";
 
-const Separator = ({ topMargin }: { topMargin: number }) => {
-  return <View style={{ marginTop: topMargin }}></View>;
+const Separator = ({ margin }: { margin: number }) => {
+  return <View style={{ marginTop: margin }}></View>;
 };
 
 export default Separator;
