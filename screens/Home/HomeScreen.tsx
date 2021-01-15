@@ -38,42 +38,40 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View styles={styles.padding}>
-          <Text style={styles.title}>New Arrivals</Text>
-          <HorizontalList
-            data={entries}
-            type="default"
-            style={styles.listStyle}
-            width={200}
-          />
+        <Text style={styles.title}>New Arrivals</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
 
-          <Separator margin={50} />
-          <Text style={styles.title}>Specialities</Text>
-          <HorizontalList
-            data={entries}
-            type="default"
-            style={styles.listStyle}
-            width={200}
-          />
+        <Separator margin={50} />
+        <Text style={styles.title}>Specialities</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
 
-          <Separator margin={50} />
-          <Text style={styles.title}>Top Deals</Text>
-          <HorizontalList
-            data={entries}
-            type="default"
-            style={styles.listStyle}
-            width={200}
-          />
+        <Separator margin={50} />
+        <Text style={styles.title}>Top Deals</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
 
-          <Separator margin={50} />
-          <Text style={styles.title}>Birthday Sepical</Text>
-          <HorizontalList
-            data={entries}
-            type="default"
-            style={styles.listStyle}
-            width={200}
-          />
-        </View>
+        <Separator margin={50} />
+        <Text style={styles.title}>Birthday Sepical</Text>
+        <HorizontalList
+          data={entries}
+          type="default"
+          style={styles.listStyle}
+          width={200}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -94,9 +92,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     height: 170
-  },
-  padding: {
-    padding: 20
   }
 });
 
