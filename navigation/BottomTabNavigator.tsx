@@ -138,6 +138,7 @@ function AccountStackScreenNavigator() {
         component={AccountScreen}
         options={{
           headerTitle: "Account",
+          headerShown: false,
           headerTitleStyle: {
             color: "#8e8f8e"
           }

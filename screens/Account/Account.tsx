@@ -1,36 +1,49 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform
-} from "react-native";
-import { Card, Title, Paragraph } from "react-native-paper";
+import React from "react";
+import { StyleSheet, SafeAreaView } from "react-native";
+import UserAvatar from "react-native-user-avatar";
 
 import { Text, View } from "../../components/Themed";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
+
+import Card from "../../components/Card";
+import Login from "../Auth/Login";
 import Separator from "../../components/Separator";
+
+const navigate = () => {
+  console.log("in navigation");
+};
 
 const AccountScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Separator margin={30} />
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={30}
-      >
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.padding}>
-            <Card>
-              <Card.Content>
-                <Title>Edit Accoount</Title>
-              </Card.Content>
-            </Card>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <>
+      {false ? (
+        <Login />
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <Separator margin={30} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.padding}>
+              <UserAvatar
+                size={80}
+                // src={}
+                name="Umair Mustafa"
+                style={styles.avatar}
+              />
+              <Separator margin={10} />
+              <Text style={styles.title}>Umair Mustafa</Text>
+              <Text style={styles.subTitle}>Owner</Text>
+              <Separator margin={10} />
+              <Card titile="Upadte Account" onPress={navigate} />
+              <Card titile="Add Employee" onPress={navigate} />
+              <Card titile="Reset Password" onPress={navigate} />
+              <Card titile="Confirm Orders" onPress={navigate} />
+              <Card titile="Pending Orders" onPress={navigate} />
+              <Card titile="Customers & Employees List" onPress={navigate} />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 
@@ -44,6 +57,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
+  subTitle: {
+    fontSize: 15,
+    textAlign: "center"
+  },
   padding: {
     padding: 30
   },
@@ -51,6 +68,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%"
+  },
+  avatar: {
+    height: 80,
+    width: 80,
+    alignSelf: "center"
   }
 });
 

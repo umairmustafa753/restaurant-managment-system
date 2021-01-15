@@ -1,17 +1,25 @@
-import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
-import { Card, Title } from "react-native-paper";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Button, Title } from "react-native-paper";
 
-const Card = () => {
+const Card = ({ titile, onPress }: { titile: string; onPress: () => void }) => {
   return (
-    <TouchableOpacity>
-      <Card>
-        <Card.Content>
-          <Title>Edit Accoount</Title>
-        </Card.Content>
-      </Card>
-    </TouchableOpacity>
+    <Button
+      style={styles.container}
+      mode="outlined"
+      color="grey"
+      onPress={onPress}
+    >
+      {titile}
+    </Button>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 7,
+    marginBottom: 20
+  }
+});
 
 export default Card;
