@@ -177,7 +177,8 @@ export default function ReservationScreen() {
                 selectedItemIconColor="#CCC"
                 itemTextColor="#000"
                 displayKey="name"
-                searchInputStyle={{ color: "#CCC" }}
+                styleItemsContainer={styles.styleItemsContainer}
+                styleRowList={styles.styleRowList}
                 submitButtonColor="#CCC"
                 submitButtonText="Submit"
               />
@@ -225,5 +226,12 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%"
+  },
+  styleItemsContainer: {
+    backgroundColor: "white",
+    paddingTop: 25
+  },
+  styleRowList: {
+    padding: 10
   }
 });

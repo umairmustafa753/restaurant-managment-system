@@ -54,13 +54,17 @@ const styles = StyleSheet.create({
     flex: 1
   },
   renderItem: {
-    backgroundColor: "#f2f2f2",
     borderRadius: 5,
     height: "100%",
     padding: 5,
-    top: 20,
     marginLeft: 25,
-    marginRight: 25
+    marginRight: 25,
+    borderColor: "#e3e3e3",
+    borderWidth: 5,
+    overflow: "hidden",
+    shadowColor: "#e3e3e3",
+    shadowRadius: 1,
+    shadowOpacity: 1
   },
   image: {
     width: "40%",
@@ -75,7 +79,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     position: "absolute",
-    backgroundColor: "#f2f2f2",
     bottom: 30,
     left: 30
   }

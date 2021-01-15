@@ -39,6 +39,7 @@ const HomeScreen = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>New Arrivals</Text>
+        <Separator margin={20} />
         <HorizontalList
           data={entries}
           type="default"
@@ -48,6 +49,7 @@ const HomeScreen = () => {
 
         <Separator margin={50} />
         <Text style={styles.title}>Specialities</Text>
+        <Separator margin={20} />
         <HorizontalList
           data={entries}
           type="default"
@@ -57,6 +59,7 @@ const HomeScreen = () => {
 
         <Separator margin={50} />
         <Text style={styles.title}>Top Deals</Text>
+        <Separator margin={20} />
         <HorizontalList
           data={entries}
           type="default"
@@ -66,6 +69,7 @@ const HomeScreen = () => {
 
         <Separator margin={50} />
         <Text style={styles.title}>Birthday Sepical</Text>
+        <Separator margin={20} />
         <HorizontalList
           data={entries}
           type="default"

@@ -1,24 +1,51 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
-import { Text, View } from "../../components/Themed";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
+import { Card, Title, Paragraph } from "react-native-paper";
 
-export default function AccountScreen() {
+import { Text, View } from "../../components/Themed";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Separator from "../../components/Separator";
+
+const AccountScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Account</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Separator margin={30} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={30}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.padding}>
+            <Card>
+              <Card.Content>
+                <Title>Edit Accoount</Title>
+              </Card.Content>
+            </Card>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "white"
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  padding: {
+    padding: 30
   },
   separator: {
     marginVertical: 30,
@@ -26,3 +53,5 @@ const styles = StyleSheet.create({
     width: "80%"
   }
 });
+
+export default AccountScreen;
