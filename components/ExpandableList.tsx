@@ -10,9 +10,9 @@ import {
   TouchableOpacity,
   Platform
 } from "react-native";
+import Separator from "./Separator";
 
 const ExpandableComponent = ({ item, onClickFunction }) => {
-  //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState<number>(0);
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
         style={styles.header}
       >
         <Text style={styles.headerText}>{item.category_name}</Text>
+        <View style={styles.separator} />
       </TouchableOpacity>
       <View
         style={{
@@ -76,6 +77,7 @@ const ExpandableList = ({ data }: { data: Array<object> }) => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <Separator margin={30} />
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Text style={styles.titleText}>Our Menu</Text>
