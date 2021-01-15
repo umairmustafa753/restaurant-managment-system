@@ -71,8 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   textStyle: {
-    fontSize: 30,
-    color: "#adadad"
+    fontSize: 30
   },
   textContainer: {
     position: "absolute",
