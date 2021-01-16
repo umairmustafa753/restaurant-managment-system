@@ -30,3 +30,7 @@ export type UnAuthenticatedStackParamList = {
   Login: undefined;
   Signup: undefined;
 };
+
+export type AuthenticatedStackParamList = {
+  Account: undefined;
+};

@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import NotFoundScreen from "../screens/NotFound/NotFoundScreen";
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "./types";
 import BottomTabNavigator from "./bottamTab/BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
 

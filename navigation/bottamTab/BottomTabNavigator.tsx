@@ -7,14 +7,14 @@ import HomeScreen from "../../screens/Home/HomeScreen";
 import MenuScreen from "../../screens/Menu/MenuScreen";
 import ReservationScreen from "../../screens/Reservation/Reservation";
 import UnAuthenticatedStack from "../UnAuthenticated/unAuthorized";
-import AccountScreen from "../../screens/Account/Account";
+import AuthenticatedStack from "../Authenticated/authorized";
 import {
   BottomTabParamList,
   HomeParamList,
   MenuParamList,
   ReservationParamList,
   AccountParamList
-} from "../../types";
+} from "../types";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -136,7 +136,7 @@ function AccountStackScreenNavigator() {
     <AccountStack.Navigator>
       <AccountStack.Screen
         name="AccountScreen"
-        component={UnAuthenticatedStack}
+        component={true ? AuthenticatedStack : UnAuthenticatedStack}
         options={{
           headerTitle: "Account",
           headerShown: false,
