@@ -25,3 +25,8 @@ export type ReservationParamList = {
 export type AccountParamList = {
   AccountScreen: undefined;
 };
+
+export type UnAuthenticatedStackParamList = {
+  Login: undefined;
+  Signup: undefined;
+};

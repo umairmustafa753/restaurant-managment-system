@@ -18,12 +18,12 @@ export default {
           },
           Reservation: {
             screens: {
-              MenuScreen: "reservation"
+              ReservationScreen: "reservation"
             }
           },
           Account: {
             screens: {
-              MenuScreen: "Account"
+              AccountScreen: "Account"
             }
           }
         }

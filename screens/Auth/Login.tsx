@@ -7,10 +7,11 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, TextInput } from "react-native-paper";
-
+import { useNavigation } from "@react-navigation/native";
 import PasswordInputText from "react-native-hide-show-password-input";
 
 import { Text, View } from "../../components/Themed";
+import { NAVIGATIONS } from "../../constants/navigator";
 import Separator from "../../components/Separator";
 import Logo from "../../components/Logo";
 
@@ -19,6 +20,12 @@ const navigate = () => {
 };
 
 const Login = () => {
+  const navigator = useNavigation();
+
+  const handleSignup = () => {
+    navigator.navigate(NAVIGATIONS.SIGNUP);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />
@@ -50,7 +57,7 @@ const Login = () => {
               <Button mode="outlined" color="grey">
                 forgot password
               </Button>
-              <Button mode="outlined" color="grey">
+              <Button mode="outlined" color="grey" onPress={handleSignup}>
                 Signup
               </Button>
             </View>

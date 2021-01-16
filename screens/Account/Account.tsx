@@ -6,7 +6,6 @@ import { Text, View } from "../../components/Themed";
 import { ScrollView } from "react-native-gesture-handler";
 
 import Card from "../../components/Card";
-import Login from "../Auth/Login";
 import Separator from "../../components/Separator";
 
 const navigate = () => {
@@ -15,36 +14,30 @@ const navigate = () => {
 
 const AccountScreen = () => {
   return (
-    <>
-      {true ? (
-        <Login />
-      ) : (
-        <SafeAreaView style={styles.container}>
-          <Separator margin={30} />
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.padding}>
-              <UserAvatar
-                size={80}
-                // src={}
-                name="Umair Mustafa"
-                style={styles.avatar}
-              />
-              <Separator margin={10} />
-              <Text style={styles.title}>Umair Mustafa</Text>
-              <Text style={styles.subTitle}>Owner</Text>
-              <Separator margin={10} />
-              <Card titile="Upadte Account" onPress={navigate} />
-              <Card titile="Add Employee" onPress={navigate} />
-              <Card titile="Reset Password" onPress={navigate} />
-              <Card titile="Confirm Orders" onPress={navigate} />
-              <Card titile="Pending Orders" onPress={navigate} />
-              <Card titile="Cancel Orders" onPress={navigate} />
-              <Card titile="Customers & Employees List" onPress={navigate} />
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-      )}
-    </>
+    <SafeAreaView style={styles.container}>
+      <Separator margin={30} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.padding}>
+          <UserAvatar
+            size={80}
+            // src={}
+            name="Umair Mustafa"
+            style={styles.avatar}
+          />
+          <Separator margin={10} />
+          <Text style={styles.title}>Umair Mustafa</Text>
+          <Text style={styles.subTitle}>Owner</Text>
+          <Separator margin={10} />
+          <Card titile="Upadte Account" onPress={navigate} />
+          <Card titile="Add Employee" onPress={navigate} />
+          <Card titile="Reset Password" onPress={navigate} />
+          <Card titile="Confirm Orders" onPress={navigate} />
+          <Card titile="Pending Orders" onPress={navigate} />
+          <Card titile="Cancel Orders" onPress={navigate} />
+          <Card titile="Customers & Employees List" onPress={navigate} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
