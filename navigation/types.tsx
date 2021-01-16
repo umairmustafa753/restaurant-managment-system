@@ -35,4 +35,6 @@ export type UnAuthenticatedStackParamList = {
 
 export type AuthenticatedStackParamList = {
   Account: undefined;
+  UpdateAccount: undefined;
+  AddUser: undefined;
 };

@@ -136,7 +136,7 @@ function AccountStackScreenNavigator() {
     <AccountStack.Navigator>
       <AccountStack.Screen
         name="AccountScreen"
-        component={false ? AuthenticatedStack : UnAuthenticatedStack}
+        component={true ? AuthenticatedStack : UnAuthenticatedStack}
         options={{
           headerTitle: "Account",
           headerShown: false,

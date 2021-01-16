@@ -4,5 +4,6 @@ export const NAVIGATIONS = {
   EMAIL_VERIFICATION: "EmailVerification",
   RESEST_PASSWORD: "ResetPassword",
   DETAILS: "Details",
-  EDIT_PROFILE: "EditProfile"
+  UPDATE_ACCOUNT: "UpdateAccount",
+  ADD_USER: "AddUser"
 };
