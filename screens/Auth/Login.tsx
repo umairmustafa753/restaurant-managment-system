@@ -22,6 +22,10 @@ const Login = () => {
     navigator.navigate(NAVIGATIONS.SIGNUP);
   };
 
+  const handleForgotPassword = () => {
+    navigator.navigate(NAVIGATIONS.EMAIL_VERIFICATION);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />
@@ -50,7 +54,11 @@ const Login = () => {
             </Button>
             <Separator margin={20} />
             <View style={styles.row}>
-              <Button mode="outlined" color="grey">
+              <Button
+                mode="outlined"
+                color="grey"
+                onPress={handleForgotPassword}
+              >
                 forgot password
               </Button>
               <Button mode="outlined" color="grey" onPress={handleSignup}>
