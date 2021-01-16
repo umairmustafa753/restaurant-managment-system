@@ -152,6 +152,7 @@ export default function ReservationScreen() {
             </View>
             <View>
               <Text style={styles.title}>Menu Items</Text>
+              <Separator margin={10} />
               <MultiSelect
                 hideTags
                 items={items}
@@ -188,6 +189,7 @@ export default function ReservationScreen() {
             </Card>
             <Separator margin={20} />
             <Text style={styles.title}>Card Info</Text>
+            <Separator margin={20} />
             <CreditCardInput
               onChange={(form) => {
                 setCardCarenditals(form);

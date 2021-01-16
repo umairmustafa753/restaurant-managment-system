@@ -1,10 +1,18 @@
 import * as React from "react";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { Button, TextInput } from "react-native-paper";
 
+import { Text, View } from "../../components/Themed";
 import Back from "../../components/Back";
+import { NAVIGATIONS } from "../../constants/navigator";
 import Separator from "../../components/Separator";
 
 const EmailVerifcation = () => {
@@ -14,43 +22,53 @@ const EmailVerifcation = () => {
     navigator.dispatch(StackActions.popToTop());
   };
 
+  const handleReset = () => {
+    navigator.navigate(NAVIGATIONS.RESEST_PASSWORD);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.padding}>
-          <Back onPress={handleNavigationPop} />
-          <Text style={styles.title}>Email Verification</Text>
-          <TextInput
-            label="Email"
-            theme={{ colors: { primary: "#149dec" } }}
-            style={styles.inputStyle}
-            value={""}
-            onChangeText={(text) => {}}
-          />
-          <Separator margin={50} />
-          {true && (
-            <Button mode="outlined" color="grey" onPress={() => {}}>
-              Send Email
-            </Button>
-          )}
-          {true && (
-            <View>
-              <Separator margin={50} />
-              <Text style={styles.title}>Please Enter Code</Text>
-              <Separator margin={50} />
-              <OTPInputView
-                pinCount={4}
-                style={styles.otp}
-                codeInputFieldStyle={styles.codeInputFieldStyle}
-              />
-              <Separator margin={50} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={30}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.padding}>
+            <Back onPress={handleNavigationPop} />
+            <Text style={styles.title}>Email Verification</Text>
+            <TextInput
+              label="Email"
+              theme={{ colors: { primary: "#149dec" } }}
+              style={styles.inputStyle}
+              value={""}
+              onChangeText={(text) => {}}
+            />
+            <Separator margin={50} />
+            {true && (
               <Button mode="outlined" color="grey" onPress={() => {}}>
-                Submit
+                Send code
               </Button>
-            </View>
-          )}
-        </View>
-      </ScrollView>
+            )}
+            {true && (
+              <View>
+                <Separator margin={50} />
+                <Text style={styles.title}>Please Enter Code</Text>
+                <Separator margin={50} />
+                <OTPInputView
+                  pinCount={4}
+                  style={styles.otp}
+                  codeInputFieldStyle={styles.codeInputFieldStyle}
+                />
+                <Separator margin={50} />
+                <Button mode="outlined" color="grey" onPress={handleReset}>
+                  Submit
+                </Button>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

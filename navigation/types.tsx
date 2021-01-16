@@ -30,7 +30,7 @@ export type UnAuthenticatedStackParamList = {
   Login: undefined;
   Signup: undefined;
   EmailVerification: undefined;
-  ResestPassword: undefined;
+  ResetPassword: undefined;
 };
 
 export type AuthenticatedStackParamList = {

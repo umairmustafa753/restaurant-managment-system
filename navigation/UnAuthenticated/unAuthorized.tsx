@@ -15,7 +15,7 @@ const UnAuthenticatedStack = () => {
       <Stack.Screen name={"Login"} component={Login} />
       <Stack.Screen name={"Signup"} component={Signup} />
       <Stack.Screen name={"EmailVerification"} component={EmailVerification} />
-      <Stack.Screen name={"ResestPassword"} component={ResestPassword} />
+      <Stack.Screen name={"ResetPassword"} component={ResestPassword} />
     </Stack.Navigator>
   );
 };
