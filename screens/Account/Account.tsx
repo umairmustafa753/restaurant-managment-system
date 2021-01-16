@@ -1,18 +1,21 @@
 import React from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
 
+import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
 import { ScrollView } from "react-native-gesture-handler";
 
 import Card from "../../components/Card";
 import Separator from "../../components/Separator";
 
-const navigate = () => {
-  console.log("in navigation");
-};
-
 const AccountScreen = () => {
+  const navigator = useNavigation();
+
+  const navigate = (to) => {
+    navigator.navigate(to);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />
@@ -28,13 +31,19 @@ const AccountScreen = () => {
           <Text style={styles.title}>Umair Mustafa</Text>
           <Text style={styles.subTitle}>Owner</Text>
           <Separator margin={10} />
-          <Card titile="Upadte Account" onPress={navigate} />
-          <Card titile="Add Employee" onPress={navigate} />
-          <Card titile="Reset Password" onPress={navigate} />
-          <Card titile="Confirm Orders" onPress={navigate} />
-          <Card titile="Pending Orders" onPress={navigate} />
-          <Card titile="Cancel Orders" onPress={navigate} />
-          <Card titile="Customers & Employees List" onPress={navigate} />
+          <Card
+            titile="Upadte Account/Details"
+            onPress={() => navigate(NAVIGATIONS.UPDATE_ACCOUNT)}
+          />
+          <Card
+            titile="Add Employee"
+            onPress={() => navigate(NAVIGATIONS.ADD_USER)}
+          />
+          <Card titile="Reset Password" onPress={() => {}} />
+          <Card titile="Confirm Orders" onPress={() => {}} />
+          <Card titile="Pending Orders" onPress={() => {}} />
+          <Card titile="Cancel Orders" onPress={() => {}} />
+          <Card titile="Customers & Employees List" onPress={() => {}} />
         </View>
       </ScrollView>
     </SafeAreaView>

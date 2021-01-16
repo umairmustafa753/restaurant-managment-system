@@ -50,7 +50,7 @@ const Login = () => {
             <Separator margin={20} />
 
             <Button mode="outlined" color="grey" onPress={() => {}}>
-              Submit
+              Log in
             </Button>
             <Separator margin={20} />
             <View style={styles.row}>

@@ -3,13 +3,15 @@ import {
   StyleSheet,
   SafeAreaView,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Picker
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, Menu } from "react-native-paper";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import PasswordInputText from "react-native-hide-show-password-input";
+import RNPickerSelect from "react-native-picker-select";
 import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
@@ -17,7 +19,7 @@ import Separator from "../../components/Separator";
 import Logo from "../../components/Logo";
 import Back from "../../components/Back";
 
-const Signup = () => {
+const AddUser = () => {
   const navigator = useNavigation();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
@@ -56,7 +58,7 @@ const Signup = () => {
               <Back onPress={handleNavigationPop} />
               <Logo />
               <Separator margin={20} />
-              <Text style={styles.title}>Sign Up</Text>
+              <Text style={styles.title}>Add User</Text>
               <TextInput
                 label="First Name"
                 theme={{ colors: { primary: "#149dec" } }}
@@ -80,6 +82,12 @@ const Signup = () => {
               />
               <PasswordInputText value={""} onChangeText={() => {}} />
               <Separator margin={20} />
+              <Picker selectedValue={""} onValueChange={() => {}}>
+                <Picker.Item label="Steve" value="steve" />
+                <Picker.Item label="Ellen" value="ellen" />
+                <Picker.Item label="Maria" value="maria" />
+              </Picker>
+              <Separator margin={20} />
               <Button mode="outlined" color="grey" onPress={showDatePicker}>
                 {date ? date : "Date of Birth"}
               </Button>
@@ -91,7 +99,7 @@ const Signup = () => {
               />
               <Separator margin={20} />
               <Button mode="outlined" color="grey" onPress={() => {}}>
-                Create Account
+                Add User
               </Button>
             </View>
           </ScrollView>
@@ -119,4 +127,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Signup;
+export default AddUser;
