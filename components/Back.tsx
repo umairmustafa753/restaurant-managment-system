@@ -5,7 +5,7 @@ import { View } from "./Themed";
 
 const Back = ({ onPress }: { onPress: () => void }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <Image
         style={styles.image}
         source={require("../assets/images/left-arrow.png")}
@@ -15,10 +15,6 @@ const Back = ({ onPress }: { onPress: () => void }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start"
-  },
   image: {
     width: 30,
     height: 30

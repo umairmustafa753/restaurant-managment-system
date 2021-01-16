@@ -29,6 +29,8 @@ export type AccountParamList = {
 export type UnAuthenticatedStackParamList = {
   Login: undefined;
   Signup: undefined;
+  EmailVerification: undefined;
+  ResestPassword: undefined;
 };
 
 export type AuthenticatedStackParamList = {
