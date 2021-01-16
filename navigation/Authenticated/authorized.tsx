@@ -6,7 +6,7 @@ import { AuthenticatedStackParamList } from "../types";
 
 const Stack = createStackNavigator<AuthenticatedStackParamList>();
 
-const UnAuthenticatedStack = () => {
+const AuthenticatedStack = () => {
   return (
     <Stack.Navigator headerMode="none" initialRouteName={"Account"}>
       <Stack.Screen name={"Account"} component={Account} />
@@ -14,4 +14,4 @@ const UnAuthenticatedStack = () => {
   );
 };
 
-export default UnAuthenticatedStack;
+export default AuthenticatedStack;
