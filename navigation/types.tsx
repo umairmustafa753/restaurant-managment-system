@@ -37,4 +37,5 @@ export type AuthenticatedStackParamList = {
   Account: undefined;
   UpdateAccount: undefined;
   AddUser: undefined;
+  ConfirmOrders: undefined;
 };

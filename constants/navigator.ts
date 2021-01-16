@@ -5,5 +5,6 @@ export const NAVIGATIONS = {
   RESEST_PASSWORD: "ResetPassword",
   DETAILS: "Details",
   UPDATE_ACCOUNT: "UpdateAccount",
-  ADD_USER: "AddUser"
+  ADD_USER: "AddUser",
+  CONFIRM_ORDERS: "ConfirmOrders"
 };

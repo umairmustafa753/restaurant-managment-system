@@ -39,10 +39,16 @@ const AccountScreen = () => {
             titile="Add User"
             onPress={() => navigate(NAVIGATIONS.ADD_USER)}
           />
-          <Card titile="Confirm Orders" onPress={() => {}} />
+          <Card
+            titile="Confirm Orders"
+            onPress={() => {
+              navigate(NAVIGATIONS.CONFIRM_ORDERS);
+            }}
+          />
           <Card titile="Pending Orders" onPress={() => {}} />
           <Card titile="Cancel Orders" onPress={() => {}} />
-          <Card titile="Customers & Employees List" onPress={() => {}} />
+          <Card titile="Customers List" onPress={() => {}} />
+          <Card titile="Employees List" onPress={() => {}} />
         </View>
       </ScrollView>
     </SafeAreaView>

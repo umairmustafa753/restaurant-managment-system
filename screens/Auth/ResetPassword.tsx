@@ -19,7 +19,7 @@ const ResestPassword = () => {
   const navigator = useNavigation();
 
   const handleLogin = () => {
-    navigator.navigate(NAVIGATIONS.EMAIL_VERIFICATION);
+    navigator.navigate(NAVIGATIONS.LOGIN);
   };
 
   const handleNavigationPop = () => {
