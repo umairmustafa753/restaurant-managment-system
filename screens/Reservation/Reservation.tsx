@@ -5,17 +5,15 @@ import {
   KeyboardAvoidingView,
   Platform
 } from "react-native";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import { Fumi } from "react-native-textinput-effects";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
+import { Button, Card, Title, Paragraph, TextInput } from "react-native-paper";
 import MultiSelect from "react-native-multiple-select";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { CreditCardInput } from "react-native-input-credit-card";
+import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
 import { ScrollView } from "react-native-gesture-handler";
 import Separator from "../../components/Separator";
-import moment from "moment";
 
 let MULTISELECT: MultiSelect;
 const items = [
@@ -108,31 +106,28 @@ export default function ReservationScreen() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.title}>Reservation Info</Text>
           <View style={styles.padding}>
-            <Fumi
-              label={"Full Name"}
-              iconClass={FontAwesomeIcon}
-              iconName={"user"}
-              iconColor={"#545454"}
-              iconSize={20}
-              inputPadding={16}
+            <TextInput
+              label="First Name"
+              theme={{ colors: { primary: "#149dec" } }}
+              style={styles.inputStyle}
+              value={""}
+              onChangeText={(text) => {}}
             />
-            <Fumi
-              label={"Phone Number"}
-              iconClass={FontAwesomeIcon}
-              iconName={"phone"}
-              iconColor={"#545454"}
-              iconSize={20}
-              inputPadding={16}
+            <TextInput
+              label="Last Name"
+              theme={{ colors: { primary: "#149dec" } }}
+              style={styles.inputStyle}
+              value={""}
+              onChangeText={(text) => {}}
             />
-            <Fumi
-              label={"Party Size"}
-              iconClass={FontAwesomeIcon}
-              iconName={"group"}
-              iconColor={"#545454"}
-              iconSize={20}
-              inputPadding={16}
-              keyboardType={"numeric"}
+            <TextInput
+              label="Email"
+              theme={{ colors: { primary: "#149dec" } }}
+              style={styles.inputStyle}
+              value={""}
+              onChangeText={(text) => {}}
             />
+            <Separator margin={20} />
             <View>
               <Button mode="outlined" color="grey" onPress={showDatePicker}>
                 {date ? date : "date"}
@@ -221,6 +216,9 @@ const styles = StyleSheet.create({
   },
   padding: {
     padding: 30
+  },
+  inputStyle: {
+    backgroundColor: "white"
   },
   separator: {
     marginVertical: 30,

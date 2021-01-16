@@ -1,10 +1,18 @@
-import React from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Button, TextInput } from "react-native-paper";
+
+import PasswordInputText from "react-native-hide-show-password-input";
 
 import { Text, View } from "../../components/Themed";
-import { ScrollView } from "react-native-gesture-handler";
-
 import Separator from "../../components/Separator";
+import Logo from "../../components/Logo";
 
 const navigate = () => {
   console.log("in navigation");
@@ -12,24 +20,50 @@ const navigate = () => {
 
 const Login = () => {
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-        <Separator margin={30} />
+    <SafeAreaView style={styles.container}>
+      <Separator margin={30} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={30}
+      >
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.padding}>
-            <Text>Login</Text>
+            <Logo />
+            <Separator margin={20} />
+            <Text style={styles.title}>Login</Text>
+            <TextInput
+              label="Email"
+              theme={{ colors: { primary: "#149dec" } }}
+              style={styles.inputStyle}
+              value={""}
+              onChangeText={(text) => {}}
+            />
+            <PasswordInputText value={""} onChangeText={() => {}} />
+            <Separator margin={20} />
+
+            <Button mode="outlined" color="grey" onPress={() => {}}>
+              Submit
+            </Button>
+            <Separator margin={20} />
+            <View style={styles.row}>
+              <Button mode="outlined" color="grey">
+                forgot password
+              </Button>
+              <Button mode="outlined" color="grey">
+                Signup
+              </Button>
+            </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "white"
   },
   title: {
@@ -37,22 +71,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
-  subTitle: {
-    fontSize: 15,
-    textAlign: "center"
-  },
   padding: {
     padding: 30
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%"
+  inputStyle: {
+    backgroundColor: "white"
   },
-  avatar: {
-    height: 80,
-    width: 80,
-    alignSelf: "center"
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });
 

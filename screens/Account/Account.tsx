@@ -16,7 +16,7 @@ const navigate = () => {
 const AccountScreen = () => {
   return (
     <>
-      {false ? (
+      {true ? (
         <Login />
       ) : (
         <SafeAreaView style={styles.container}>
@@ -38,6 +38,7 @@ const AccountScreen = () => {
               <Card titile="Reset Password" onPress={navigate} />
               <Card titile="Confirm Orders" onPress={navigate} />
               <Card titile="Pending Orders" onPress={navigate} />
+              <Card titile="Cancel Orders" onPress={navigate} />
               <Card titile="Customers & Employees List" onPress={navigate} />
             </View>
           </ScrollView>
