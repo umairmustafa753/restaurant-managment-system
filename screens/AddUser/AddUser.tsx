@@ -83,9 +83,8 @@ const AddUser = () => {
               <PasswordInputText value={""} onChangeText={() => {}} />
               <Separator margin={20} />
               <Picker selectedValue={""} onValueChange={() => {}}>
-                <Picker.Item label="Steve" value="steve" />
-                <Picker.Item label="Ellen" value="ellen" />
-                <Picker.Item label="Maria" value="maria" />
+                <Picker.Item label="employee" value="employee" />
+                <Picker.Item label="customer" value="customer" />
               </Picker>
               <Separator margin={20} />
               <Button mode="outlined" color="grey" onPress={showDatePicker}>

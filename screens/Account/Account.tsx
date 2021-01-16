@@ -36,10 +36,9 @@ const AccountScreen = () => {
             onPress={() => navigate(NAVIGATIONS.UPDATE_ACCOUNT)}
           />
           <Card
-            titile="Add Employee"
+            titile="Add User"
             onPress={() => navigate(NAVIGATIONS.ADD_USER)}
           />
-          <Card titile="Reset Password" onPress={() => {}} />
           <Card titile="Confirm Orders" onPress={() => {}} />
           <Card titile="Pending Orders" onPress={() => {}} />
           <Card titile="Cancel Orders" onPress={() => {}} />
