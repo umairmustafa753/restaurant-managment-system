@@ -45,7 +45,7 @@ const EmailVerifcation = () => {
               onChangeText={(text) => {}}
             />
             <Separator margin={50} />
-            {true && (
+            {false && (
               <Button mode="outlined" color="grey" onPress={() => {}}>
                 Send code
               </Button>

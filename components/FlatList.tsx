@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  Alert
-} from "react-native";
+import { SafeAreaView, StyleSheet, FlatList, Alert } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
 import { Avatar } from "react-native-paper";
-import Modal from "react-native-modal";
+// import Modal from "react-native-modal";
+import { Modal } from "./Modal";
+
+import { Text, View } from "./Themed";
+import Separator from "./Separator";
 
 const List = ({ data }: { data: Array<object> }) => {
   const [search, setSearch] = useState<string>("");
@@ -85,13 +82,29 @@ const List = ({ data }: { data: Array<object> }) => {
   return (
     <View>
       <View style={styles.container}>
-        <Modal
-          isVisible={isModalVisible}
-          onBackdropPress={() => setModalVisible(false)}
-          coverScreen={true}
-        >
-          <View style={{ backgroundColor: "white" }}>
-            <Text>{modalData?.title}</Text>
+        <Modal visible={isModalVisible} onClose={() => setModalVisible(false)}>
+          <View style={styles.row}>
+            <UserAvatar
+              size={70}
+              // src={}
+              name="Umair Mustafa"
+              style={styles.avatar}
+            />
+            <Text style={styles.modalTextStyle}>
+              Umair Mustafa Order booking date 2021-12-20 8:30 PM
+            </Text>
+          </View>
+          <Separator margin={20} />
+          <Text>Menu Items</Text>
+          <Text style={styles.modalText}>{modalData?.title}</Text>
+          <Separator margin={20} />
+          <View style={[styles.row, styles.spaceBetween]}>
+            <Button mode="outlined" color="grey" onPress={() => {}}>
+              Comfrim
+            </Button>
+            <Button mode="outlined" color="grey" onPress={() => {}}>
+              Delete
+            </Button>
           </View>
         </Modal>
         <SearchBar
@@ -123,6 +136,25 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 30
+  },
+  avatar: {
+    height: 70,
+    width: 70,
+    alignSelf: "center"
+  },
+  row: {
+    flexDirection: "row"
+  },
+  spaceBetween: {
+    justifyContent: "space-between"
+  },
+  modalTextStyle: {
+    alignSelf: "center",
+    width: "70%",
+    marginLeft: 10
+  },
+  modalText: {
+    width: "80%"
   }
 });
 

@@ -45,8 +45,14 @@ const AccountScreen = () => {
               navigate(NAVIGATIONS.CONFIRM_ORDERS);
             }}
           />
-          <Card titile="Pending Orders" onPress={() => {}} />
-          <Card titile="Cancel Orders" onPress={() => {}} />
+          <Card
+            titile="Pending Orders"
+            onPress={() => navigate(NAVIGATIONS.PENDING_ORDERS)}
+          />
+          <Card
+            titile="Cancel Orders"
+            onPress={() => navigate(NAVIGATIONS.CANCEL_ORDERS)}
+          />
           <Card titile="Customers List" onPress={() => {}} />
           <Card titile="Employees List" onPress={() => {}} />
         </View>

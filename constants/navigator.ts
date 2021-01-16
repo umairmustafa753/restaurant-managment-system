@@ -6,5 +6,7 @@ export const NAVIGATIONS = {
   DETAILS: "Details",
   UPDATE_ACCOUNT: "UpdateAccount",
   ADD_USER: "AddUser",
-  CONFIRM_ORDERS: "ConfirmOrders"
+  CONFIRM_ORDERS: "ConfirmOrders",
+  PENDING_ORDERS: "PendingOrders",
+  CANCEL_ORDERS: "CancelOrders"
 };
