@@ -15,10 +15,6 @@ import { NAVIGATIONS } from "../../constants/navigator";
 import Separator from "../../components/Separator";
 import Logo from "../../components/Logo";
 
-const navigate = () => {
-  console.log("in navigation");
-};
-
 const Login = () => {
   const navigator = useNavigation();
 

@@ -8,19 +8,18 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Button, TextInput } from "react-native-paper";
-
+import { useNavigation, StackActions } from "@react-navigation/native";
 import PasswordInputText from "react-native-hide-show-password-input";
 import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
 import Separator from "../../components/Separator";
 import Logo from "../../components/Logo";
-
-const navigate = () => {
-  console.log("in navigation");
-};
+import Back from "../../components/Back";
 
 const Signup = () => {
+  const navigator = useNavigation();
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
@@ -39,6 +38,10 @@ const Signup = () => {
     hideDatePicker();
   };
 
+  const handleNavigationPop = () => {
+    navigator.dispatch(StackActions.popToTop());
+  };
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -50,6 +53,7 @@ const Signup = () => {
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.padding}>
+              <Back onPress={handleNavigationPop} />
               <Logo />
               <Separator margin={20} />
               <Text style={styles.title}>Sign Up</Text>
