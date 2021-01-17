@@ -25,3 +25,14 @@ export const MenuSubItem = [
     }
   }
 ];
+
+export const UserEnum = {
+  type: String,
+  enum: ["customer", "employee", "owner"],
+  default: "customer"
+};
+
+export type IUser = {
+  username: string;
+  password: string;
+};

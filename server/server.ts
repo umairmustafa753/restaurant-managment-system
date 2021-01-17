@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 
 import api from "./routes/api";
+import authApi from "./routes/auth";
 
 const app = express();
 dotenv.config();
@@ -26,6 +27,7 @@ mongoose.connection.on("error", (err) => {
 // middleware;
 app.use(bodyParser.json());
 app.use("/api", cors(), api);
+app.use("/auth", cors(), authApi);
 app.use("*", (req, res) => {
   res.send("Not Found!");
 });
