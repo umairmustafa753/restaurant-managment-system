@@ -26,6 +26,15 @@ export const MenuSubItem = [
   }
 ];
 
+export const PaidSalariesMonth = [
+  {
+    date: {
+      type: String,
+      required: true
+    }
+  }
+];
+
 export const UserEnum = {
   type: String,
   enum: ["customer", "employee", "owner"],

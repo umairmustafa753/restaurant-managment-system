@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 import { Document } from "mongoose";
 
-import { IUser, UserEnum } from "./constant";
+import { IUser, UserEnum, PaidSalariesMonth } from "./constant";
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     role: UserEnum,
     email: { type: String, unique: true, required: true },
     password: { type: String, minlength: 6, required: true },
+    paidSalariesMonth: PaidSalariesMonth,
     dob: { type: String, required: true }
   },
   { timestamps: true }
