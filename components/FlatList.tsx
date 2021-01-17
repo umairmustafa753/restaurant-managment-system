@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, FlatList, Alert } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
-import UserAvatar from "react-native-user-avatar";
-import { Avatar } from "react-native-paper";
-// import Modal from "react-native-modal";
-import { Modal } from "./Modal";
 
 import { Text, View } from "./Themed";
-import Separator from "./Separator";
 
-const List = ({ data }: { data: Array<object> }) => {
+const List = ({
+  data,
+  children
+}: {
+  data: Array<object>;
+  children: (
+    data: any,
+    isModalVisible: boolean,
+    isVisisble: () => void
+  ) => React.ReactNode;
+}) => {
   const [search, setSearch] = useState<string>("");
   const [filteredDataSource, setFilteredDataSource] = useState<Array<object>>(
     []
@@ -55,9 +59,11 @@ const List = ({ data }: { data: Array<object> }) => {
 
   const ItemView = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.itemStyle} onPress={() => getItem(item)}>
-        <Text>{item?.title}</Text>
-      </TouchableOpacity>
+      <View style={styles.itemStyle}>
+        <TouchableOpacity onPress={() => getItem(item)}>
+          <Text>{item?.title}</Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -76,37 +82,12 @@ const List = ({ data }: { data: Array<object> }) => {
   const getItem = (item: any) => {
     setModalData(item);
     setModalVisible(true);
-    // Alert.alert("Id : " + item.id + " Title : " + item.title);
   };
 
   return (
     <View>
       <View style={styles.container}>
-        <Modal visible={isModalVisible} onClose={() => setModalVisible(false)}>
-          <View style={styles.row}>
-            <UserAvatar
-              size={70}
-              // src={}
-              name="Umair Mustafa"
-              style={styles.avatar}
-            />
-            <Text style={styles.modalTextStyle}>
-              Umair Mustafa Order booking date 2021-12-20 8:30 PM
-            </Text>
-          </View>
-          <Separator margin={20} />
-          <Text>Menu Items</Text>
-          <Text style={styles.modalText}>{modalData?.title}</Text>
-          <Separator margin={20} />
-          <View style={[styles.row, styles.spaceBetween]}>
-            <Button mode="outlined" color="grey" onPress={() => {}}>
-              Comfrim
-            </Button>
-            <Button mode="outlined" color="grey" onPress={() => {}}>
-              Delete
-            </Button>
-          </View>
-        </Modal>
+        {children(modalData, isModalVisible, toggleModal)}
         <SearchBar
           round
           onChangeText={(text) => searchFilterFunction(text)}
