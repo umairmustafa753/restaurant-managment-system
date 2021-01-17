@@ -7,7 +7,7 @@ import featureItems from "../controller/featureItem";
 const api = express.Router();
 
 // featured Items api
-// api.get("/featuredItem",  Note.getAllNotes);
+api.get("/featuredItem", featureItems.getFeaturedItems);
 api.post(
   "/featuredItem",
   check("newArrival").notEmpty().withMessage("title is required"),
@@ -17,7 +17,7 @@ api.post(
     .notEmpty()
     .withMessage("Birthday special is required"),
   expressPostValidator,
-  featureItems.AddFeaturedItem
+  featureItems.AddFeaturedItems
 );
 
 export default api;
