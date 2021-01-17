@@ -8,5 +8,7 @@ export const NAVIGATIONS = {
   ADD_USER: "AddUser",
   CONFIRM_ORDERS: "ConfirmOrders",
   PENDING_ORDERS: "PendingOrders",
-  CANCEL_ORDERS: "CancelOrders"
+  CANCEL_ORDERS: "CancelOrders",
+  CUSTOMER_LIST: "CustomerList",
+  EMPLOYEE_LIST: "EmployeeList"
 };

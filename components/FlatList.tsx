@@ -24,8 +24,12 @@ const List = ({
   const [masterDataSource, setMasterDataSource] = useState<Array<object>>([]);
   const [modalData, setModalData] = useState<any>();
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -81,13 +85,13 @@ const List = ({
 
   const getItem = (item: any) => {
     setModalData(item);
-    setModalVisible(true);
+    showModal();
   };
 
   return (
     <View>
       <View style={styles.container}>
-        {children(modalData, isModalVisible, toggleModal)}
+        {children(modalData, isModalVisible, hideModal)}
         <SearchBar
           round
           onChangeText={(text) => searchFilterFunction(text)}

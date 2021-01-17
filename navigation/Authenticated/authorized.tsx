@@ -7,6 +7,8 @@ import AddUser from "../../screens/AddUser/AddUser";
 import ConfirmOrders from "../../screens/ConfirmOrders/ConfirmOrders";
 import PendingOrders from "../../screens/PendingOrders/PendingOrders";
 import CancelOrders from "../../screens/CancelOrders/CancelOrders";
+import CustomerList from "../../screens/CustomerList/CustomerList";
+import EmployeeList from "../../screens/EmployeeList/EmployeeList";
 import { AuthenticatedStackParamList } from "../types";
 
 const Stack = createStackNavigator<AuthenticatedStackParamList>();
@@ -20,6 +22,8 @@ const AuthenticatedStack = () => {
       <Stack.Screen name={"ConfirmOrders"} component={ConfirmOrders} />
       <Stack.Screen name={"PendingOrders"} component={PendingOrders} />
       <Stack.Screen name={"CancelOrders"} component={CancelOrders} />
+      <Stack.Screen name={"CustomerList"} component={CustomerList} />
+      <Stack.Screen name={"EmployeeList"} component={EmployeeList} />
     </Stack.Navigator>
   );
 };

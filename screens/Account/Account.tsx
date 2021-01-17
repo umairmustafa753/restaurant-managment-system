@@ -53,8 +53,14 @@ const AccountScreen = () => {
             titile="Cancel Orders"
             onPress={() => navigate(NAVIGATIONS.CANCEL_ORDERS)}
           />
-          <Card titile="Customers List" onPress={() => {}} />
-          <Card titile="Employees List" onPress={() => {}} />
+          <Card
+            titile="Customers List"
+            onPress={() => navigate(NAVIGATIONS.CUSTOMER_LIST)}
+          />
+          <Card
+            titile="Employees List"
+            onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
