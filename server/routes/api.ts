@@ -3,6 +3,7 @@ import { check } from "express-validator";
 
 import expressPostValidator from "../validator/index";
 import featureItems from "../controller/featureItem";
+import MenuList from "../controller/menuList";
 
 const api = express.Router();
 
@@ -18,6 +19,16 @@ api.post(
     .withMessage("Birthday special is required"),
   expressPostValidator,
   featureItems.AddFeaturedItems
+);
+
+// MenuItem List api
+api.get("/menuList", MenuList.getMenuList);
+api.post(
+  "/menuList",
+  check("categoryName").notEmpty().withMessage("categoryName is required"),
+  check("subCategory").isArray().withMessage("subCategory is required"),
+  expressPostValidator,
+  MenuList.AddMenuList
 );
 
 export default api;

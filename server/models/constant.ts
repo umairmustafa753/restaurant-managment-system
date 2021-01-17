@@ -16,3 +16,12 @@ export const FoodItem = {
     required: true
   }
 };
+
+export const MenuSubItem = [
+  {
+    val: {
+      type: String,
+      required: true
+    }
+  }
+];

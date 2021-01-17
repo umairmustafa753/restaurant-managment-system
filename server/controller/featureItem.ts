@@ -1,4 +1,3 @@
-// const Candidate = require("../model/candidates");
 import featureItems from "../models/featureItem";
 
 const featuredItem = {
