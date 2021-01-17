@@ -1,11 +1,12 @@
 import * as express from "express";
 import * as cors from "cors";
 import * as bodyParser from "body-parser";
-
-const app = express();
 import * as dotenv from "dotenv";
 import * as mongoose from "mongoose";
 
+import api from "./routes/api";
+
+const app = express();
 dotenv.config();
 
 // db;
@@ -24,6 +25,7 @@ mongoose.connection.on("error", (err) => {
 
 // middleware;
 app.use(bodyParser.json());
+app.use("/api", cors(), api);
 app.use("*", (req, res) => {
   res.send("Not Found!");
 });
