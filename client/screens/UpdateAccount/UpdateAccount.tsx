@@ -11,6 +11,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import UserAvatar from "react-native-user-avatar";
 import { Button, TextInput, Card, Title, Paragraph } from "react-native-paper";
+import CompleteFlatList from "react-native-complete-flatlist";
 import moment from "moment";
 
 import Back from "../../components/Back";
@@ -23,6 +24,7 @@ const UpdateAccount = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
+
   const [date, setDate] = useState<string>("");
 
   const showDatePicker = () => {
@@ -40,6 +42,22 @@ const UpdateAccount = () => {
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
+  };
+
+  const DATA = [
+    {
+      date: "Aug-2021"
+    },
+    {
+      date: "Aug-2021"
+    },
+    {
+      date: "Aug-2021"
+    }
+  ];
+
+  const cell = ({ item }) => {
+    return <Text style={styles.listText}>{item.date}</Text>;
   };
 
   return (
@@ -104,12 +122,29 @@ const UpdateAccount = () => {
             </Button>
             <Separator margin={20} />
             {true && (
-              <Card>
-                <Card.Content>
-                  <Title>Your Salary is</Title>
-                  <Paragraph>0.00 Rs</Paragraph>
-                </Card.Content>
-              </Card>
+              <View>
+                <Card>
+                  <Card.Content>
+                    <Title>Your Salary is</Title>
+                    <Paragraph>0.00 Rs</Paragraph>
+                  </Card.Content>
+                </Card>
+                <Separator margin={20} />
+                <CompleteFlatList
+                  searchKey={["name", "status", "time", "date"]}
+                  highlightColor="yellow"
+                  // pullToRefreshCallback={() => {
+                  //   alert('refreshing');
+                  // }}
+                  placeholder={"Search paid Salary months"}
+                  data={DATA}
+                  // ref={c => this.completeFlatList = c}
+                  renderSeparator={null}
+                  renderItem={cell}
+                  // onEndReached={() => console.log("reach end")}
+                  onEndReachedThreshold={0}
+                />
+              </View>
             )}
           </View>
         </ScrollView>
@@ -139,6 +174,11 @@ const styles = StyleSheet.create({
   },
   padding: {
     padding: 30
+  },
+  listText: {
+    padding: 20,
+    backgroundColor: "#f2f2f2",
+    marginTop: 20
   },
   avatar: {
     height: 80,
