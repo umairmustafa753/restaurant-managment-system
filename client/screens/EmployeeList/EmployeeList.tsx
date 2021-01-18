@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
-import { Button } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
 import moment from "moment";
 
@@ -66,11 +66,16 @@ const EmployeeList = () => {
                 <Separator margin={20} />
                 <Text style={styles.title}>Designation</Text>
                 <Text style={styles.text}>Chef</Text>
-                <Text style={styles.title}>Salary</Text>
-                <Text style={styles.text}>5000</Text>
                 <Text style={styles.title}>Personal Information</Text>
                 <Text style={styles.text}>umair@gmail.com</Text>
                 <Text style={styles.text}>Umair Mustafa</Text>
+                <TextInput
+                  label="Salary"
+                  theme={{ colors: { primary: "#149dec" } }}
+                  style={styles.inputStyle}
+                  value={"50000"}
+                  onChangeText={(text) => {}}
+                />
                 <Separator margin={20} />
                 {false ? (
                   <Button mode="outlined" color="green" onPress={() => {}}>
@@ -81,6 +86,7 @@ const EmployeeList = () => {
                     {"Pay Salary"}
                   </Button>
                 )}
+                <Separator margin={20} />
               </Modal>
             )}
           </List>
@@ -116,6 +122,9 @@ const styles = StyleSheet.create({
     width: "80%",
     top: 20,
     textAlign: "center"
+  },
+  inputStyle: {
+    backgroundColor: "white"
   },
   avatar: {
     height: 70,

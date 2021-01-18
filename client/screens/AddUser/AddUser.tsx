@@ -87,6 +87,17 @@ const AddUser = () => {
                 <Picker.Item label="customer" value="customer" />
               </Picker>
               <Separator margin={20} />
+              {true && (
+                <TextInput
+                  label="Salary"
+                  theme={{ colors: { primary: "#149dec" } }}
+                  style={styles.inputStyle}
+                  value={""}
+                  onChangeText={(text) => {}}
+                  keyboardType={"numeric"}
+                />
+              )}
+              <Separator margin={20} />
               <Button mode="outlined" color="grey" onPress={showDatePicker}>
                 {date ? date : "Date of Birth"}
               </Button>
