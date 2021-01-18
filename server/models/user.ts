@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, unique: true, required: true },
     password: { type: String, minlength: 6, required: true },
     picture: { type: String, required: false },
+    salary: { type: Number, required: false },
     paidSalariesMonth: PaidSalariesMonth,
     dob: { type: String, required: true }
   },
