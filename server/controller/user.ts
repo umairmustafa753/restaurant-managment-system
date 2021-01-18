@@ -85,7 +85,7 @@ const Auth = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        picture: req.body.password,
+        picture: req.body.picture,
         paidSalariesMonth: req.body.paidSalariesMonth,
         dob: req.body.dob,
         updatedAt: Date.now()
