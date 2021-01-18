@@ -14,7 +14,7 @@ const featuredItem = {
       res.status(500).send({ error: "Something went wrong, Please try again" });
     }
   },
-  getFeaturedItems: async (req, res) => {
+  GetFeaturedItems: async (req, res) => {
     try {
       featureItems
         .find()

@@ -14,7 +14,7 @@ const MenuListController = {
       res.status(500).send({ error: "Something went wrong, Please try again" });
     }
   },
-  getMenuList: async (req, res) => {
+  GetMenuList: async (req, res) => {
     try {
       MenuList.find()
         .then((MenuList) => {

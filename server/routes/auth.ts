@@ -4,31 +4,32 @@ import { check } from "express-validator";
 import expressPostValidator from "../validator/index";
 import Auth from "../controller/user";
 import Authorization from "../middleware/Authorization";
+import { MODAL_KEYS, MESSAGE } from "./constants";
 
 const api = express.Router();
 
 api.post(
   "/signup",
-  check("firstName").notEmpty().withMessage("First name is required"),
-  check("lastName").notEmpty().withMessage("Last name is required"),
-  check("email").isEmail().withMessage("Enter a valid email"),
-  check("dob").notEmpty().withMessage("dob is required"),
-  check("password").notEmpty().withMessage("password is required"),
-  check("password")
+  check(MODAL_KEYS.FIRST_NAME).notEmpty().withMessage(MESSAGE.FIRST_NAME),
+  check(MODAL_KEYS.LAST_NAME).notEmpty().withMessage(MESSAGE.LAST_NAME),
+  check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
+  check(MODAL_KEYS.DOB).notEmpty().withMessage(MESSAGE.DOB),
+  check(MODAL_KEYS.PASSWORD).notEmpty().withMessage(MESSAGE.PASSWORD),
+  check(MODAL_KEYS.PASSWORD)
     .isLength({ min: 8 })
-    .withMessage("Password must be of 8 character or more"),
+    .withMessage(MESSAGE.PASSWORD_LENGTH),
   expressPostValidator,
   Auth.Signup
 );
 
 api.post(
   "/signin",
-  check("email").notEmpty().withMessage("Write a email"),
-  check("password").notEmpty().withMessage("Write a password"),
+  check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
+  check(MODAL_KEYS.PASSWORD).notEmpty().withMessage(MESSAGE.PASSWORD),
   expressPostValidator,
   Auth.Login
 );
 
-api.get("/signin/:id", Authorization, Auth.autoLogin);
+api.get("/signin/:id", Authorization, Auth.AutoLogin);
 
 export default api;
