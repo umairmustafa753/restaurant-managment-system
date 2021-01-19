@@ -38,7 +38,7 @@ api.post(
 
 // Update user api
 
-api.post(
+api.put(
   "/updateUser",
   check(MODAL_KEYS.FIRST_NAME).notEmpty().withMessage(MESSAGE.FIRST_NAME),
   check(MODAL_KEYS.LAST_NAME).notEmpty().withMessage(MESSAGE.LAST_NAME),
@@ -51,6 +51,14 @@ api.post(
   expressPostValidator,
   Authorization,
   Auth.UpdateUser
+);
+
+api.put(
+  "/emailVerification",
+  check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
+  expressPostValidator,
+  Authorization,
+  Auth.EmailVerification
 );
 
 export default api;

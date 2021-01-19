@@ -1,7 +1,12 @@
 import * as bcrypt from "bcryptjs";
+import * as nodemailer from "nodemailer";
+import * as dotenv from "dotenv";
+
 import User from "../models/user";
+import { EMAIL } from "./constants";
 
 const saltRounds = 10;
+dotenv.config();
 
 const salt = () => {
   return bcrypt.genSaltSync(saltRounds);
@@ -31,6 +36,36 @@ const Users = {
     } catch (error) {
       console.log("error", error);
       throw error;
+    }
+  },
+
+  emailVerification: async (obj: any) => {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.HOST,
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.USEREMAIL,
+          pass: process.env.USERPASS
+        }
+      });
+
+      const htmlBody = `<p>${EMAIL.MESSAGE}: ${obj.otp}</p>`;
+      const mail = {
+        from: process.env.USEREMAIL,
+        to: obj.email,
+        subject: EMAIL.SUBJECT,
+        html: htmlBody
+      };
+
+      transporter.sendMail(mail, function (err, info) {
+        if (err) return false;
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   },
 

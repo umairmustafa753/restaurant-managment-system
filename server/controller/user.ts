@@ -91,7 +91,7 @@ const Auth = {
         dob: req.body.dob,
         updatedAt: Date.now()
       };
-      let item = await user.findOneAndUpdate(query, update, options);
+      const item = await user.findOneAndUpdate(query, update, options);
       if (item) {
         return res
           .status(200)
@@ -100,6 +100,40 @@ const Auth = {
       return res
         .status(409)
         .send({ data: {}, message: "Something went wrong, Please try again" });
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send({ error });
+    }
+  },
+
+  EmailVerification: async (req, res) => {
+    try {
+      const obj = req.body;
+      let userDB = await userFromService.getByEmail(obj.email);
+      if (!userDB) {
+        return res.status(404).send({ data: {}, message: "Email Not found" });
+      }
+      const otp = Math.floor(1000 + Math.random() * 9000);
+      const query = { _id: userDB._id };
+      const options = { new: true, runValidators: true };
+      const update = {
+        otp: otp,
+        updatedAt: Date.now()
+      };
+      const item = await user.findOneAndUpdate(query, update, options);
+      const isEmailSend = await userFromService.emailVerification({
+        otp,
+        email: obj.email
+      });
+      if (item && isEmailSend) {
+        return res
+          .status(200)
+          .send({ data: {}, message: "Email with OTP sended" });
+      } else if (!isEmailSend) {
+        return res
+          .status(409)
+          .send({ data: {}, message: "Failed to send email" });
+      }
     } catch (error) {
       console.log("error", error);
       res.status(500).send({ error });

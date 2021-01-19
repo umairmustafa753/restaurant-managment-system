@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema(
     picture: { type: String, required: false },
     salary: { type: Number, required: false },
     paidSalariesMonth: PaidSalariesMonth,
-    dob: { type: String, required: true }
+    dob: { type: String, required: true },
+    otp: { type: Number, required: false }
   },
   { timestamps: true }
 );
