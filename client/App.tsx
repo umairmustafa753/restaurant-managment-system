@@ -1,9 +1,11 @@
 import React from "react";
 import { LogBox } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider } from "react-redux";
 
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
+import Store from "./store";
 
 export default function App() {
   LogBox.ignoreAllLogs();
@@ -13,9 +15,11 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation />
-      </SafeAreaProvider>
+      <Provider store={Store}>
+        <SafeAreaProvider>
+          <Navigation />
+        </SafeAreaProvider>
+      </Provider>
     );
   }
 }

@@ -48,13 +48,17 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-textinput-effects": "^0.6.1",
     "react-native-user-avatar": "^1.0.7",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "0.63.35",
     "jest-expo": "~40.0.0",
+    "react-native-dotenv": "^2.5.0",
     "typescript": "^4.0.5"
   },
   "private": true

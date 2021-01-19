@@ -1,12 +1,12 @@
-import featureItems from "../models/featureItem";
+import featuredItems from "../models/featureItem";
 
 const featuredItem = {
   AddFeaturedItems: (req, res) => {
     try {
-      const FeatureItemsDB = new featureItems(req.body);
-      FeatureItemsDB.save().then((result) => {
+      const FeaturedItemsDB = new featuredItems(req.body);
+      FeaturedItemsDB.save().then((result) => {
         res.status(200).json({
-          FeatureItems: result,
+          FeaturedItems: result,
           message: "Featured Items Succesfully"
         });
       });
@@ -16,10 +16,10 @@ const featuredItem = {
   },
   GetFeaturedItems: async (req, res) => {
     try {
-      featureItems
+      featuredItems
         .find()
-        .then((featureItems) => {
-          res.status(200).json({ featureItems: featureItems });
+        .then((featuredItems) => {
+          res.status(200).json({ featuredItems: featuredItems });
         })
         .catch((err) => console.log("error message: ", err));
     } catch (error) {

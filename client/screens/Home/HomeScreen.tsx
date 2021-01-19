@@ -1,85 +1,79 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { connect } from "react-redux";
 
 import { Text, View } from "../../components/Themed";
 import HorizontalList from "../../components/HorizentalList";
 import Separator from "../../components/Separator";
+import FeaturedItemAction from "../../store/Actions/featuredItems";
 
-const entries = [
-  {
-    title: "Biryani",
-    text: "Rs 250",
-    image: require("../../assets/images/restaurant.png")
-  },
-  {
-    title: "Biryani",
-    text: "Rs 250",
-    image: require("../../assets/images/restaurant.png")
-  },
-  {
-    title: "Biryani",
-    text: "Rs 250",
-    image: require("../../assets/images/restaurant.png")
-  },
-  {
-    title: "Biryani",
-    text: "Rs 250",
-    image: require("../../assets/images/restaurant.png")
-  },
-  {
-    title: "Biryani",
-    text: "Rs 250",
-    image: require("../../assets/images/restaurant.png")
-  }
-];
+const HomeScreen = (props) => {
+  const [items, setItems] = useState<any>(props?.featuredItems);
 
-const HomeScreen = () => {
+  useEffect(() => {
+    props.getFeaturedItems();
+  }, []);
+
+  useEffect(() => {
+    setItems(props?.featuredItems);
+  }, [props?.featuredItems]);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>New Arrivals</Text>
-        <Separator margin={20} />
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+        {items && (
+          <View>
+            <Text style={styles.title}>New Arrivals</Text>
+            <Separator margin={20} />
+            <HorizontalList
+              data={items[0]?.newArrival}
+              type="default"
+              style={styles.listStyle}
+              width={300}
+            />
 
-        <Separator margin={50} />
-        <Text style={styles.title}>Specialities</Text>
-        <Separator margin={20} />
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+            <Separator margin={50} />
+            <Text style={styles.title}>Specialities</Text>
+            <Separator margin={20} />
+            <HorizontalList
+              data={items[0]?.specialities}
+              type="default"
+              style={styles.listStyle}
+              width={300}
+            />
 
-        <Separator margin={50} />
-        <Text style={styles.title}>Top Deals</Text>
-        <Separator margin={20} />
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
-
-        <Separator margin={50} />
-        <Text style={styles.title}>Birthday Sepical</Text>
-        <Separator margin={20} />
-        <HorizontalList
-          data={entries}
-          type="default"
-          style={styles.listStyle}
-          width={200}
-        />
+            <Separator margin={50} />
+            <Text style={styles.title}>Top Deals</Text>
+            <Separator margin={20} />
+            <HorizontalList
+              data={items[0]?.topDeals}
+              type="default"
+              style={styles.listStyle}
+              width={300}
+            />
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    featuredItems: state.featuredItemsReducer?.featuredItems?.featuredItems
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getFeaturedItems: () => {
+      dispatch(FeaturedItemAction.GetFeaturedItems());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -98,5 +92,3 @@ const styles = StyleSheet.create({
     height: 170
   }
 });
-
-export default HomeScreen;

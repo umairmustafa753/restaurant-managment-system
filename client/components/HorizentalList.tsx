@@ -10,15 +10,13 @@ const renderItem = ({ item }) => {
     <View style={styles.renderItem}>
       <Image
         style={styles.image}
-        source={item.image}
-        // source={{
-        //   uri:
-        //     "https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png"
-        // }}
+        source={{
+          uri: item?.picture
+        }}
       />
       <View style={styles.textContainer}>
-        <Text style={[styles.textStyle]}>{item.title}</Text>
-        <Text>{item.text}</Text>
+        <Text style={[styles.textStyle]}>{item?.title}</Text>
+        <Text>{item?.price} Rs</Text>
       </View>
     </View>
   );
@@ -68,14 +66,14 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "40%",
-    height: "35%",
+    height: "60%",
     right: 40,
-    top: 20,
+    top: 5,
     position: "absolute",
     borderRadius: 50
   },
   textStyle: {
-    fontSize: 30
+    fontSize: 12
   },
   textContainer: {
     position: "absolute",

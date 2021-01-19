@@ -2,7 +2,7 @@ import * as express from "express";
 import { check } from "express-validator";
 
 import expressPostValidator from "../validator/index";
-import featureItems from "../controller/featureItem";
+import featuredItems from "../controller/featureItem";
 import MenuList from "../controller/menuList";
 import Reservation from "../controller/reservation";
 import User from "../controller/user";
@@ -13,14 +13,14 @@ const api = express.Router();
 
 // featured Items api
 
-api.get("/featuredItem", featureItems.GetFeaturedItems);
+api.get("/featuredItems", featuredItems.GetFeaturedItems);
 api.post(
-  "/featuredItem",
+  "/featuredItems",
   check(MODAL_KEYS.NEW_ARRIVAL).notEmpty().withMessage(MESSAGE.NEW_ARRIVAL),
   check(MODAL_KEYS.SPECIALITIES).notEmpty().withMessage(MESSAGE.SPECIALITIES),
   check(MODAL_KEYS.TOP_DEALS).notEmpty().withMessage(MESSAGE.TOP_DEALS),
   expressPostValidator,
-  featureItems.AddFeaturedItems
+  featuredItems.AddFeaturedItems
 );
 
 // MenuItem List api
