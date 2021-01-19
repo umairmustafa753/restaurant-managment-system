@@ -44,4 +44,5 @@ export const UserEnum = {
 export type IUser = {
   username: string;
   password: string;
+  otp: Number;
 };

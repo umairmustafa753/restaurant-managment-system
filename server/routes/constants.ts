@@ -9,6 +9,7 @@ export const MODAL_KEYS = {
   LAST_NAME: "lastName",
   EMAIL: "email",
   DOB: "dob",
+  OTP: "otp",
   PASSWORD: "password"
 };
 
@@ -24,5 +25,6 @@ export const MESSAGE = {
   EMAIL: "Enter a valid email",
   DOB: "Date of birth is required",
   PASSWORD: "Password is required",
+  OTP: "OTP is required",
   PASSWORD_LENGTH: "Password must be of 8 character or more"
 };

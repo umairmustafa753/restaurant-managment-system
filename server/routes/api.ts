@@ -61,4 +61,13 @@ api.put(
   Auth.EmailVerification
 );
 
+api.post(
+  "/otpVerification",
+  check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
+  check(MODAL_KEYS.OTP).notEmpty().withMessage(MESSAGE.OTP),
+  expressPostValidator,
+  Authorization,
+  Auth.otpVerification
+);
+
 export default api;

@@ -138,6 +138,26 @@ const Auth = {
       console.log("error", error);
       res.status(500).send({ error });
     }
+  },
+
+  otpVerification: async (req, res) => {
+    try {
+      const obj = req.body;
+      let userDB = await userFromService.getByEmail(obj.email);
+      if (!userDB) {
+        return res.status(404).send({ data: {}, message: "Email Not found" });
+      }
+      if (`${obj.otp}` === `${userDB.otp}`) {
+        return res
+          .status(200)
+          .send({ data: {}, message: "OTP verified successfully" });
+      } else {
+        return res.status(409).send({ data: {}, message: "Wrong OTP entered" });
+      }
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send({ error });
+    }
   }
 };
 
