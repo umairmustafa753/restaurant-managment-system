@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import Spinner from "react-native-loading-spinner-overlay";
 import { connect } from "react-redux";
 
 import { Text, View } from "../../components/Themed";
@@ -22,7 +23,7 @@ const HomeScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {items && (
+        {items ? (
           <View>
             <Text style={styles.title}>New Arrivals</Text>
             <Separator margin={20} />
@@ -52,7 +53,14 @@ const HomeScreen = (props) => {
               style={styles.listStyle}
               width={300}
             />
+            <Separator margin={20} />
           </View>
+        ) : (
+          <Spinner
+            visible={!items}
+            textContent={"Loading..."}
+            textStyle={styles.spinnerTextStyle}
+          />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -80,6 +88,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     paddingTop: 50
+  },
+  spinnerTextStyle: {
+    color: "#fff"
   },
   title: {
     fontSize: 20,

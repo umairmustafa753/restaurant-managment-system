@@ -38,6 +38,7 @@
     "react-native-gesture-handler": "~1.8.0",
     "react-native-hide-show-password-input": "^1.2.0",
     "react-native-input-credit-card": "^0.5.5",
+    "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-modal": "^11.6.1",
     "react-native-modal-datetime-picker": "^9.1.0",
     "react-native-multiple-select": "^0.5.6",
