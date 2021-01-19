@@ -4,7 +4,7 @@ import { check } from "express-validator";
 import expressPostValidator from "../validator/index";
 import featureItems from "../controller/featureItem";
 import MenuList from "../controller/menuList";
-import Auth from "../controller/user";
+import User from "../controller/user";
 import Authorization from "../middleware/Authorization";
 import { MODAL_KEYS, MESSAGE } from "./constants";
 
@@ -50,26 +50,26 @@ api.put(
     .withMessage(MESSAGE.PASSWORD_LENGTH),
   expressPostValidator,
   Authorization,
-  Auth.UpdateUser
+  User.UpdateUser
 );
+
+// forget Password
 
 api.put(
   "/emailVerification",
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
   expressPostValidator,
   Authorization,
-  Auth.EmailVerification
+  User.EmailVerification
 );
-
 api.post(
   "/otpVerification",
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
   check(MODAL_KEYS.OTP).notEmpty().withMessage(MESSAGE.OTP),
   expressPostValidator,
   Authorization,
-  Auth.otpVerification
+  User.otpVerification
 );
-
 api.put(
   "/resetPassword",
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
@@ -79,7 +79,11 @@ api.put(
     .withMessage(MESSAGE.PASSWORD_LENGTH),
   expressPostValidator,
   Authorization,
-  Auth.ResestPassword
+  User.ResestPassword
 );
+
+// get Users
+
+api.get("/users/:role", Authorization, User.GetUsers);
 
 export default api;

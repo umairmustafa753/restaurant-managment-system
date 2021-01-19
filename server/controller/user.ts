@@ -2,7 +2,7 @@ import user from "../models/user";
 import userFromService from "../services/user";
 import JWT from "../services/jwt";
 
-const Auth = {
+const User = {
   Signup: async (req, res) => {
     const obj = req.body;
     try {
@@ -186,7 +186,24 @@ const Auth = {
         .status(500)
         .send({ message: "Something went wrong, Please try again" });
     }
+  },
+
+  GetUsers: async (req, res) => {
+    try {
+      let users = await userFromService.getUsers({ role: req.params.role });
+      if (user) {
+        return res
+          .status(200)
+          .send({ data: users, message: `${req.params.role} are found` });
+      }
+      return res
+        .status(404)
+        .send({ data: users, message: `${req.params.role} are not found` });
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send({ error });
+    }
   }
 };
 
-export default Auth;
+export default User;

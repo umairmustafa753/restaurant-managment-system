@@ -51,6 +51,18 @@ const Users = {
     }
   },
 
+  getUsers: async (obj) => {
+    try {
+      let query;
+      query = User.find(obj).select(
+        "_id firstName lastName email role picture salary paidSalariesMonth createdAt updatedAt"
+      );
+      return await query.exec();
+    } catch (error) {
+      throw error;
+    }
+  },
+
   emailVerification: async (obj: any) => {
     try {
       const transporter = nodemailer.createTransport({
