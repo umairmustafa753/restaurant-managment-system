@@ -191,14 +191,15 @@ const User = {
   GetUsers: async (req, res) => {
     try {
       let users = await userFromService.getUsers({ role: req.params.role });
-      if (user) {
+      if (users.length) {
         return res
           .status(200)
           .send({ data: users, message: `${req.params.role} are found` });
+      } else {
+        return res
+          .status(404)
+          .send({ data: users, message: `${req.params.role} are not found` });
       }
-      return res
-        .status(404)
-        .send({ data: users, message: `${req.params.role} are not found` });
     } catch (error) {
       console.log("error", error);
       res.status(500).send({ error });

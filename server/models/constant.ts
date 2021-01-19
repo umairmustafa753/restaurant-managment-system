@@ -41,6 +41,31 @@ export const UserEnum = {
   default: "customer"
 };
 
+export const CardInfo = {
+  cvc: {
+    type: String,
+    required: true
+  },
+  expiry: {
+    type: String,
+    required: true
+  },
+  number: {
+    type: String,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true
+  }
+};
+
+export const ReservationEnum = {
+  type: String,
+  enum: ["pending", "cancel", "confirm"],
+  default: "pending"
+};
+
 export type IUser = {
   username: string;
   password: string;

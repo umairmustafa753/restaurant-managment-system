@@ -4,6 +4,7 @@ import { check } from "express-validator";
 import expressPostValidator from "../validator/index";
 import featureItems from "../controller/featureItem";
 import MenuList from "../controller/menuList";
+import Reservation from "../controller/reservation";
 import User from "../controller/user";
 import Authorization from "../middleware/Authorization";
 import { MODAL_KEYS, MESSAGE } from "./constants";
@@ -88,3 +89,22 @@ api.put(
 api.get("/users/:role", Authorization, User.GetUsers);
 
 export default api;
+
+// Reservation
+api.get("/reservations/:status", Authorization, Reservation.GetReservations);
+api.post(
+  "/reservation",
+  check(MODAL_KEYS.FIRST_NAME).notEmpty().withMessage(MESSAGE.FIRST_NAME),
+  check(MODAL_KEYS.LAST_NAME).notEmpty().withMessage(MESSAGE.LAST_NAME),
+  check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
+  check(MODAL_KEYS.DATE).notEmpty().withMessage(MESSAGE.DATE),
+  check(MODAL_KEYS.TIME).notEmpty().withMessage(MESSAGE.TIME),
+  check(MODAL_KEYS.MENU_ITEMS).isArray().withMessage(MESSAGE.MENU_ITEMS),
+  check(MODAL_KEYS.FIFTY_PER_AMOUNT)
+    .notEmpty()
+    .withMessage(MESSAGE.FIFTY_PER_AMOUNT),
+  check(MODAL_KEYS.CARD_INFO).notEmpty().withMessage(MESSAGE.CARD_INFO),
+  expressPostValidator,
+  Authorization,
+  Reservation.AddReservation
+);

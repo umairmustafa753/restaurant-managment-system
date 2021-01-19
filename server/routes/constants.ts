@@ -10,7 +10,12 @@ export const MODAL_KEYS = {
   EMAIL: "email",
   DOB: "dob",
   OTP: "otp",
-  PASSWORD: "password"
+  PASSWORD: "password",
+  DATE: "date",
+  TIME: "time",
+  MENU_ITEMS: "menuItems",
+  FIFTY_PER_AMOUNT: "fiftyPerAmount",
+  CARD_INFO: "CardInfo"
 };
 
 export const MESSAGE = {
@@ -26,5 +31,10 @@ export const MESSAGE = {
   DOB: "Date of birth is required",
   PASSWORD: "Password is required",
   OTP: "OTP is required",
-  PASSWORD_LENGTH: "Password must be of 8 character or more"
+  PASSWORD_LENGTH: "Password must be of 8 character or more",
+  DATE: "Date is required",
+  TIME: "Time is required",
+  MENU_ITEMS: "Menu Items is required",
+  FIFTY_PER_AMOUNT: "Amount is required",
+  CARD_INFO: "Card info is required"
 };
