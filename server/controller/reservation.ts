@@ -16,9 +16,40 @@ const ReservationController = {
     }
   },
 
+  UpdateReservation: async (req, res) => {
+    try {
+      let note = await ReservationFromService.getUserReservation({
+        _id: req.body._id
+      });
+      if (!note) {
+        return res
+          .status(404)
+          .send({ data: {}, message: "Reservation Not found" });
+      }
+      const query = { _id: req.body._id };
+      const options = { new: true, runValidators: true };
+      const update = {
+        status: req.body.status,
+        updatedAt: Date.now()
+      };
+      const item = await Reservation.findOneAndUpdate(query, update, options);
+      if (item) {
+        return res
+          .status(200)
+          .send({ data: item, message: "User updated Successfully" });
+      }
+      return res
+        .status(409)
+        .send({ data: {}, message: "Something went wrong, Please try again" });
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send({ error });
+    }
+  },
+
   GetReservation: async (req, res) => {
     try {
-      let reservations = await ReservationFromService.getById({
+      let reservations = await ReservationFromService.getUserReservation({
         userId: req.params.id,
         status: req.params.status
       });

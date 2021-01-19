@@ -77,12 +77,6 @@ const CancelOrders = () => {
                 <Separator margin={20} />
                 <Text>10% cancellation fee will be</Text>
                 <Text style={styles.modalText}>{modalData?.title}</Text>
-                <Separator margin={20} />
-                <View style={[styles.row, styles.spaceBetween]}>
-                  <Button mode="outlined" color="grey" onPress={() => {}}>
-                    Cancel Order
-                  </Button>
-                </View>
               </Modal>
             )}
           </List>

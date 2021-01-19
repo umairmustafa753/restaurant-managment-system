@@ -16,7 +16,8 @@ export const MODAL_KEYS = {
   MENU_ITEMS: "menuItems",
   FIFTY_PER_AMOUNT: "fiftyPerAmount",
   CARD_INFO: "CardInfo",
-  USER_ID: "userId"
+  USER_ID: "userId",
+  STATUS: "status"
 };
 
 export const MESSAGE = {
@@ -38,5 +39,6 @@ export const MESSAGE = {
   MENU_ITEMS: "Menu Items is required",
   FIFTY_PER_AMOUNT: "Amount is required",
   CARD_INFO: "Card info is required",
-  USER_ID: "User Id is required"
+  USER_ID: "User Id is required",
+  STATUS: "Status is required"
 };

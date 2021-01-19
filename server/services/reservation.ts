@@ -1,7 +1,7 @@
 import Reservation from "../models/reservation";
 
 const Users = {
-  getById: async (obj: object) => {
+  getUserReservation: async (obj: object) => {
     const query = Reservation.find(obj).select(
       "_id firstName lastName email status date time menuItems fiftyPerAmount"
     );

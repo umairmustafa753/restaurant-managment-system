@@ -110,3 +110,10 @@ api.post(
   Authorization,
   Reservation.AddReservation
 );
+api.put(
+  "/updateReservation",
+  check(MODAL_KEYS.STATUS).notEmpty().withMessage(MESSAGE.STATUS),
+  expressPostValidator,
+  Authorization,
+  Reservation.UpdateReservation
+);
