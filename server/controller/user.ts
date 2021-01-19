@@ -158,6 +158,34 @@ const Auth = {
       console.log("error", error);
       res.status(500).send({ error });
     }
+  },
+
+  ResestPassword: async (req, res) => {
+    const obj = req.body;
+    try {
+      const userDB = await userFromService.getByEmail(obj.email);
+      if (!userDB) {
+        return res.status(404).send({ data: {}, message: "Email Not found" });
+      }
+      const password = await userFromService.resestPassword(obj.password);
+      const query = { _id: userDB._id };
+      const options = { new: true, runValidators: true };
+      const update = {
+        password: password,
+        updatedAt: Date.now()
+      };
+      const item = await user.findOneAndUpdate(query, update, options);
+      if (item) {
+        return res
+          .status(200)
+          .send({ data: {}, message: "Password changed successfully" });
+      }
+    } catch (error) {
+      console.log("error", error);
+      res
+        .status(500)
+        .send({ message: "Something went wrong, Please try again" });
+    }
   }
 };
 

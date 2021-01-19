@@ -27,6 +27,18 @@ const Users = {
     }
   },
 
+  resestPassword: async (password: string) => {
+    try {
+      password = bcrypt.hashSync(password, salt());
+      if (password) {
+        return password;
+      }
+      throw password;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   getById: async (id: object) => {
     const query = User.findById(id).select(
       "_id firstName lastName username email role createdAt updatedAt"

@@ -70,4 +70,16 @@ api.post(
   Auth.otpVerification
 );
 
+api.put(
+  "/resetPassword",
+  check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
+  check(MODAL_KEYS.PASSWORD).notEmpty().withMessage(MESSAGE.PASSWORD),
+  check(MODAL_KEYS.PASSWORD)
+    .isLength({ min: 8 })
+    .withMessage(MESSAGE.PASSWORD_LENGTH),
+  expressPostValidator,
+  Authorization,
+  Auth.ResestPassword
+);
+
 export default api;
