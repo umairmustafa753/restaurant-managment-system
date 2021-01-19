@@ -16,6 +16,29 @@ const ReservationController = {
     }
   },
 
+  GetReservation: async (req, res) => {
+    try {
+      let reservations = await ReservationFromService.getById({
+        userId: req.params.id,
+        status: req.params.status
+      });
+      if (reservations.length) {
+        return res.status(200).send({
+          data: reservations,
+          message: `${req.params.status} reservations are found`
+        });
+      } else {
+        return res.status(404).send({
+          data: reservations,
+          message: `${req.params.status} reservations are not found`
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send({ error });
+    }
+  },
+
   GetReservations: async (req, res) => {
     try {
       let reservations = await ReservationFromService.getReservations({

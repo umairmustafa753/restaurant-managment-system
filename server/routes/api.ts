@@ -91,6 +91,7 @@ api.get("/users/:role", Authorization, User.GetUsers);
 export default api;
 
 // Reservation
+api.get("/reservation/:id/:status", Authorization, Reservation.GetReservation);
 api.get("/reservations/:status", Authorization, Reservation.GetReservations);
 api.post(
   "/reservation",
@@ -104,6 +105,7 @@ api.post(
     .notEmpty()
     .withMessage(MESSAGE.FIFTY_PER_AMOUNT),
   check(MODAL_KEYS.CARD_INFO).notEmpty().withMessage(MESSAGE.CARD_INFO),
+  check(MODAL_KEYS.USER_ID).notEmpty().withMessage(MESSAGE.USER_ID),
   expressPostValidator,
   Authorization,
   Reservation.AddReservation

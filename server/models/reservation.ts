@@ -11,7 +11,8 @@ const Reservation = new mongoose.Schema({
   menuItems: { type: Array, required: true },
   fiftyPerAmount: { type: Number, required: true },
   CardInfo: CardInfo,
-  status: ReservationEnum
+  status: ReservationEnum,
+  userId: { type: String, required: true }
 });
 
 export default mongoose.model("Reservation", Reservation);
