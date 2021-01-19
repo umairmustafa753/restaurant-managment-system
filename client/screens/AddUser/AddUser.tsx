@@ -88,14 +88,24 @@ const AddUser = () => {
               </Picker>
               <Separator margin={20} />
               {true && (
-                <TextInput
-                  label="Salary"
-                  theme={{ colors: { primary: "#149dec" } }}
-                  style={styles.inputStyle}
-                  value={""}
-                  onChangeText={(text) => {}}
-                  keyboardType={"numeric"}
-                />
+                <View>
+                  <TextInput
+                    label="Salary"
+                    theme={{ colors: { primary: "#149dec" } }}
+                    style={styles.inputStyle}
+                    value={""}
+                    onChangeText={(text) => {}}
+                    keyboardType={"numeric"}
+                  />
+                  <Separator margin={20} />
+                  <TextInput
+                    label="Designation"
+                    theme={{ colors: { primary: "#149dec" } }}
+                    style={styles.inputStyle}
+                    value={""}
+                    onChangeText={(text) => {}}
+                  />
+                </View>
               )}
               <Separator margin={20} />
               <Button mode="outlined" color="grey" onPress={showDatePicker}>

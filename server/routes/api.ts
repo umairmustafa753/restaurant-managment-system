@@ -70,6 +70,7 @@ api.post(
   Authorization,
   User.otpVerification
 );
+
 api.put(
   "/resetPassword",
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),

@@ -75,6 +75,7 @@ const EmployeeList = () => {
                   style={styles.inputStyle}
                   value={"50000"}
                   onChangeText={(text) => {}}
+                  keyboardType={"numeric"}
                 />
                 <Separator margin={20} />
                 {false ? (
