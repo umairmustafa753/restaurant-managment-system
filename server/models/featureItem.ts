@@ -5,8 +5,7 @@ import { FoodItem } from "./constant";
 const featureItems = new mongoose.Schema({
   newArrival: FoodItem,
   specialities: FoodItem,
-  topDeals: FoodItem,
-  birthdaySpecial: FoodItem
+  topDeals: FoodItem
 });
 
 export default mongoose.model("FeatureItems", featureItems);

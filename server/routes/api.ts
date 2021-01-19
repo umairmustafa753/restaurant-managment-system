@@ -19,9 +19,6 @@ api.post(
   check(MODAL_KEYS.NEW_ARRIVAL).notEmpty().withMessage(MESSAGE.NEW_ARRIVAL),
   check(MODAL_KEYS.SPECIALITIES).notEmpty().withMessage(MESSAGE.SPECIALITIES),
   check(MODAL_KEYS.TOP_DEALS).notEmpty().withMessage(MESSAGE.TOP_DEALS),
-  check(MODAL_KEYS.BIRTHDAY_SPECIAL)
-    .notEmpty()
-    .withMessage(MESSAGE.BIRTHDAY_SPECIAL),
   expressPostValidator,
   featureItems.AddFeaturedItems
 );
