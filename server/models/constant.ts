@@ -24,7 +24,21 @@ export const MenuSubItem = [
     val: {
       type: String,
       required: true
+    },
+    price: {
+      type: Number,
+      required: true
     }
+  }
+];
+
+export const MenuItems = [
+  {
+    categoryName: {
+      type: String,
+      required: true
+    },
+    subCategory: MenuSubItem
   }
 ];
 

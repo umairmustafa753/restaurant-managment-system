@@ -28,8 +28,7 @@ api.post(
 api.get("/menuList", MenuList.GetMenuList);
 api.post(
   "/menuList",
-  check(MODAL_KEYS.CATEGORY_NAME).notEmpty().withMessage(MESSAGE.CATEGORY_NAME),
-  check(MODAL_KEYS.SUB_CATEGORY).isArray().withMessage(MESSAGE.SUB_CATEGORY),
+  check(MODAL_KEYS.MENU).notEmpty().withMessage(MESSAGE.MENU),
   expressPostValidator,
   MenuList.AddMenuList
 );

@@ -1,13 +1,9 @@
 import * as mongoose from "mongoose";
 
-import { MenuSubItem } from "./constant";
+import { MenuItems } from "./constant";
 
 const MenuList = new mongoose.Schema({
-  categoryName: {
-    type: String,
-    required: true
-  },
-  subCategory: MenuSubItem
+  menu: MenuItems
 });
 
 export default mongoose.model("MenuList", MenuList);
