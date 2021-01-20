@@ -1,15 +1,15 @@
 import ActionTypes from "../Actions/ActionTypes";
 
 const INITIAL_STATE = {
-  featuredItems: []
+  menu: []
 };
 
-const featuredItems = (state = INITIAL_STATE, action) => {
+const menuList = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ActionTypes.GET_FEATURED_ITEMS: {
+    case ActionTypes.GET_MENU: {
       return {
         ...state,
-        featuredItems: action.payload
+        menu: action.payload
       };
     }
 
@@ -18,4 +18,4 @@ const featuredItems = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default featuredItems;
+export default menuList;
