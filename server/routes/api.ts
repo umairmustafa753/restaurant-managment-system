@@ -56,7 +56,6 @@ api.put(
   "/emailVerification",
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
   expressPostValidator,
-  Authorization,
   User.EmailVerification
 );
 api.post(
@@ -64,7 +63,6 @@ api.post(
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
   check(MODAL_KEYS.OTP).notEmpty().withMessage(MESSAGE.OTP),
   expressPostValidator,
-  Authorization,
   User.otpVerification
 );
 
@@ -76,7 +74,6 @@ api.put(
     .isLength({ min: 8 })
     .withMessage(MESSAGE.PASSWORD_LENGTH),
   expressPostValidator,
-  Authorization,
   User.ResestPassword
 );
 
