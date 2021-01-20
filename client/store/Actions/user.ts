@@ -34,6 +34,7 @@ const UserAction = {
         });
     };
   },
+
   Login: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.LOGIN_USER_REQUST, payload: {} });
@@ -79,6 +80,7 @@ const UserAction = {
         });
     };
   },
+
   EmailVerification: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.EMAIL_VERIFICATOIN_REQUST, payload: {} });
@@ -97,13 +99,44 @@ const UserAction = {
           throw resposne;
         })
         .then((data) => {
-          dispatch({ type: ActionTypes.SIGNUP_USER, payload: data });
+          dispatch({ type: ActionTypes.EMAIL_VERIFICATOIN, payload: data });
         })
         .catch((error) => {
           if (typeof error.text === "function") {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
-              dispatch({ type: ActionTypes.SIGNUP_USER, payload: obj });
+              dispatch({ type: ActionTypes.EMAIL_VERIFICATOIN, payload: obj });
+            });
+          }
+        });
+    };
+  },
+
+  OTPVerification: function (obj) {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.OTP_VERIFICATOIN_REQUST, payload: {} });
+      let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/otpVerification";
+      return fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+      })
+        .then((resposne) => {
+          if (resposne.status === 200) {
+            return resposne.json();
+          }
+          throw resposne;
+        })
+        .then((data) => {
+          dispatch({ type: ActionTypes.OTP_VERIFICATOIN, payload: data });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.OTP_VERIFICATOIN, payload: obj });
             });
           }
         });

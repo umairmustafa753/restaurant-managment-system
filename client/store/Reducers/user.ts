@@ -50,6 +50,21 @@ function userReducer(state = INITIAL_STATE, action) {
       };
     }
 
+    case ActionTypes.OTP_VERIFICATOIN_REQUST: {
+      return {
+        ...state,
+        obj: action.payload,
+        loading: true
+      };
+    }
+    case ActionTypes.OTP_VERIFICATOIN: {
+      return {
+        ...state,
+        obj: action.payload,
+        loading: false
+      };
+    }
+
     default:
       return state;
   }

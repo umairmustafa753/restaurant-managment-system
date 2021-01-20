@@ -6,7 +6,9 @@ const ActionTypes = {
   LOGIN_USER_REQUST: "loginUserRequst",
   LOGIN_USER: "loginUser",
   EMAIL_VERIFICATOIN_REQUST: "emailVerificationRequst",
-  EMAIL_VERIFICATOIN: "emailVerification"
+  EMAIL_VERIFICATOIN: "emailVerification",
+  OTP_VERIFICATOIN_REQUST: "otpVerificationRequst",
+  OTP_VERIFICATOIN: "otpVerification"
 };
 
 export default ActionTypes;
