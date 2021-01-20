@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -8,15 +8,28 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import { connect } from "react-redux";
+import Spinner from "react-native-loading-spinner-overlay";
 import PasswordInputText from "react-native-hide-show-password-input";
 
 import { Text, View } from "../../components/Themed";
 import { NAVIGATIONS } from "../../constants/navigator";
 import Separator from "../../components/Separator";
 import Logo from "../../components/Logo";
+import UserAction from "../../store/Actions/user";
+import { MESSAGE, TYPE } from "../constant";
 
-const Login = () => {
+const Login = (props) => {
   const navigator = useNavigation();
+
+  const [input, setInput] = useState({
+    email: "",
+    password: ""
+  });
+  const [enableToast, setEnableToast] = useState({
+    visible: false
+  });
 
   const handleSignup = () => {
     navigator.navigate(NAVIGATIONS.SIGNUP);
@@ -26,8 +39,40 @@ const Login = () => {
     navigator.navigate(NAVIGATIONS.EMAIL_VERIFICATION);
   };
 
+  const showToast = (msg: string, type: string) => {
+    Toast.show({
+      type: `${type}`,
+      position: "bottom",
+      text1: `${msg}`,
+      autoHide: false,
+      topOffset: 50
+    });
+  };
+
+  const handleSubmit = async () => {
+    props.login(input);
+  };
+
+  useEffect(() => {
+    if (!props.loading && enableToast?.visible) {
+      const message = props?.LoginUser?.message;
+      const type =
+        MESSAGE.SUCCESS_LOG_IN_MESSAGE === message ? TYPE.SUCCESS : TYPE.ERROR;
+      showToast(message, type);
+    }
+  }, [props.loading]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: true }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
+
   return (
     <SafeAreaView style={styles.container}>
+      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
       <Separator margin={30} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -43,13 +88,20 @@ const Login = () => {
               label="Email"
               theme={{ colors: { primary: "#149dec" } }}
               style={styles.inputStyle}
-              value={""}
-              onChangeText={(text) => {}}
+              value={input?.email}
+              onChangeText={(text) =>
+                setInput((prevState) => ({ ...prevState, email: text }))
+              }
             />
-            <PasswordInputText value={""} onChangeText={() => {}} />
+            <PasswordInputText
+              value={input?.password}
+              onChangeText={(text) =>
+                setInput((prevState) => ({ ...prevState, password: text }))
+              }
+            />
             <Separator margin={20} />
 
-            <Button mode="outlined" color="grey" onPress={() => {}}>
+            <Button mode="outlined" color="grey" onPress={handleSubmit}>
               Log in
             </Button>
             <Separator margin={20} />
@@ -66,16 +118,44 @@ const Login = () => {
               </Button>
             </View>
           </View>
+          <Spinner
+            visible={props?.loading}
+            textContent={"Loading..."}
+            textStyle={styles.spinnerTextStyle}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    LoginUser: state.userReducer.obj,
+    loading: state.userReducer.loading
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (obj) => {
+      dispatch(UserAction.Login(obj));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white"
+  },
+  zIndex: {
+    zIndex: 1
+  },
+  spinnerTextStyle: {
+    color: "#fff"
   },
   title: {
     fontSize: 20,
@@ -93,5 +173,3 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   }
 });
-
-export default Login;

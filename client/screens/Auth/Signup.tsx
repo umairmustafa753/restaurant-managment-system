@@ -11,6 +11,7 @@ import { Button, TextInput } from "react-native-paper";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { connect } from "react-redux";
 import PasswordInputText from "react-native-hide-show-password-input";
+import Spinner from "react-native-loading-spinner-overlay";
 import Toast from "react-native-toast-message";
 import moment from "moment";
 
@@ -27,6 +28,11 @@ const Signup = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
+
+  const [enableToast, setEnableToast] = useState({
+    visible: false
+  });
+
   const [input, setInput] = useState({
     firstName: "",
     lastName: "",
@@ -58,7 +64,7 @@ const Signup = (props) => {
   const showToast = (msg: string, type: string) => {
     Toast.show({
       type: `${type}`,
-      position: "top",
+      position: "bottom",
       text1: `${msg}`,
       autoHide: false,
       topOffset: 50
@@ -66,14 +72,25 @@ const Signup = (props) => {
   };
 
   const handleSubmit = async () => {
-    await props.signup(input);
-    const message = props?.SignUpUser?.message;
-    if (message) {
+    props.signup(input);
+  };
+
+  useEffect(() => {
+    if (!props.loading && enableToast?.visible) {
+      const message = props?.SignUpUser?.message;
       const type =
         MESSAGE.SUCCESS_SIGN_UP_MESSAGE === message ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
     }
-  };
+  }, [props.loading]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: true }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
 
   return (
     <>
@@ -139,6 +156,11 @@ const Signup = (props) => {
                 Create Account
               </Button>
             </View>
+            <Spinner
+              visible={props?.loading}
+              textContent={"Loading..."}
+              textStyle={styles.spinnerTextStyle}
+            />
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -148,7 +170,8 @@ const Signup = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    SignUpUser: state.userReducer.obj
+    SignUpUser: state.userReducer.obj,
+    loading: state.userReducer.loading
   };
 };
 
@@ -169,6 +192,9 @@ const styles = StyleSheet.create({
   },
   zIndex: {
     zIndex: 1
+  },
+  spinnerTextStyle: {
+    color: "#fff"
   },
   title: {
     fontSize: 20,
