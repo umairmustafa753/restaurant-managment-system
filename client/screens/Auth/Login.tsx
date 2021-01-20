@@ -42,7 +42,7 @@ const Login = (props) => {
   const showToast = (msg: string, type: string) => {
     Toast.show({
       type: `${type}`,
-      position: "bottom",
+      position: "top",
       text1: `${msg}`,
       autoHide: false,
       topOffset: 50
