@@ -6,7 +6,7 @@ const expressValidator = (req, res, next) => {
   //Handling Errors
   if (!errors.isEmpty()) {
     const firsterror = errors.array()[0];
-    return res.status(400).json({ error: firsterror.msg });
+    return res.status(400).json({ message: firsterror.msg });
   }
   //next middleware
   next();
