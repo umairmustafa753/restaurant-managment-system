@@ -43,7 +43,6 @@ const EmailVerifcation = (props) => {
   };
 
   const handleOtpVerification = () => {
-    console.log({ input });
     props.otpVerifcation(input);
   };
 
@@ -64,20 +63,15 @@ const EmailVerifcation = (props) => {
   useEffect(() => {
     if (!props.loading && enableToast?.visible) {
       const message = props?.Verifcation?.message;
-      const isOTPMatch =
-        message == MESSAGE.SUCCESS_OTP_SENDED_MESSAGE ||
-        message !== MESSAGE.SUCCESS_OTP_MESSAGE;
-      const isEmailSend =
-        message == MESSAGE.SUCCESS_OTP_SENDED_MESSAGE ||
-        message != MESSAGE.SUCCESS_OTP_MESSAGE;
+      const email = MESSAGE.SUCCESS_OTP_SENDED_MESSAGE;
+      const otp = MESSAGE.SUCCESS_OTP_MESSAGE;
+      const isOTPMatch = message !== otp;
+      if (!isEmailSend) {
+        setEmailSend(message == email);
+      }
       const type =
-        message == MESSAGE.SUCCESS_OTP_SENDED_MESSAGE ||
-        message == MESSAGE.SUCCESS_OTP_MESSAGE
-          ? TYPE.SUCCESS
-          : TYPE.ERROR;
+        message == email || message == otp ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
-      console.log(message == MESSAGE.SUCCESS_OTP_SENDED_MESSAGE);
-      setEmailSend(isEmailSend);
       if (!isOTPMatch) {
         handleReset();
       }
@@ -160,7 +154,6 @@ const EmailVerifcation = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log({ userReducer: state.userReducer });
   return {
     Verifcation: state.userReducer.obj,
     loading: state.userReducer.loading
