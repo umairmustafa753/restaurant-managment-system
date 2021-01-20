@@ -1,71 +1,55 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import { connect } from "react-redux";
+
 import ExpandableList from "../../components/ExpandableList";
+import Spinner from "react-native-loading-spinner-overlay";
+import Menu from "../../store/Actions/menu";
 
-const data = [
-  {
-    category_name: "Item 1",
-    subcategory: [{ val: "Sub Cat 1" }, { val: "Sub Cat 3" }]
-  },
-  {
-    category_name: "Item 2",
-    subcategory: [{ val: "Sub Cat 4" }, { val: "Sub Cat 5" }]
-  },
-  {
-    category_name: "Item 3",
-    subcategory: [{ val: "Sub Cat 7" }, { val: "Sub Cat 9" }]
-  },
-  {
-    category_name: "Item 4",
-    subcategory: [{ val: "Sub Cat 10" }, { val: "Sub Cat 2" }]
-  },
-  {
-    category_name: "Item 5",
-    subcategory: [{ val: "Sub Cat 13" }, { val: "Sub Cat 5" }]
-  },
-  {
-    category_name: "Item 6",
-    subcategory: [{ val: "Sub Cat 17" }, { val: "Sub Cat 8" }]
-  },
-  {
-    category_name: "Item 7",
-    subcategory: [{ val: "Sub Cat 20" }]
-  },
-  {
-    category_name: "Item 8",
-    subcategory: [{ val: "Sub Cat 22" }]
-  },
-  {
-    category_name: "Item 9",
-    subcategory: [{ val: "Sub Cat 26" }, { val: "Sub Cat 7" }]
-  },
-  {
-    category_name: "Item 10",
-    subcategory: [{ val: "Sub Cat 28" }, { val: "Sub Cat 0" }]
-  },
-  {
-    category_name: "Item 11",
-    subcategory: [{ val: "Sub Cat 31" }]
-  },
-  {
-    category_name: "Item 12",
-    subcategory: [{ val: "Sub Cat 34" }]
-  },
-  {
-    category_name: "Item 13",
-    subcategory: [{ val: "Sub Cat 38" }, { val: "Sub Cat 9" }]
-  },
-  {
-    category_name: "Item 14",
-    subcategory: [{ val: "Sub Cat 40" }, { val: "Sub Cat 2" }]
-  },
-  {
-    category_name: "Item 15",
-    subcategory: [{ val: "Sub Cat 43" }, { val: "Sub Cat 44" }]
-  }
-];
+const MenuScreen = (props) => {
+  const [items, setItems] = useState<any>([]);
 
-const MenuScreen = () => {
-  return <ExpandableList data={data} />;
+  useEffect(() => {
+    props.getFeaturedItems();
+  }, []);
+
+  useEffect(() => {
+    setItems(props?.menuItems);
+  }, [props?.menuItems]);
+
+  return (
+    <>
+      {items?.length ? (
+        <ExpandableList data={items[0]?.menu} />
+      ) : (
+        <Spinner
+          visible={!items?.length}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
+      )}
+    </>
+  );
 };
 
-export default MenuScreen;
+const mapStateToProps = (state) => {
+  return {
+    menuItems: state?.menuReducer?.menu?.MenuList
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getFeaturedItems: () => {
+      dispatch(Menu.GetMenuItems());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);
+
+const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: "#fff"
+  }
+});

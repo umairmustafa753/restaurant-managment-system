@@ -30,7 +30,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
         onPress={onClickFunction}
         style={styles.header}
       >
-        <Text style={styles.headerText}>{item.category_name}</Text>
+        <Text style={styles.headerText}>{item?.categoryName}</Text>
         <View style={styles.separator} />
       </TouchableOpacity>
       <View
@@ -39,10 +39,10 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
           overflow: "hidden"
         }}
       >
-        {item.subcategory.map((item, key) => (
+        {item?.subCategory.map((item, key) => (
           <View key={key} style={styles.content}>
             <Text style={styles.text}>
-              {key}. {item.val}
+              {item?.val} {item?.price} Rs
             </Text>
             <View style={styles.separator} />
           </View>
@@ -82,12 +82,7 @@ const ExpandableList = ({ data }: { data: Array<object> }) => {
         <View style={styles.innerContainer}>
           <Text style={styles.titleText}>Our Menu</Text>
           <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
-            <Text
-              style={{
-                textAlign: "center",
-                justifyContent: "center"
-              }}
-            >
+            <Text style={styles.flexCenter}>
               {multiSelect
                 ? "Enable Single \n Expand"
                 : "Enalble Multiple \n Expand"}
@@ -95,15 +90,17 @@ const ExpandableList = ({ data }: { data: Array<object> }) => {
           </TouchableOpacity>
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {listDataSource.map((item, key) => (
-            <ExpandableComponent
-              key={item.category_name}
-              onClickFunction={() => {
-                updateLayout(key);
-              }}
-              item={item}
-            />
-          ))}
+          {listDataSource.map((item, key) => {
+            return (
+              <ExpandableComponent
+                key={item?.categoryName}
+                onClickFunction={() => {
+                  updateLayout(key);
+                }}
+                item={item}
+              />
+            );
+          })}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -115,6 +112,10 @@ export default ExpandableList;
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  flexCenter: {
+    textAlign: "center",
+    justifyContent: "center"
   },
   safeAreaView: {
     flex: 1,
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
     padding: 20
   },
   content: {
-    paddingLeft: 10,
-    paddingRight: 10
+    padding: 20,
+    width: "80%"
   }
 });

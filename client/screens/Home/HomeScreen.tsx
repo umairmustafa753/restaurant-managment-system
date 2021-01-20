@@ -10,7 +10,7 @@ import Separator from "../../components/Separator";
 import FeaturedItemAction from "../../store/Actions/featuredItems";
 
 const HomeScreen = (props) => {
-  const [items, setItems] = useState<any>(props?.featuredItems);
+  const [items, setItems] = useState<any>([]);
 
   useEffect(() => {
     props.getFeaturedItems();
@@ -23,7 +23,7 @@ const HomeScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {items ? (
+        {items?.length ? (
           <View>
             <Text style={styles.title}>New Arrivals</Text>
             <Separator margin={20} />
@@ -57,7 +57,7 @@ const HomeScreen = (props) => {
           </View>
         ) : (
           <Spinner
-            visible={!items}
+            visible={!items?.length}
             textContent={"Loading..."}
             textStyle={styles.spinnerTextStyle}
           />
@@ -69,7 +69,7 @@ const HomeScreen = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    featuredItems: state.featuredItemsReducer?.featuredItems?.featuredItems
+    featuredItems: state?.featuredItemsReducer?.featuredItems?.featuredItems
   };
 };
 
