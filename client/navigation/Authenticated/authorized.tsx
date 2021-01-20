@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Account from "../../screens/Account/Account";
 import UpdateAccount from "../../screens/UpdateAccount/UpdateAccount";
+import ReservationScreen from "../../screens/Reservation/Reservation";
 import AddUser from "../../screens/AddUser/AddUser";
 import ConfirmOrders from "../../screens/ConfirmOrders/ConfirmOrders";
 import PendingOrders from "../../screens/PendingOrders/PendingOrders";
@@ -24,6 +25,7 @@ const AuthenticatedStack = () => {
       <Stack.Screen name={"CancelOrders"} component={CancelOrders} />
       <Stack.Screen name={"CustomerList"} component={CustomerList} />
       <Stack.Screen name={"EmployeeList"} component={EmployeeList} />
+      <Stack.Screen name={"Reservation"} component={ReservationScreen} />
     </Stack.Navigator>
   );
 };

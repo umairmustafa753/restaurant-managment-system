@@ -5,14 +5,12 @@ import * as React from "react";
 
 import HomeScreen from "../../screens/Home/HomeScreen";
 import MenuScreen from "../../screens/Menu/MenuScreen";
-import ReservationScreen from "../../screens/Reservation/Reservation";
 import UnAuthenticatedStack from "../UnAuthenticated/unAuthorized";
 import AuthenticatedStack from "../Authenticated/authorized";
 import {
   BottomTabParamList,
   HomeParamList,
   MenuParamList,
-  ReservationParamList,
   AccountParamList
 } from "../types";
 
@@ -36,15 +34,6 @@ export default function BottomTabNavigator() {
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="restaurant-menu" color={color} />
-          )
-        }}
-      />
-      <BottomTab.Screen
-        name="Reservation"
-        component={ReservationScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="dinner-dining" color={color} />
           )
         }}
       />
@@ -106,26 +95,6 @@ function MenuScreenNavigator() {
         }}
       />
     </MenuStack.Navigator>
-  );
-}
-
-const ReservationStack = createStackNavigator<ReservationParamList>();
-
-function ReservationScreenNavigator() {
-  return (
-    <ReservationStack.Navigator>
-      <ReservationStack.Screen
-        name="ReservationScreen"
-        component={ReservationScreen}
-        options={{
-          headerTitle: "Reservation",
-          headerShown: false,
-          headerTitleStyle: {
-            color: "#8e8f8e"
-          }
-        }}
-      />
-    </ReservationStack.Navigator>
   );
 }
 

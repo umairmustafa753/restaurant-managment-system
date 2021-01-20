@@ -9,11 +9,14 @@ import { Button, Card, Title, Paragraph, TextInput } from "react-native-paper";
 import MultiSelect from "react-native-multiple-select";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { CreditCardInput } from "react-native-input-credit-card";
+import { useNavigation, StackActions } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
 import { ScrollView } from "react-native-gesture-handler";
 import Separator from "../../components/Separator";
+import Back from "../../components/Back";
 
 let MULTISELECT: MultiSelect;
 const items = [
@@ -56,6 +59,8 @@ const items = [
 ];
 
 export default function ReservationScreen() {
+  const navigator = useNavigation();
+
   const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
@@ -95,8 +100,24 @@ export default function ReservationScreen() {
     setSelectedItems(selectedItems);
   };
 
+  const handleNavigationPop = () => {
+    navigator.dispatch(StackActions.popToTop());
+  };
+
+  const showToast = () => {
+    Toast.show({
+      type: "error",
+      position: "top",
+      text1: "Alert !",
+      text2: "This is some something 👋",
+      autoHide: false,
+      topOffset: 50
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
       <Separator margin={30} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -104,8 +125,9 @@ export default function ReservationScreen() {
         keyboardVerticalOffset={30}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>Reservation Info</Text>
           <View style={styles.padding}>
+            <Back onPress={handleNavigationPop} />
+            <Text style={styles.title}>Reservation Info</Text>
             <TextInput
               label="First Name"
               theme={{ colors: { primary: "#149dec" } }}
@@ -196,7 +218,7 @@ export default function ReservationScreen() {
               }}
             />
             <Separator margin={20} />
-            <Button mode="outlined" color="grey" onPress={() => {}}>
+            <Button mode="outlined" color="grey" onPress={showToast}>
               confirm
             </Button>
           </View>
@@ -210,6 +232,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white"
+  },
+  zIndex: {
+    zIndex: 1
   },
   title: {
     fontSize: 20,

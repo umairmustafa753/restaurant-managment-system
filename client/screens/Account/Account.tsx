@@ -40,6 +40,10 @@ const AccountScreen = () => {
             onPress={() => navigate(NAVIGATIONS.ADD_USER)}
           />
           <Card
+            titile="Reservation"
+            onPress={() => navigate(NAVIGATIONS.RESERVATION)}
+          />
+          <Card
             titile="Confirm Orders"
             onPress={() => {
               navigate(NAVIGATIONS.CONFIRM_ORDERS);
@@ -61,6 +65,7 @@ const AccountScreen = () => {
             titile="Employees List"
             onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
           />
+          <Card titile="log out" onPress={() => {}} />
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -10,5 +10,6 @@ export const NAVIGATIONS = {
   PENDING_ORDERS: "PendingOrders",
   CANCEL_ORDERS: "CancelOrders",
   CUSTOMER_LIST: "CustomerList",
-  EMPLOYEE_LIST: "EmployeeList"
+  EMPLOYEE_LIST: "EmployeeList",
+  RESERVATION: "Reservation"
 };

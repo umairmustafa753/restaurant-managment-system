@@ -18,10 +18,6 @@ export type MenuParamList = {
   MenuScreen: undefined;
 };
 
-export type ReservationParamList = {
-  ReservationScreen: undefined;
-};
-
 export type AccountParamList = {
   AccountScreen: undefined;
 };
@@ -42,4 +38,5 @@ export type AuthenticatedStackParamList = {
   CancelOrders: undefined;
   CustomerList: undefined;
   EmployeeList: undefined;
+  Reservation: undefined;
 };
