@@ -7,57 +7,15 @@ const INITIAL_STATE = {
 
 function userReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.SIGNUP_USER_REQUST: {
+    case ActionTypes.USER_REQUST: {
       return {
         ...state,
         obj: action.payload,
         loading: true
-      };
-    }
-    case ActionTypes.SIGNUP_USER: {
-      return {
-        ...state,
-        obj: action.payload,
-        loading: false
-      };
-    }
-    case ActionTypes.LOGIN_USER_REQUST: {
-      return {
-        ...state,
-        obj: action.payload,
-        loading: true
-      };
-    }
-    case ActionTypes.LOGIN_USER: {
-      return {
-        ...state,
-        obj: action.payload,
-        loading: false
-      };
-    }
-    case ActionTypes.EMAIL_VERIFICATOIN_REQUST: {
-      return {
-        ...state,
-        obj: action.payload,
-        loading: true
-      };
-    }
-    case ActionTypes.EMAIL_VERIFICATOIN: {
-      return {
-        ...state,
-        obj: action.payload,
-        loading: false
       };
     }
 
-    case ActionTypes.OTP_VERIFICATOIN_REQUST: {
-      return {
-        ...state,
-        obj: action.payload,
-        loading: true
-      };
-    }
-    case ActionTypes.OTP_VERIFICATOIN: {
+    case ActionTypes.USER: {
       return {
         ...state,
         obj: action.payload,

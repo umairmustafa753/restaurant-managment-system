@@ -6,7 +6,7 @@ import config from "../../config";
 const UserAction = {
   Signup: function (obj) {
     return (dispatch) => {
-      dispatch({ type: ActionTypes.SIGNUP_USER_REQUST, payload: {} });
+      dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
       let url = config.REACT_NATIVE_APP_ENDPOINT + "/auth/signup";
       return fetch(url, {
         method: "POST",
@@ -22,13 +22,13 @@ const UserAction = {
           throw resposne;
         })
         .then((data) => {
-          dispatch({ type: ActionTypes.SIGNUP_USER, payload: data });
+          dispatch({ type: ActionTypes.USER, payload: data });
         })
         .catch((error) => {
           if (typeof error.text === "function") {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
-              dispatch({ type: ActionTypes.SIGNUP_USER, payload: obj });
+              dispatch({ type: ActionTypes.USER, payload: obj });
             });
           }
         });
@@ -37,7 +37,7 @@ const UserAction = {
 
   Login: function (obj) {
     return (dispatch) => {
-      dispatch({ type: ActionTypes.LOGIN_USER_REQUST, payload: {} });
+      dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
       const url = config.REACT_NATIVE_APP_ENDPOINT + "/auth/signin";
       fetch(url, {
         method: "POST",
@@ -66,7 +66,7 @@ const UserAction = {
                 console.log(e);
               }
             };
-            dispatch({ type: ActionTypes.LOGIN_USER, payload: data });
+            dispatch({ type: ActionTypes.USER, payload: data });
             return data.data;
           }
         })
@@ -74,7 +74,7 @@ const UserAction = {
           if (typeof error.text === "function") {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
-              dispatch({ type: ActionTypes.LOGIN_USER, payload: obj });
+              dispatch({ type: ActionTypes.USER, payload: obj });
             });
           }
         });
@@ -83,7 +83,7 @@ const UserAction = {
 
   EmailVerification: function (obj) {
     return (dispatch) => {
-      dispatch({ type: ActionTypes.EMAIL_VERIFICATOIN_REQUST, payload: {} });
+      dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
       let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/emailVerification";
       return fetch(url, {
         method: "PUT",
@@ -99,13 +99,13 @@ const UserAction = {
           throw resposne;
         })
         .then((data) => {
-          dispatch({ type: ActionTypes.EMAIL_VERIFICATOIN, payload: data });
+          dispatch({ type: ActionTypes.USER, payload: data });
         })
         .catch((error) => {
           if (typeof error.text === "function") {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
-              dispatch({ type: ActionTypes.EMAIL_VERIFICATOIN, payload: obj });
+              dispatch({ type: ActionTypes.USER, payload: obj });
             });
           }
         });
@@ -114,7 +114,7 @@ const UserAction = {
 
   OTPVerification: function (obj) {
     return (dispatch) => {
-      dispatch({ type: ActionTypes.OTP_VERIFICATOIN_REQUST, payload: {} });
+      dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
       let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/otpVerification";
       return fetch(url, {
         method: "POST",
@@ -130,13 +130,44 @@ const UserAction = {
           throw resposne;
         })
         .then((data) => {
-          dispatch({ type: ActionTypes.OTP_VERIFICATOIN, payload: data });
+          dispatch({ type: ActionTypes.USER, payload: data });
         })
         .catch((error) => {
           if (typeof error.text === "function") {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
-              dispatch({ type: ActionTypes.OTP_VERIFICATOIN, payload: obj });
+              dispatch({ type: ActionTypes.USER, payload: obj });
+            });
+          }
+        });
+    };
+  },
+
+  ResetPassword: function (obj) {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
+      let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/resetPassword";
+      return fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+      })
+        .then((resposne) => {
+          if (resposne.status === 200) {
+            return resposne.json();
+          }
+          throw resposne;
+        })
+        .then((data) => {
+          dispatch({ type: ActionTypes.USER, payload: data });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.USER, payload: obj });
             });
           }
         });
