@@ -29,6 +29,8 @@ const Signup = (props) => {
     false
   );
 
+  const [disabled, setDisabled] = useState<boolean>(false);
+
   const [enableToast, setEnableToast] = useState({
     visible: false
   });
@@ -78,9 +80,10 @@ const Signup = (props) => {
   useEffect(() => {
     if (!props.loading && enableToast?.visible) {
       const message = props?.SignUpUser?.message;
-      const type =
-        MESSAGE.SUCCESS_SIGN_UP_MESSAGE === message ? TYPE.SUCCESS : TYPE.ERROR;
+      const isMatch = MESSAGE.SUCCESS_SIGN_UP_MESSAGE === message;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
+      setDisabled(isMatch);
     }
   }, [props.loading]);
 
@@ -152,7 +155,12 @@ const Signup = (props) => {
                 onCancel={hideDatePicker}
               />
               <Separator margin={20} />
-              <Button mode="outlined" color="grey" onPress={handleSubmit}>
+              <Button
+                mode="outlined"
+                color="grey"
+                onPress={handleSubmit}
+                disabled={disabled}
+              >
                 Create Account
               </Button>
             </View>
