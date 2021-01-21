@@ -22,14 +22,11 @@ export type AccountParamList = {
   AccountScreen: undefined;
 };
 
-export type UnAuthenticatedStackParamList = {
+export type StackParamList = {
   Login: undefined;
   Signup: undefined;
   EmailVerification: undefined;
   ResetPassword: undefined;
-};
-
-export type AuthenticatedStackParamList = {
   Account: undefined;
   UpdateAccount: undefined;
   AddUser: undefined;

@@ -5,8 +5,7 @@ import * as React from "react";
 
 import HomeScreen from "../../screens/Home/HomeScreen";
 import MenuScreen from "../../screens/Menu/MenuScreen";
-import UnAuthenticatedStack from "../UnAuthenticated/unAuthorized";
-import AuthenticatedStack from "../Authenticated/authorized";
+import Stack from "../stack/stack";
 import {
   BottomTabParamList,
   HomeParamList,
@@ -105,7 +104,7 @@ function AccountStackScreenNavigator() {
     <AccountStack.Navigator>
       <AccountStack.Screen
         name="AccountScreen"
-        component={false ? AuthenticatedStack : UnAuthenticatedStack}
+        component={Stack}
         options={{
           headerTitle: "Account",
           headerShown: false,

@@ -1,6 +1,10 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import Login from "../../screens/Auth/Login";
+import Signup from "../../screens/Auth/Signup";
+import EmailVerification from "../../screens/Auth/EmailVerification";
+import ResestPassword from "../../screens/Auth/ResetPassword";
 import Account from "../../screens/Account/Account";
 import UpdateAccount from "../../screens/UpdateAccount/UpdateAccount";
 import ReservationScreen from "../../screens/Reservation/Reservation";
@@ -10,13 +14,17 @@ import PendingOrders from "../../screens/PendingOrders/PendingOrders";
 import CancelOrders from "../../screens/CancelOrders/CancelOrders";
 import CustomerList from "../../screens/CustomerList/CustomerList";
 import EmployeeList from "../../screens/EmployeeList/EmployeeList";
-import { AuthenticatedStackParamList } from "../types";
+import { StackParamList } from "../types";
 
-const Stack = createStackNavigator<AuthenticatedStackParamList>();
+const Stack = createStackNavigator<StackParamList>();
 
-const AuthenticatedStack = () => {
+const StackScreens = () => {
   return (
-    <Stack.Navigator headerMode="none" initialRouteName={"Account"}>
+    <Stack.Navigator headerMode="none" initialRouteName={"Login"}>
+      <Stack.Screen name={"Login"} component={Login} />
+      <Stack.Screen name={"Signup"} component={Signup} />
+      <Stack.Screen name={"EmailVerification"} component={EmailVerification} />
+      <Stack.Screen name={"ResetPassword"} component={ResestPassword} />
       <Stack.Screen name={"Account"} component={Account} />
       <Stack.Screen name={"UpdateAccount"} component={UpdateAccount} />
       <Stack.Screen name={"AddUser"} component={AddUser} />
@@ -30,4 +38,4 @@ const AuthenticatedStack = () => {
   );
 };
 
-export default AuthenticatedStack;
+export default StackScreens;
