@@ -29,6 +29,7 @@ const Login = (props) => {
     password: ""
   });
   const [isVisible, setVisible] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const [enableToast, setEnableToast] = useState({
     visible: false
@@ -56,6 +57,11 @@ const Login = (props) => {
     props.login(input);
   };
 
+  const submit = () => {
+    setDisabled(true);
+    handleSubmit();
+  };
+
   const handleAccount = () => {
     navigator.reset({ routes: [{ name: NAVIGATIONS.ACCOUNT }] });
   };
@@ -69,6 +75,7 @@ const Login = (props) => {
         handleAccount();
       }
       showToast(message, type);
+      setDisabled(false);
     }
   }, [props.loading]);
 
@@ -133,7 +140,12 @@ const Login = (props) => {
               />
               <Separator margin={20} />
 
-              <Button mode="outlined" color="grey" onPress={handleSubmit}>
+              <Button
+                mode="outlined"
+                color="grey"
+                onPress={submit}
+                disabled={disabled}
+              >
                 Log in
               </Button>
               <Separator margin={20} />

@@ -98,10 +98,10 @@ const Signup = (props) => {
       const isMatch = MESSAGE.SUCCESS_SIGN_UP_MESSAGE === message;
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
-      setDisabled(isMatch);
       if (isMatch) {
         handleNavigate();
       }
+      setDisabled(false);
     }
   }, [props.loading]);
 
@@ -112,6 +112,11 @@ const Signup = (props) => {
 
     return unsubscribe;
   }, [navigator]);
+
+  const submit = () => {
+    setDisabled(true);
+    handleSubmit();
+  };
 
   return (
     <>
@@ -176,7 +181,7 @@ const Signup = (props) => {
               <Button
                 mode="outlined"
                 color="grey"
-                onPress={handleSubmit}
+                onPress={submit}
                 disabled={disabled}
               >
                 Create Account

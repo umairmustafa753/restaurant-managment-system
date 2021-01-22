@@ -32,10 +32,17 @@ const EmailVerifcation = (props) => {
     visible: false
   });
 
+  const [disabled, setDisabled] = useState<boolean>(false);
+
   const [isEmailSend, setEmailSend] = useState<boolean>(false);
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
+  };
+
+  const _handleEmailVerification = () => {
+    setDisabled(true);
+    handleEmailVerification();
   };
 
   const handleEmailVerification = () => {
@@ -47,9 +54,16 @@ const EmailVerifcation = (props) => {
   };
 
   const handleReset = () => {
-    navigator.dispatch(
-      StackActions.replace(NAVIGATIONS.RESEST_PASSWORD, { email: input?.email })
-    );
+    navigator.reset({
+      routes: [
+        {
+          name: NAVIGATIONS.RESEST_PASSWORD,
+          params: {
+            email: input?.email
+          }
+        }
+      ]
+    });
   };
 
   const showToast = (msg: string, type: string) => {
@@ -77,6 +91,7 @@ const EmailVerifcation = (props) => {
       if (!isOTPMatch) {
         handleReset();
       }
+      setDisabled(false);
     }
   }, [props.loading]);
 
@@ -115,7 +130,8 @@ const EmailVerifcation = (props) => {
               <Button
                 mode="outlined"
                 color="grey"
-                onPress={handleEmailVerification}
+                onPress={_handleEmailVerification}
+                disabled={disabled}
               >
                 Send code
               </Button>
