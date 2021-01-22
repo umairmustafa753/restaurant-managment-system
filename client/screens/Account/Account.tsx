@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
@@ -17,8 +18,14 @@ const AccountScreen = () => {
     navigator.navigate(to);
   };
 
-  const handleLogout = () => {
-    navigator.reset({ routes: [{ name: NAVIGATIONS.LOGIN }] });
+  const handleLogout = async () => {
+    let error = null;
+    try {
+      await AsyncStorage.removeItem("user");
+    } catch (error) {
+      error = error;
+    }
+    if (!error) navigator.reset({ routes: [{ name: NAVIGATIONS.LOGIN }] });
   };
 
   return (

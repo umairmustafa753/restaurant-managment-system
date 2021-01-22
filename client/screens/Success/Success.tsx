@@ -22,7 +22,7 @@ const Success = () => {
       <Separator margin={20} />
       <CountdownCircleTimer
         isPlaying
-        duration={3}
+        duration={5}
         size={180}
         colors={[
           ["#004777", 0.4],

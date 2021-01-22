@@ -85,6 +85,40 @@ const UserAction = {
     };
   },
 
+  AutoLogin: function (obj) {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
+      const url = config.REACT_NATIVE_APP_ENDPOINT + "/auth/signin/" + obj._id;
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`
+        }
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          throw response;
+        })
+        .then((data) => {
+          if (data.data.token) {
+            dispatch({ type: ActionTypes.USER, payload: data });
+            return data.data;
+          }
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.USER, payload: obj });
+            });
+          }
+        });
+    };
+  },
+
   EmailVerification: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });

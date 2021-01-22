@@ -28,6 +28,8 @@ const Login = (props) => {
     email: "",
     password: ""
   });
+  const [isVisible, setVisible] = useState<boolean>(false);
+
   const [enableToast, setEnableToast] = useState({
     visible: false
   });
@@ -87,9 +89,11 @@ const Login = (props) => {
   }, [navigator]);
 
   const alreadyLogin = async () => {
-    let user = await AsyncStorage.getItem("user");
+    const user = await AsyncStorage.getItem("user");
     if (user) {
-      user = JSON.parse(user);
+      props.autoLogin(JSON.parse(user));
+    } else {
+      setVisible(true);
     }
   };
 
@@ -107,44 +111,46 @@ const Login = (props) => {
         keyboardVerticalOffset={30}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.padding}>
-            <Logo />
-            <Separator margin={20} />
-            <Text style={styles.title}>Login</Text>
-            <TextInput
-              label="Email"
-              theme={{ colors: { primary: "#149dec" } }}
-              style={styles.inputStyle}
-              value={input?.email}
-              onChangeText={(text) =>
-                setInput((prevState) => ({ ...prevState, email: text }))
-              }
-            />
-            <PasswordInputText
-              value={input?.password}
-              onChangeText={(text) =>
-                setInput((prevState) => ({ ...prevState, password: text }))
-              }
-            />
-            <Separator margin={20} />
+          {isVisible && (
+            <View style={styles.padding}>
+              <Logo />
+              <Separator margin={20} />
+              <Text style={styles.title}>Login</Text>
+              <TextInput
+                label="Email"
+                theme={{ colors: { primary: "#149dec" } }}
+                style={styles.inputStyle}
+                value={input?.email}
+                onChangeText={(text) =>
+                  setInput((prevState) => ({ ...prevState, email: text }))
+                }
+              />
+              <PasswordInputText
+                value={input?.password}
+                onChangeText={(text) =>
+                  setInput((prevState) => ({ ...prevState, password: text }))
+                }
+              />
+              <Separator margin={20} />
 
-            <Button mode="outlined" color="grey" onPress={handleSubmit}>
-              Log in
-            </Button>
-            <Separator margin={20} />
-            <View style={styles.row}>
-              <Button
-                mode="outlined"
-                color="grey"
-                onPress={handleForgotPassword}
-              >
-                forgot password
+              <Button mode="outlined" color="grey" onPress={handleSubmit}>
+                Log in
               </Button>
-              <Button mode="outlined" color="grey" onPress={handleSignup}>
-                Signup
-              </Button>
+              <Separator margin={20} />
+              <View style={styles.row}>
+                <Button
+                  mode="outlined"
+                  color="grey"
+                  onPress={handleForgotPassword}
+                >
+                  forgot password
+                </Button>
+                <Button mode="outlined" color="grey" onPress={handleSignup}>
+                  Signup
+                </Button>
+              </View>
             </View>
-          </View>
+          )}
           <Spinner
             visible={props?.loading}
             textContent={"Loading..."}
@@ -167,6 +173,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: (obj) => {
       dispatch(UserAction.Login(obj));
+    },
+    autoLogin: (obj) => {
+      dispatch(UserAction.AutoLogin(obj));
     }
   };
 };
