@@ -47,7 +47,9 @@ const EmailVerifcation = (props) => {
   };
 
   const handleReset = () => {
-    navigator.navigate(NAVIGATIONS.RESEST_PASSWORD, { email: input?.email });
+    navigator.dispatch(
+      StackActions.replace(NAVIGATIONS.RESEST_PASSWORD, { email: input?.email })
+    );
   };
 
   const showToast = (msg: string, type: string) => {

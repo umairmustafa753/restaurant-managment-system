@@ -17,6 +17,10 @@ const AccountScreen = () => {
     navigator.navigate(to);
   };
 
+  const handleLogout = () => {
+    navigator.reset({ routes: [{ name: NAVIGATIONS.LOGIN }] });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />
@@ -66,7 +70,7 @@ const AccountScreen = () => {
             titile="Employees List"
             onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
           />
-          <Card titile="log out" onPress={() => {}} />
+          <Card titile="log out" onPress={handleLogout} />
         </View>
       </ScrollView>
     </SafeAreaView>

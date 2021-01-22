@@ -4,7 +4,8 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Animated
 } from "react-native";
 import { Button } from "react-native-paper";
 import {
@@ -14,12 +15,12 @@ import {
 } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import PasswordInputText from "react-native-hide-show-password-input";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 
 import UserAction from "../../store/Actions/user";
 import Separator from "../../components/Separator";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Text, View } from "../../components/Themed";
-import Back from "../../components/Back";
 import { connect } from "react-redux";
 import { MESSAGE, TYPE } from "../constant";
 
@@ -39,9 +40,7 @@ const ResestPassword = (props) => {
   });
 
   const handleNavigationPop = () => {
-    setTimeout(() => {
-      navigator.dispatch(StackActions.popToTop());
-    }, 500);
+    navigator.dispatch(StackActions.popToTop());
   };
 
   const handleSubmit = () => {
@@ -73,9 +72,6 @@ const ResestPassword = (props) => {
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
       setDisabled(isMatch);
-      if (isMatch) {
-        handleNavigationPop();
-      }
     }
   }, [props.loading]);
 
@@ -97,7 +93,6 @@ const ResestPassword = (props) => {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.padding}>
-            <Back onPress={handleNavigationPop} />
             <Text style={styles.title}>Enter New Password</Text>
             <Separator margin={20} />
             <PasswordInputText
@@ -132,6 +127,33 @@ const ResestPassword = (props) => {
             textContent={"Loading..."}
             textStyle={styles.spinnerTextStyle}
           />
+          {disabled && (
+            <View style={styles.center}>
+              <CountdownCircleTimer
+                isPlaying={disabled}
+                duration={5}
+                size={180}
+                colors={[
+                  ["#004777", 0.4],
+                  ["#F7B801", 0.4],
+                  ["#A30000", 0.2]
+                ]}
+                onComplete={handleNavigationPop}
+              >
+                {({ remainingTime }) => (
+                  <>
+                    <Animated.Text>Redirecting in</Animated.Text>
+                    <Separator margin={15} />
+                    <Animated.Text style={styles.AnimatedText}>
+                      {remainingTime}
+                    </Animated.Text>
+                    <Separator margin={15} />
+                    <Animated.Text>seconds</Animated.Text>
+                  </>
+                )}
+              </CountdownCircleTimer>
+            </View>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -163,6 +185,9 @@ const styles = StyleSheet.create({
   zIndex: {
     zIndex: 1
   },
+  center: {
+    alignSelf: "center"
+  },
   spinnerTextStyle: {
     color: "#fff"
   },
@@ -173,6 +198,9 @@ const styles = StyleSheet.create({
   },
   padding: {
     padding: 30
+  },
+  AnimatedText: {
+    fontSize: 40
   },
   inputStyle: {
     backgroundColor: "white"
