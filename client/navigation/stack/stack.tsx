@@ -14,6 +14,7 @@ import PendingOrders from "../../screens/PendingOrders/PendingOrders";
 import CancelOrders from "../../screens/CancelOrders/CancelOrders";
 import CustomerList from "../../screens/CustomerList/CustomerList";
 import EmployeeList from "../../screens/EmployeeList/EmployeeList";
+import Success from "../../screens/Success/Success";
 import { StackParamList } from "../types";
 
 const Stack = createStackNavigator<StackParamList>();
@@ -34,6 +35,7 @@ const StackScreens = () => {
       <Stack.Screen name={"CustomerList"} component={CustomerList} />
       <Stack.Screen name={"EmployeeList"} component={EmployeeList} />
       <Stack.Screen name={"Reservation"} component={ReservationScreen} />
+      <Stack.Screen name={"Success"} component={Success} />
     </Stack.Navigator>
   );
 };

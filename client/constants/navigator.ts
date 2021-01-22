@@ -12,5 +12,6 @@ export const NAVIGATIONS = {
   CANCEL_ORDERS: "CancelOrders",
   CUSTOMER_LIST: "CustomerList",
   EMPLOYEE_LIST: "EmployeeList",
-  RESERVATION: "Reservation"
+  RESERVATION: "Reservation",
+  SUCCESS: "Success"
 };

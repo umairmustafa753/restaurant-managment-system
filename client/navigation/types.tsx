@@ -36,4 +36,5 @@ export type StackParamList = {
   CustomerList: undefined;
   EmployeeList: undefined;
   Reservation: undefined;
+  Success: undefined;
 };

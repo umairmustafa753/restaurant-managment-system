@@ -20,6 +20,7 @@ import Separator from "../../components/Separator";
 import Logo from "../../components/Logo";
 import Back from "../../components/Back";
 import UserAction from "../../store/Actions/user";
+import { NAVIGATIONS } from "../../constants/navigator";
 import { MESSAGE, TYPE } from "../constant";
 
 const Signup = (props) => {
@@ -63,6 +64,20 @@ const Signup = (props) => {
     navigator.dispatch(StackActions.popToTop());
   };
 
+  const handleNavigate = () => {
+    navigator.reset({
+      routes: [
+        {
+          name: NAVIGATIONS.SUCCESS,
+          params: {
+            msg: MESSAGE.SUCCESS_SIGN_UP_MESSAGE,
+            navigateTo: NAVIGATIONS.LOGIN
+          }
+        }
+      ]
+    });
+  };
+
   const showToast = (msg: string, type: string) => {
     Toast.show({
       type: `${type}`,
@@ -84,6 +99,9 @@ const Signup = (props) => {
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
       setDisabled(isMatch);
+      if (isMatch) {
+        handleNavigate();
+      }
     }
   }, [props.loading]);
 
