@@ -40,9 +40,7 @@ const Users = {
   },
 
   getById: async (id: object) => {
-    const query = User.findById(id).select(
-      "_id firstName lastName username email role createdAt updatedAt"
-    );
+    const query = User.findById(id);
     try {
       return await query.exec();
     } catch (error) {

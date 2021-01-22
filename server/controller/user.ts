@@ -35,7 +35,8 @@ const User = {
         );
         if (comparePass) {
           const token = JWT.generateToken(user);
-          delete user.password;
+          user.password = null;
+          user.otp = null;
           return res
             .status(200)
             .send({ data: { user, token }, message: "Successfully Login" });
@@ -59,6 +60,8 @@ const User = {
       let user = await userFromService.getById({ _id: req.params.id });
       const token = JWT.generateToken(user);
       if (user) {
+        user.password = null;
+        user.otp = null;
         return res
           .status(200)
           .send({ data: { user, token }, message: "Successfully Login" });
