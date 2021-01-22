@@ -4,7 +4,7 @@ import config from "../../config";
 const MenuAction = {
   GetMenuItems: () => {
     return (dispatch) => {
-      const url = config.REACT_NATIVE_APP_ENDPOINT + "/api/menuList";
+      const url = config.SERVER_ENDPOINT + "/api/menuList";
       fetch(url, {
         method: "GET",
         headers: {

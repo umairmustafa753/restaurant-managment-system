@@ -4,7 +4,7 @@ import config from "../../config";
 const FeaturedItemsAction = {
   GetFeaturedItems: () => {
     return (dispatch) => {
-      const url = config.REACT_NATIVE_APP_ENDPOINT + "/api/featuredItems";
+      const url = config.SERVER_ENDPOINT + "/api/featuredItems";
       fetch(url, {
         method: "GET",
         headers: {

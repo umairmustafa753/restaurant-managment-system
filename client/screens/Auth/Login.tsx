@@ -74,6 +74,7 @@ const Login = (props) => {
       if (isMatch) {
         handleAccount();
       }
+
       showToast(message, type);
       setDisabled(false);
     }

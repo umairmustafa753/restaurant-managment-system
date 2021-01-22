@@ -7,7 +7,7 @@ const UserAction = {
   Signup: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      let url = config.REACT_NATIVE_APP_ENDPOINT + "/auth/signup";
+      let url = config.SERVER_ENDPOINT + "/auth/signup";
       return fetch(url, {
         method: "POST",
         headers: {
@@ -38,7 +38,7 @@ const UserAction = {
   Login: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      const url = config.REACT_NATIVE_APP_ENDPOINT + "/auth/signin";
+      const url = config.SERVER_ENDPOINT + "/auth/signin";
       fetch(url, {
         method: "POST",
         headers: {
@@ -88,7 +88,7 @@ const UserAction = {
   AutoLogin: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      const url = config.REACT_NATIVE_APP_ENDPOINT + "/auth/signin/" + obj._id;
+      const url = config.SERVER_ENDPOINT + "/auth/signin/" + obj._id;
       fetch(url, {
         method: "GET",
         headers: {
@@ -122,7 +122,7 @@ const UserAction = {
   EmailVerification: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/emailVerification";
+      let url = config.SERVER_ENDPOINT + "/api/emailVerification";
       return fetch(url, {
         method: "PUT",
         headers: {
@@ -153,7 +153,7 @@ const UserAction = {
   OTPVerification: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/otpVerification";
+      let url = config.SERVER_ENDPOINT + "/api/otpVerification";
       return fetch(url, {
         method: "POST",
         headers: {
@@ -184,7 +184,7 @@ const UserAction = {
   ResetPassword: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      let url = config.REACT_NATIVE_APP_ENDPOINT + "/api/resetPassword";
+      let url = config.SERVER_ENDPOINT + "/api/resetPassword";
       return fetch(url, {
         method: "PUT",
         headers: {
