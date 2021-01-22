@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
@@ -16,6 +16,7 @@ const AccountScreen = () => {
   const navigate = (to) => {
     navigator.navigate(to);
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />

@@ -3,6 +3,7 @@ export const NAVIGATIONS = {
   SIGNUP: "Signup",
   EMAIL_VERIFICATION: "EmailVerification",
   RESEST_PASSWORD: "ResetPassword",
+  ACCOUNT: "Account",
   DETAILS: "Details",
   UPDATE_ACCOUNT: "UpdateAccount",
   ADD_USER: "AddUser",

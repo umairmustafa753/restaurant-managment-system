@@ -53,11 +53,18 @@ const Login = (props) => {
     props.login(input);
   };
 
+  const handleAccount = () => {
+    navigator.reset({ routes: [{ name: NAVIGATIONS.ACCOUNT }] });
+  };
+
   useEffect(() => {
     if (!props.loading && enableToast?.visible) {
       const message = props?.LoginUser?.message;
-      const type =
-        MESSAGE.SUCCESS_LOG_IN_MESSAGE === message ? TYPE.SUCCESS : TYPE.ERROR;
+      const isMatch = MESSAGE.SUCCESS_LOG_IN_MESSAGE === message;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
+      if (isMatch) {
+        handleAccount();
+      }
       showToast(message, type);
     }
   }, [props.loading]);
@@ -69,6 +76,8 @@ const Login = (props) => {
 
     return unsubscribe;
   }, [navigator]);
+
+  console.log({ props });
 
   return (
     <SafeAreaView style={styles.container}>

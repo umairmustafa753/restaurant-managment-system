@@ -16,7 +16,6 @@ import Toast from "react-native-toast-message";
 import PasswordInputText from "react-native-hide-show-password-input";
 
 import UserAction from "../../store/Actions/user";
-import { NAVIGATIONS } from "../../constants/navigator";
 import Separator from "../../components/Separator";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Text, View } from "../../components/Themed";
@@ -40,7 +39,9 @@ const ResestPassword = (props) => {
   });
 
   const handleNavigationPop = () => {
-    navigator.dispatch(StackActions.popToTop());
+    setTimeout(() => {
+      navigator.dispatch(StackActions.popToTop());
+    }, 500);
   };
 
   const handleSubmit = () => {
@@ -72,6 +73,9 @@ const ResestPassword = (props) => {
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(message, type);
       setDisabled(isMatch);
+      if (isMatch) {
+        handleNavigationPop();
+      }
     }
   }, [props.loading]);
 
