@@ -54,18 +54,22 @@ const UserAction = {
         })
         .then((data) => {
           if (data.data.token) {
-            async () => {
-              try {
-                const value = {
-                  token: data.data.token,
-                  _id: data.data.user._id
-                };
-                const key = "user";
-                await AsyncStorage.setItem(key, JSON.stringify(value));
-              } catch (e) {
-                console.log(e);
-              }
-            };
+            try {
+              const value = {
+                token: data.data.token,
+                _id: data.data.user._id
+              };
+              const key = "user";
+              AsyncStorage.setItem(key, JSON.stringify(value), (err) => {
+                if (err) {
+                  throw err;
+                }
+              }).catch((err) => {
+                console.log("error is: " + err);
+              });
+            } catch (e) {
+              console.log(e);
+            }
             dispatch({ type: ActionTypes.USER, payload: data });
             return data.data;
           }

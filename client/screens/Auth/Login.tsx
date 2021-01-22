@@ -12,6 +12,7 @@ import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import PasswordInputText from "react-native-hide-show-password-input";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Text, View } from "../../components/Themed";
 import { NAVIGATIONS } from "../../constants/navigator";
@@ -77,7 +78,24 @@ const Login = (props) => {
     return unsubscribe;
   }, [navigator]);
 
-  console.log({ props });
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: true }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
+
+  const alreadyLogin = async () => {
+    let user = await AsyncStorage.getItem("user");
+    if (user) {
+      user = JSON.parse(user);
+    }
+  };
+
+  useEffect(() => {
+    alreadyLogin();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
