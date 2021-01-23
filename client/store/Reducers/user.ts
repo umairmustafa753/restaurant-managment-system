@@ -23,6 +23,22 @@ function userReducer(state = INITIAL_STATE, action) {
       };
     }
 
+    case ActionTypes.UPDATE_USER_REQUST: {
+      return {
+        ...state,
+        requsted: action.requsted,
+        loading: true
+      };
+    }
+
+    case ActionTypes.UPDATE_USER: {
+      return {
+        ...state,
+        requsted: action.requsted,
+        loading: false
+      };
+    }
+
     default:
       return state;
   }

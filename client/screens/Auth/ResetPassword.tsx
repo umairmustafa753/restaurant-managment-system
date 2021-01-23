@@ -7,11 +7,8 @@ import {
   Platform
 } from "react-native";
 import { Button } from "react-native-paper";
-import {
-  useNavigation,
-  useRoute,
-  StackActions
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { connect } from "react-redux";
 import Toast from "react-native-toast-message";
 import PasswordInputText from "react-native-hide-show-password-input";
 
@@ -19,7 +16,6 @@ import UserAction from "../../store/Actions/user";
 import Separator from "../../components/Separator";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Text, View } from "../../components/Themed";
-import { connect } from "react-redux";
 import { NAVIGATIONS } from "../../constants/navigator";
 import { MESSAGE, TYPE } from "../constant";
 

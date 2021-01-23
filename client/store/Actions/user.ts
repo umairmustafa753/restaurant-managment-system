@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { cloudinaryUpload } from "../../utils";
 import ActionTypes from "./ActionTypes";
 import config from "../../config";
 
@@ -206,6 +207,42 @@ const UserAction = {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
               dispatch({ type: ActionTypes.USER, payload: obj });
+            });
+          }
+        });
+    };
+  },
+
+  updateUser: function (obj) {
+    return async (dispatch) => {
+      dispatch({ type: ActionTypes.UPDATE_USER_REQUST, requsted: {} });
+      let url = config.SERVER_ENDPOINT + "/api/updateUser";
+      if (obj.picture) {
+        const res = await cloudinaryUpload(obj.picture);
+        obj.picture = res;
+      }
+      return fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`
+        },
+        body: JSON.stringify(obj)
+      })
+        .then((resposne) => {
+          if (resposne.status === 200) {
+            return resposne.json();
+          }
+          throw resposne;
+        })
+        .then((data) => {
+          dispatch({ type: ActionTypes.USER, payload: data });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.UPDATE_USER, requsted: obj });
             });
           }
         });

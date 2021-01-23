@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { connect } from "react-redux";
 
 import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
@@ -11,8 +12,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import Card from "../../components/Card";
 import Separator from "../../components/Separator";
 
-const AccountScreen = () => {
+const AccountScreen = (props) => {
   const navigator = useNavigation();
+
+  const [image, setImage] = useState("");
 
   const navigate = (to) => {
     navigator.navigate(to);
@@ -28,6 +31,10 @@ const AccountScreen = () => {
     if (!error) navigator.reset({ routes: [{ name: NAVIGATIONS.LOGIN }] });
   };
 
+  useEffect(() => {
+    setImage(props?.user?.data?.user?.picture);
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Separator margin={30} />
@@ -35,7 +42,8 @@ const AccountScreen = () => {
         <View style={styles.padding}>
           <UserAvatar
             size={80}
-            // src={}
+            key={image}
+            src={image}
             name="Umair Mustafa"
             style={styles.avatar}
           />
@@ -84,6 +92,14 @@ const AccountScreen = () => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.obj
+  };
+};
+
+export default connect(mapStateToProps, null)(AccountScreen);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -112,5 +128,3 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   }
 });
-
-export default AccountScreen;
