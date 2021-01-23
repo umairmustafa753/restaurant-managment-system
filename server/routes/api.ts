@@ -41,10 +41,6 @@ api.put(
   check(MODAL_KEYS.LAST_NAME).notEmpty().withMessage(MESSAGE.LAST_NAME),
   check(MODAL_KEYS.EMAIL).isEmail().withMessage(MESSAGE.EMAIL),
   check(MODAL_KEYS.DOB).notEmpty().withMessage(MESSAGE.DOB),
-  check(MODAL_KEYS.PASSWORD).notEmpty().withMessage(MESSAGE.PASSWORD),
-  check(MODAL_KEYS.PASSWORD)
-    .isLength({ min: 8 })
-    .withMessage(MESSAGE.PASSWORD_LENGTH),
   expressPostValidator,
   Authorization,
   User.UpdateUser
@@ -81,8 +77,6 @@ api.put(
 
 api.get("/users/:role", Authorization, User.GetUsers);
 
-export default api;
-
 // Reservation
 api.get("/reservation/:id/:status", Authorization, Reservation.GetReservation);
 api.get("/reservations/:status", Authorization, Reservation.GetReservations);
@@ -110,3 +104,5 @@ api.put(
   Authorization,
   Reservation.UpdateReservation
 );
+
+export default api;

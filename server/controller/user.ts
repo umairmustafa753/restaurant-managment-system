@@ -96,6 +96,8 @@ const User = {
       };
       const item = await user.findOneAndUpdate(query, update, options);
       if (item) {
+        item.password = null;
+        item.otp = null;
         return res
           .status(200)
           .send({ data: item, message: "User updated Successfully" });
