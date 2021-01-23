@@ -78,8 +78,8 @@ const User = {
 
   UpdateUser: async (req, res) => {
     try {
-      let note = await userFromService.getById(req.body._id);
-      if (!note) {
+      let userDB = await userFromService.getById(req.body._id);
+      if (!userDB) {
         return res.status(404).send({ data: {}, message: "User Not found" });
       }
       const query = { _id: req.body._id };
@@ -205,6 +205,28 @@ const User = {
           .status(404)
           .send({ data: users, message: `${req.params.role} are not found` });
       }
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send({ error });
+    }
+  },
+
+  GetUser: async (req, res) => {
+    try {
+      let userDB = await userFromService.getById(req.params.id);
+      if (!userDB) {
+        return res.status(404).send({ data: {}, message: "User Not found" });
+      }
+      if (userDB) {
+        userDB.password = null;
+        userDB.otp = null;
+        return res
+          .status(200)
+          .send({ data: userDB, message: "User Fetched Successfully" });
+      }
+      return res
+        .status(409)
+        .send({ data: {}, message: "Something went wrong, Please try again" });
     } catch (error) {
       console.log("error", error);
       res.status(500).send({ error });

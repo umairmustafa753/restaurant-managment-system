@@ -76,6 +76,7 @@ api.put(
 // get Users
 
 api.get("/users/:role", Authorization, User.GetUsers);
+api.get("/user/:id", Authorization, User.GetUser);
 
 // Reservation
 api.get("/reservation/:id/:status", Authorization, Reservation.GetReservation);
