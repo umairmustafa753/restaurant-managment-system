@@ -213,20 +213,19 @@ const User = {
 
   GetUser: async (req, res) => {
     try {
-      let userDB = await userFromService.getById(req.params.id);
-      if (!userDB) {
-        return res.status(404).send({ data: {}, message: "User Not found" });
-      }
-      if (userDB) {
-        userDB.password = null;
-        userDB.otp = null;
+      let user = await userFromService.getById({ _id: req.params.id });
+      const token = JWT.generateToken(user);
+      if (user) {
+        user.password = null;
+        user.otp = null;
         return res
           .status(200)
-          .send({ data: userDB, message: "User Fetched Successfully" });
+          .send({ data: { user, token }, message: "User Fetch Successfully" });
       }
-      return res
-        .status(409)
-        .send({ data: {}, message: "Something went wrong, Please try again" });
+      return res.status(404).send({
+        data: { user },
+        message: "Something went wrong, Please try again"
+      });
     } catch (error) {
       console.log("error", error);
       res.status(500).send({ error });
