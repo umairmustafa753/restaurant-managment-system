@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  RefreshControl,
+  ScrollView
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 
+import UserAction from "../../store/Actions/user";
 import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
-import { ScrollView } from "react-native-gesture-handler";
+import { MESSAGE, TYPE } from "../constant";
 
 import Card from "../../components/Card";
 import Separator from "../../components/Separator";
@@ -16,6 +23,9 @@ const AccountScreen = (props) => {
   const navigator = useNavigation();
 
   const [image, setImage] = useState("");
+  const [enableToast, setEnableToast] = useState({
+    visible: false
+  });
 
   const navigate = (to) => {
     navigator.navigate(to);
@@ -35,10 +45,52 @@ const AccountScreen = (props) => {
     setImage(props?.user?.data?.user?.picture);
   }, []);
 
+  const onRefresh = async () => {
+    await props.getUser({
+      _id: props?.user?.data?.user?._id,
+      token: props?.user?.data?.token
+    });
+  };
+
+  const showToast = (msg: string, type: string) => {
+    Toast.show({
+      type: `${type}`,
+      position: "top",
+      text1: `${msg}`,
+      autoHide: false,
+      topOffset: 50
+    });
+  };
+
+  useEffect(() => {
+    if (!props.loading && enableToast?.visible) {
+      setImage(props?.user?.data?.user?.picture);
+      const requstedMessage = props?.requsted?.message;
+      const successMessage = props?.user?.message;
+      const isMatch = MESSAGE.SUCCESS_USER_FETCHED_MESSAGE === successMessage;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
+      showToast(isMatch ? successMessage : requstedMessage, type);
+    }
+  }, [props.loading]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: true }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Separator margin={30} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
+      <Separator margin={20} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={props.loading} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.padding}>
           <UserAvatar
             size={80}
@@ -93,12 +145,22 @@ const AccountScreen = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log(state.userReducer);
   return {
-    user: state.userReducer.obj
+    user: state.userReducer.obj,
+    requsted: state.userReducer.requsted,
+    loading: state.userReducer.loading
   };
 };
 
-export default connect(mapStateToProps, null)(AccountScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: (obj) => {
+      dispatch(UserAction.GetUser(obj));
+    }
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AccountScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -126,5 +188,8 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     alignSelf: "center"
+  },
+  zIndex: {
+    zIndex: 1
   }
 });
