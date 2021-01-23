@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableOpacity,
   ScrollView,
+  RefreshControl,
   Image
 } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
@@ -139,7 +140,8 @@ const UpdateAccount = (props) => {
         lastName: input?.lastName,
         email: input?.email,
         dob: input?.dob,
-        picture: image?.base64Image
+        base64Image: image?.base64Image,
+        picture: image?.uri
       };
       props.updateUser(obj);
     }
@@ -159,10 +161,13 @@ const UpdateAccount = (props) => {
     if (!props.loading && enableToast?.visible) {
       const requstedMessage = props?.requsted?.message;
       const successMessage = props?.user?.message;
-      const isMatch = MESSAGE.SUCCESS_USER_UPDATED_MESSAGE === successMessage;
+      const isMatch =
+        MESSAGE.SUCCESS_USER_UPDATED_MESSAGE === successMessage ||
+        MESSAGE.SUCCESS_USER_FETCHED_MESSAGE === successMessage;
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
       showToast(isMatch ? successMessage : requstedMessage, type);
       setDisabled(false);
+      updateState();
     }
   }, [props.loading]);
 
@@ -174,7 +179,7 @@ const UpdateAccount = (props) => {
     return unsubscribe;
   }, [navigator]);
 
-  useEffect(() => {
+  const updateState = () => {
     setInput({
       firstName: props?.user?.data?.user?.firstName,
       lastName: props?.user?.data?.user?.lastName,
@@ -187,7 +192,18 @@ const UpdateAccount = (props) => {
       ...prevState,
       uri: props?.user?.data?.user?.picture
     }));
+  };
+
+  useEffect(() => {
+    updateState();
   }, []);
+
+  const onRefresh = () => {
+    props.getUser({
+      _id: props?.user?.data?.user?._id,
+      token: props?.user?.data?.token
+    });
+  };
 
   const cell = ({ item }) => {
     return <Text style={styles.listText}>{item?.date}</Text>;
@@ -201,7 +217,12 @@ const UpdateAccount = (props) => {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={30}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={showSpiner} onRefresh={onRefresh} />
+          }
+        >
           <View style={styles.padding}>
             <Modal
               visible={visible}
@@ -335,7 +356,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateUser: (obj) => {
-      dispatch(UserAction.updateUser(obj));
+      dispatch(UserAction.UpdateUser(obj));
+    },
+    getUser: (obj) => {
+      dispatch(UserAction.GetUser(obj));
     }
   };
 };

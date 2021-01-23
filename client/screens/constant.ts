@@ -6,6 +6,7 @@ export const MESSAGE = {
   SUCCESS_PASSWORD_MESSAGE: "Password changed successfully",
   FAILED_PASSWORD_NOT_MATCH: "Passowrd does not match",
   SUCCESS_USER_UPDATED_MESSAGE: "User updated Successfully",
+  SUCCESS_USER_FETCHED_MESSAGE: "User Fetch Successfully",
   FAILED_NO_CHANGED_FOUND: "No change found"
 };
 

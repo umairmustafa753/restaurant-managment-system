@@ -39,7 +39,7 @@ const UserAction = {
   Login: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      const url = config.SERVER_ENDPOINT + "/auth/signin";
+      const url = config.LOCAL_ENDPOINT + "/auth/signin";
       fetch(url, {
         method: "POST",
         headers: {
@@ -213,14 +213,15 @@ const UserAction = {
     };
   },
 
-  updateUser: function (obj) {
+  UpdateUser: function (obj) {
     return async (dispatch) => {
       dispatch({ type: ActionTypes.UPDATE_USER_REQUST, requsted: {} });
       let url = config.SERVER_ENDPOINT + "/api/updateUser";
-      if (obj.picture) {
-        const res = await cloudinaryUpload(obj.picture);
+      if (obj.base64Image) {
+        const res = await cloudinaryUpload(obj.base64Image);
         obj.picture = res;
       }
+      obj.base64Image = null;
       return fetch(url, {
         method: "PUT",
         headers: {
@@ -237,6 +238,40 @@ const UserAction = {
         })
         .then((data) => {
           dispatch({ type: ActionTypes.USER, payload: data });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.UPDATE_USER, requsted: obj });
+            });
+          }
+        });
+    };
+  },
+
+  GetUser: function (obj) {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.UPDATE_USER_REQUST, requsted: {} });
+      const url = config.SERVER_ENDPOINT + "/api/user/" + obj._id;
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`
+        }
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          throw response;
+        })
+        .then((data) => {
+          if (data.data.token) {
+            dispatch({ type: ActionTypes.USER, payload: data });
+            return data.data;
+          }
         })
         .catch((error) => {
           if (typeof error.text === "function") {
