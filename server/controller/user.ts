@@ -100,7 +100,7 @@ const User = {
         item.otp = null;
         return res
           .status(200)
-          .send({ data: { user }, message: "User updated Successfully" });
+          .send({ data: { item }, message: "User updated Successfully" });
       }
       return res
         .status(409)
