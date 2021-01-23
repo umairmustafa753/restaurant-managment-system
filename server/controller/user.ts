@@ -82,6 +82,7 @@ const User = {
       if (!userDB) {
         return res.status(404).send({ data: {}, message: "User Not found" });
       }
+      const token = JWT.generateToken(user);
       const query = { _id: req.body._id };
       const options = { new: true, runValidators: true };
       const update = {
@@ -98,9 +99,10 @@ const User = {
       if (item) {
         item.password = null;
         item.otp = null;
-        return res
-          .status(200)
-          .send({ data: { user: item }, message: "User updated Successfully" });
+        return res.status(200).send({
+          data: { user: item, token },
+          message: "User updated Successfully"
+        });
       }
       return res
         .status(409)
