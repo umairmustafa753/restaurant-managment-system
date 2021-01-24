@@ -39,7 +39,7 @@ const UserAction = {
   Login: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.USER_REQUST, payload: {} });
-      const url = config.LOCAL_ENDPOINT + "/auth/signin";
+      const url = config.SERVER_ENDPOINT + "/auth/signin";
       fetch(url, {
         method: "POST",
         headers: {
@@ -278,6 +278,37 @@ const UserAction = {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
               dispatch({ type: ActionTypes.UPDATE_USER, requsted: obj });
+            });
+          }
+        });
+    };
+  },
+
+  AddUser: function (obj) {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.ADD_USER_REQUST, addUser: {} });
+      let url = config.SERVER_ENDPOINT + "/auth/signup";
+      return fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+      })
+        .then((resposne) => {
+          if (resposne.status === 200) {
+            return resposne.json();
+          }
+          throw resposne;
+        })
+        .then((data) => {
+          dispatch({ type: ActionTypes.ADD_USER, addUser: data });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.ADD_USER, addUser: obj });
             });
           }
         });

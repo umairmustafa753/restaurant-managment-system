@@ -106,7 +106,7 @@ const AccountScreen = (props) => {
           />
         </View>
         <Separator margin={50} />
-        <TableView>
+        <TableView appearance="light">
           <Section footer="All rights reserved.">
             <Cell
               title="Upadte Account/Details"
