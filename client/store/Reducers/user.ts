@@ -2,6 +2,8 @@ import ActionTypes from "../Actions/ActionTypes";
 
 const INITIAL_STATE = {
   obj: {},
+  requsted: {},
+  addUser: {},
   loading: false
 };
 
@@ -35,6 +37,22 @@ function userReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         requsted: action.requsted,
+        loading: false
+      };
+    }
+
+    case ActionTypes.ADD_USER_REQUST: {
+      return {
+        ...state,
+        addUser: action.addUser,
+        loading: true
+      };
+    }
+
+    case ActionTypes.ADD_USER: {
+      return {
+        ...state,
+        addUser: action.addUser,
         loading: false
       };
     }
