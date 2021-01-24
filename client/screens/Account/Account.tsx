@@ -10,13 +10,13 @@ import UserAvatar from "react-native-user-avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
+import { Cell, Section, TableView } from "react-native-tableview-simple";
 
 import UserAction from "../../store/Actions/user";
 import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
 import { MESSAGE, TYPE } from "../constant";
 
-import Card from "../../components/Card";
 import Separator from "../../components/Separator";
 
 const AccountScreen = (props) => {
@@ -84,68 +84,85 @@ const AccountScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
-      <Separator margin={20} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={props.loading} onRefresh={onRefresh} />
         }
       >
-        <View style={styles.padding}>
+        <View style={styles.row}>
+          <View style={styles.colounm}>
+            <Text style={styles.title}>
+              {`${props?.user?.data?.user?.firstName} ${props?.user?.data?.user?.lastName}`}
+            </Text>
+            <Text style={styles.subTitle}>{props?.user?.data?.user?.role}</Text>
+          </View>
           <UserAvatar
-            size={80}
+            size={50}
             key={image}
             src={image}
-            name="Umair Mustafa"
+            name={`${props?.user?.data?.user?.firstName} ${props?.user?.data?.user?.lastName}`}
             style={styles.avatar}
           />
-          <Separator margin={10} />
-          <Text style={styles.title}>Umair Mustafa</Text>
-          <Text style={styles.subTitle}>Owner</Text>
-          <Separator margin={10} />
-          <Card
-            titile="Upadte Account/Details"
-            onPress={() => navigate(NAVIGATIONS.UPDATE_ACCOUNT)}
-          />
-          <Card
-            titile="Add User"
-            onPress={() => navigate(NAVIGATIONS.ADD_USER)}
-          />
-          <Card
-            titile="Reservation"
-            onPress={() => navigate(NAVIGATIONS.RESERVATION)}
-          />
-          <Card
-            titile="Confirm Orders"
-            onPress={() => {
-              navigate(NAVIGATIONS.CONFIRM_ORDERS);
-            }}
-          />
-          <Card
-            titile="Pending Orders"
-            onPress={() => navigate(NAVIGATIONS.PENDING_ORDERS)}
-          />
-          <Card
-            titile="Cancel Orders"
-            onPress={() => navigate(NAVIGATIONS.CANCEL_ORDERS)}
-          />
-          <Card
-            titile="Customers List"
-            onPress={() => navigate(NAVIGATIONS.CUSTOMER_LIST)}
-          />
-          <Card
-            titile="Employees List"
-            onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
-          />
-          <Card titile="log out" onPress={handleLogout} />
         </View>
+        <Separator margin={50} />
+        <TableView>
+          <Section footer="All rights reserved.">
+            <Cell
+              title="Upadte Account/Details"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.UPDATE_ACCOUNT)}
+            />
+            <Cell
+              title="Add User"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.ADD_USER)}
+            />
+            <Cell
+              title="Reservation"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.RESERVATION)}
+            />
+            <Cell
+              title="Confirm Orders"
+              titleTextColor="#007AFF"
+              onPress={() => {
+                navigate(NAVIGATIONS.CONFIRM_ORDERS);
+              }}
+            />
+            <Cell
+              title="Pending Orders"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.PENDING_ORDERS)}
+            />
+            <Cell
+              title="Cancel Orders"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.CANCEL_ORDERS)}
+            />
+            <Cell
+              title="Customers List"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.CUSTOMER_LIST)}
+            />
+            <Cell
+              title="Employees List"
+              titleTextColor="#007AFF"
+              onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
+            />
+            <Cell
+              title="log out"
+              titleTextColor="#007AFF"
+              onPress={handleLogout}
+            />
+          </Section>
+        </TableView>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.userReducer);
   return {
     user: state.userReducer.obj,
     requsted: state.userReducer.requsted,
@@ -176,6 +193,19 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center"
   },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    top: 30,
+    paddingLeft: 10,
+    paddingRight: 5
+  },
+  colounm: {
+    flexDirection: "column",
+    alignSelf: "center",
+    alignItems: "flex-start",
+    width: "80%"
+  },
   padding: {
     padding: 30
   },
@@ -185,9 +215,9 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   avatar: {
-    height: 80,
-    width: 80,
-    alignSelf: "center"
+    height: 50,
+    width: 50,
+    justifyContent: "flex-end"
   },
   zIndex: {
     zIndex: 1

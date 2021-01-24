@@ -53,6 +53,7 @@
     "react-native-simple-store": "^2.0.2",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.1.0",
+    "react-native-tableview-simple": "^4.2.1",
     "react-native-textinput-effects": "^0.6.1",
     "react-native-toast-message": "^1.4.3",
     "react-native-user-avatar": "^1.0.7",
