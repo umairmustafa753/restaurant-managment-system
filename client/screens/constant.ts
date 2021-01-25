@@ -8,6 +8,7 @@ export const MESSAGE = {
   SUCCESS_USER_UPDATED_MESSAGE: "User updated Successfully",
   SUCCESS_USER_FETCHED_MESSAGE: "User Fetch Successfully",
   SUCCESS_USER_ADDED_MESSAGE: "User added Successfully",
+  SUCCESS_CUSTOMER_FOUND_MESSAGE: "customer are found",
   FAILED_NO_CHANGED_FOUND: "No change found"
 };
 
@@ -15,4 +16,10 @@ export const TYPE = {
   SUCCESS: "success",
   ERROR: "error",
   INFO: "info"
+};
+
+export const ROLE = {
+  CUSTOMER: "customer",
+  EMPLOYEE: "employee",
+  OWNER: "owner"
 };
