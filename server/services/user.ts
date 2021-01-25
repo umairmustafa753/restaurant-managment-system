@@ -53,7 +53,7 @@ const Users = {
     try {
       let query;
       query = User.find(obj).select(
-        "_id firstName lastName email role picture salary paidSalariesMonth createdAt updatedAt"
+        "_id firstName lastName email role picture salary designation dob paidSalariesMonth createdAt updatedAt"
       );
       return await query.exec();
     } catch (error) {

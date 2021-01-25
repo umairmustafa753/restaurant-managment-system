@@ -86,4 +86,5 @@ export type IUser = {
   username: string;
   password: string;
   otp: Number;
+  paidSalariesMonth: Array<Object>;
 };
