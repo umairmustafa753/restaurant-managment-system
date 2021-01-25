@@ -1,20 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
+import { connect } from "react-redux";
 import UserAvatar from "react-native-user-avatar";
 
+import UserAction from "../../store/Actions/user";
 import { Text, View } from "../../components/Themed";
+import { Modal } from "../../components/Modal";
 import Separator from "../../components/Separator";
 import List from "../../components/FlatList";
 import Back from "../../components/Back";
-import { Modal } from "../../components/Modal";
+import Spinner from "react-native-loading-spinner-overlay";
 
-const CustomerList = () => {
+const CustomerList = (props) => {
   const navigator = useNavigation();
+  const [items, setItems] = useState<any>([]);
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
   };
+
+  useEffect(() => {
+    props.getCustomers({
+      role: props?.user?.data?.user?.role,
+      token: props?.user?.data?.token
+    });
+  }, []);
+
+  useEffect(() => {
+    setItems(props?.customers);
+  }, [props?.customers]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,29 +39,57 @@ const CustomerList = () => {
           <Back onPress={handleNavigationPop} />
           <Text style={styles.title}>Customer List</Text>
           <Separator margin={30} />
-          <List data={[]}>
-            {(modalData, isModalVisible, isVisible) => (
-              <Modal visible={isModalVisible} onClose={isVisible}>
-                <UserAvatar
-                  size={70}
-                  // src={}
-                  name="Umair Mustafa"
-                  style={styles.avatar}
-                />
-                <Separator margin={20} />
-                <Text style={styles.title}>Personal Information</Text>
-                <Text style={styles.text}>umair@gmail.com</Text>
-                <Text style={styles.text}>Umair Mustafa</Text>
-                <Separator margin={20} />
-                <Separator margin={20} />
-              </Modal>
-            )}
-          </List>
+          {!props.loading && (
+            <List data={items?.data}>
+              {(modalData, isModalVisible, isVisible) => (
+                <Modal visible={isModalVisible} onClose={isVisible}>
+                  <UserAvatar
+                    size={70}
+                    src={modalData?.picture}
+                    key={modalData?.picture}
+                    name={`${modalData?.firstName} ${modalData?.lastName}`}
+                    style={styles.avatar}
+                  />
+                  <Separator margin={20} />
+                  <Text style={styles.title}>Personal Information</Text>
+                  <Text style={styles.text}>{modalData?.email}</Text>
+                  <Text
+                    style={styles.text}
+                  >{`${modalData?.firstName} ${modalData?.lastName}`}</Text>
+                  <Separator margin={20} />
+                  <Separator margin={20} />
+                </Modal>
+              )}
+            </List>
+          )}
+          <Spinner
+            visible={props?.loading}
+            textContent={"Loading..."}
+            textStyle={styles.spinnerTextStyle}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    customers: state.userReducer.users,
+    user: state.userReducer.obj,
+    loading: state.userReducer.loading
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCustomers: (obj) => {
+      dispatch(UserAction.GetUsers(obj));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerList);
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +100,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center"
+  },
+  spinnerTextStyle: {
+    color: "#fff"
   },
   padding: {
     padding: 30
@@ -79,5 +125,3 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   }
 });
-
-export default CustomerList;

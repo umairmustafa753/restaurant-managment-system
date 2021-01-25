@@ -74,11 +74,15 @@ const AccountScreen = (props) => {
   }, [props.loading]);
 
   useEffect(() => {
-    const unsubscribe = navigator.addListener("focus", () => {
+    const unsubscribeFocus = navigator.addListener("focus", () => {
       setEnableToast((prevState) => ({ ...prevState, visible: true }));
     });
 
-    return unsubscribe;
+    const unsubscribeBlur = navigator.addListener("blur", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: false }));
+    });
+
+    return unsubscribeFocus && unsubscribeBlur;
   }, [navigator]);
 
   return (

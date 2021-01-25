@@ -33,16 +33,9 @@ const List = ({
   };
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setFilteredDataSource(responseJson);
-        setMasterDataSource(responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    setFilteredDataSource(data);
+    setMasterDataSource(data);
+  }, [data]);
 
   const searchFilterFunction = (text: string) => {
     if (text) {
@@ -65,22 +58,18 @@ const List = ({
     return (
       <View style={styles.itemStyle}>
         <TouchableOpacity onPress={() => getItem(item)}>
-          <Text>{item?.title}</Text>
+          <Text>
+            {data?.length
+              ? `${item?.firstName} ${item?.lastName}`
+              : item?.title}
+          </Text>
         </TouchableOpacity>
       </View>
     );
   };
 
   const ItemSeparatorView = () => {
-    return (
-      <View
-        style={{
-          height: 0.5,
-          width: "100%",
-          backgroundColor: "#C8C8C8"
-        }}
-      />
-    );
+    return <View style={styles.ItemSeparatorView} />;
   };
 
   const getItem = (item: any) => {
@@ -95,11 +84,8 @@ const List = ({
         <SearchBar
           round
           onChangeText={(text) => searchFilterFunction(text)}
-          placeholder={`Search here from ${filteredDataSource.length} items`}
-          inputContainerStyle={{
-            backgroundColor: "white",
-            borderColor: "white"
-          }}
+          placeholder={`Search here from ${filteredDataSource?.length} items`}
+          inputContainerStyle={styles.inputContainerStyle}
           lightTheme={true}
           value={search}
         />
@@ -109,6 +95,11 @@ const List = ({
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemView}
+          ListEmptyComponent={
+            <View style={styles.noResultView}>
+              <Text style={styles.noResultText}>No Result Found</Text>
+            </View>
+          }
         />
       </View>
     </View>
@@ -121,6 +112,25 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 30
+  },
+  noResultView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50
+  },
+  noResultText: {
+    fontSize: 20,
+    top: 5
+  },
+  ItemSeparatorView: {
+    height: 0.5,
+    width: "100%",
+    backgroundColor: "#C8C8C8"
+  },
+  inputContainerStyle: {
+    backgroundColor: "white",
+    borderColor: "white"
   },
   avatar: {
     height: 70,
