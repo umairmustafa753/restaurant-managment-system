@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl
+} from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { connect } from "react-redux";
+import Toast from "react-native-toast-message";
 import UserAvatar from "react-native-user-avatar";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import UserAction from "../../store/Actions/user";
 import { Text, View } from "../../components/Themed";
@@ -10,11 +17,15 @@ import { Modal } from "../../components/Modal";
 import Separator from "../../components/Separator";
 import List from "../../components/FlatList";
 import Back from "../../components/Back";
-import Spinner from "react-native-loading-spinner-overlay";
+import { MESSAGE, TYPE, ROLE } from "../constant";
 
 const CustomerList = (props) => {
   const navigator = useNavigation();
   const [items, setItems] = useState<any>([]);
+  const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [enableToast, setEnableToast] = useState({
+    visible: false
+  });
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
@@ -22,18 +33,55 @@ const CustomerList = (props) => {
 
   useEffect(() => {
     props.getCustomers({
-      role: props?.user?.data?.user?.role,
+      role: ROLE.CUSTOMER,
       token: props?.user?.data?.token
     });
   }, []);
 
+  const showToast = (msg: string, type: string) => {
+    Toast.show({
+      type: `${type}`,
+      position: "top",
+      text1: `${msg}`,
+      autoHide: false,
+      topOffset: 50
+    });
+  };
+
+  const onRefresh = () => {
+    props.getCustomers({
+      role: ROLE.CUSTOMER,
+      token: props?.user?.data?.token
+    });
+  };
+
   useEffect(() => {
-    setItems(props?.customers);
-  }, [props?.customers]);
+    if (!props.loading && enableToast?.visible) {
+      const message = props?.customers?.message;
+      const isMatch = MESSAGE.SUCCESS_CUSTOMER_FOUND_MESSAGE === message;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
+      showToast(message, type);
+      setItems(props?.customers);
+    }
+  }, [props.loading]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: true }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={showSpiner} onRefresh={onRefresh} />
+        }
+      >
         <Separator margin={30} />
         <View style={{ padding: 30 }}>
           <Back onPress={handleNavigationPop} />
@@ -95,6 +143,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white"
+  },
+  zIndex: {
+    zIndex: 1
   },
   title: {
     fontSize: 20,
