@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   obj: {},
   requsted: {},
   addUser: {},
+  users: {},
   loading: false
 };
 
@@ -53,6 +54,22 @@ function userReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         addUser: action.addUser,
+        loading: false
+      };
+    }
+
+    case ActionTypes.GET_CUSTOMERS_REQUST: {
+      return {
+        ...state,
+        users: action.users,
+        loading: true
+      };
+    }
+
+    case ActionTypes.GET_CUSTOMERS: {
+      return {
+        ...state,
+        users: action.users,
         loading: false
       };
     }

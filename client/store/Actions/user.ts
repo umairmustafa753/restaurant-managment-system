@@ -313,6 +313,40 @@ const UserAction = {
           }
         });
     };
+  },
+
+  GetUsers: function (obj) {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.GET_CUSTOMERS_REQUST, users: {} });
+      const url = config.SERVER_ENDPOINT + "/api/users/" + obj.role;
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`
+        }
+      })
+        .then((data) => {
+          if (data.status === 200) {
+            return data.json();
+          }
+          throw data;
+        })
+        .then((res) => {
+          dispatch({
+            type: ActionTypes.GET_CUSTOMERS,
+            users: res
+          });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({ type: ActionTypes.GET_CUSTOMERS, users: obj });
+            });
+          }
+        });
+    };
   }
 };
 
