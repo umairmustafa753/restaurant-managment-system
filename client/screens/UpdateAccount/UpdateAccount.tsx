@@ -75,9 +75,7 @@ const UpdateAccount = (props) => {
 
   const handleLaunchImageLibrary = () => {
     setVisible(false);
-    setShowSpiner(true);
     setTimeout(async () => {
-      setShowSpiner(false);
       const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (permission.granted === false) {
         return;
@@ -99,9 +97,7 @@ const UpdateAccount = (props) => {
 
   const handleLaunchCamera = () => {
     setVisible(false);
-    setShowSpiner(true);
     setTimeout(async () => {
-      setShowSpiner(false);
       const permission = await ImagePicker.requestCameraPermissionsAsync();
       if (permission.granted === false) {
         return;
