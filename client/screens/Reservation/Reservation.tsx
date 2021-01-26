@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -11,57 +11,23 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { CreditCardInput } from "react-native-input-credit-card";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { connect } from "react-redux";
 import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
 import { ScrollView } from "react-native-gesture-handler";
 import Separator from "../../components/Separator";
 import Back from "../../components/Back";
+import Menu from "../../store/Actions/menu";
 
 let MULTISELECT: MultiSelect;
-const items = [
-  {
-    id: "92iijs7yta",
-    name: "Ondo"
-  },
-  {
-    id: "a0s0a8ssbsd",
-    name: "Ogun"
-  },
-  {
-    id: "16hbajsabsd",
-    name: "Calabar"
-  },
-  {
-    id: "nahs75a5sg",
-    name: "Lagos"
-  },
-  {
-    id: "667atsas",
-    name: "Maiduguri"
-  },
-  {
-    id: "hsyasajs",
-    name: "Anambra"
-  },
-  {
-    id: "djsjudksjd",
-    name: "Benue"
-  },
-  {
-    id: "sdhyaysdj",
-    name: "Kaduna"
-  },
-  {
-    id: "suudydjsjd",
-    name: "Abuja"
-  }
-];
 
-export default function ReservationScreen() {
+const ReservationScreen = (props) => {
   const navigator = useNavigation();
 
-  const [selectedItems, setSelectedItems] = useState<Array<object>>([]);
+  const [items, setItems] = useState<any>([]);
+  const [selectedMenu, setSelectedMenu] = useState<Array<object>>([]);
+  const [selectedItemsIds, setSelectedItemsIds] = useState<Array<object>>([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
@@ -69,6 +35,7 @@ export default function ReservationScreen() {
   const [cardCardentials, setCardCarenditals] = useState<object>({});
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -97,12 +64,21 @@ export default function ReservationScreen() {
   };
 
   const onSelectedItemsChange = (selectedItems) => {
-    setSelectedItems(selectedItems);
+    let price50 = 0;
+    const list = items.filter((item) =>
+      selectedItems?.find((selected) => selected === item?.id)
+    );
+    setSelectedItemsIds(selectedItems);
+    list.map((item) => (price50 = price50 + item?.price * 0.5));
+    setPrice(price50);
+    setSelectedMenu(list);
   };
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
   };
+
+  console.log(selectedMenu);
 
   const showToast = () => {
     Toast.show({
@@ -114,6 +90,25 @@ export default function ReservationScreen() {
       topOffset: 50
     });
   };
+
+  useEffect(() => {
+    props.getFeaturedItems();
+  }, []);
+
+  useEffect(() => {
+    let menuList = [{}];
+    menuList.pop();
+    props?.menuItems[0]?.menu?.map((item) =>
+      item?.subCategory.map((subItem) =>
+        menuList?.push({
+          id: subItem?._id,
+          name: subItem?.val,
+          price: subItem?.price
+        })
+      )
+    );
+    setItems(menuList);
+  }, [props?.menuItems]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -183,10 +178,10 @@ export default function ReservationScreen() {
                   component && (MULTISELECT = component);
                 }}
                 onSelectedItemsChange={onSelectedItemsChange}
-                selectedItems={selectedItems}
+                selectedItems={selectedItemsIds}
                 selectText="Pick Items"
                 searchInputPlaceholderText="Search Items..."
-                onChangeInput={(text) => console.log(text)}
+                onChangeInput={() => {}}
                 altFontFamily="ProximaNova-Light"
                 tagRemoveIconColor="#CCC"
                 tagBorderColor="#CCC"
@@ -200,13 +195,13 @@ export default function ReservationScreen() {
                 submitButtonColor="#CCC"
                 submitButtonText="Submit"
               />
-              <View>{MULTISELECT?.getSelectedItemsExt(selectedItems)}</View>
+              <View>{MULTISELECT?.getSelectedItemsExt(selectedItemsIds)}</View>
             </View>
             <Separator margin={20} />
             <Card>
               <Card.Content>
                 <Title>Your 50% advance bill is</Title>
-                <Paragraph>0.00 Rs</Paragraph>
+                <Paragraph>{price} Rs</Paragraph>
               </Card.Content>
             </Card>
             <Separator margin={20} />
@@ -226,7 +221,23 @@ export default function ReservationScreen() {
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    menuItems: state?.menuReducer?.menu?.MenuList
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getFeaturedItems: () => {
+      dispatch(Menu.GetMenuItems());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReservationScreen);
 
 const styles = StyleSheet.create({
   container: {
