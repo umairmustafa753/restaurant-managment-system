@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
+import AwesomeAlert from "react-native-awesome-alerts";
+import Spinner from "react-native-loading-spinner-overlay";
 import { Button, TextInput } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
+import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
 
@@ -12,6 +20,7 @@ import { Text, View } from "../../components/Themed";
 import Separator from "../../components/Separator";
 import List from "../../components/FlatList";
 import Back from "../../components/Back";
+import { MESSAGE, TYPE } from "../constant";
 import { Modal } from "../../components/Modal";
 import { ROLE } from "../constant";
 
@@ -20,8 +29,14 @@ const EmployeeList = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
+  const [enableToast, setEnableToast] = useState({
+    visible: false
+  });
+  const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [isShowAlert, setShowAlert] = useState<boolean>(false);
   const [date, setDate] = useState<string>("");
   const [items, setItems] = useState<any>([]);
+  const [user, setUser] = useState<any>();
   const [input, setInput] = useState({
     salary: "",
     designation: ""
@@ -44,6 +59,16 @@ const EmployeeList = (props) => {
     navigator.dispatch(StackActions.popToTop());
   };
 
+  const showToast = (msg: string, type: string) => {
+    Toast.show({
+      type: `${type}`,
+      position: "top",
+      text1: `${msg}`,
+      autoHide: false,
+      topOffset: 50
+    });
+  };
+
   useEffect(() => {
     props.getEmployee({
       role: ROLE.EMPLOYEE,
@@ -51,7 +76,23 @@ const EmployeeList = (props) => {
     });
   }, []);
 
-  const handleSubmit = (user: any) => {
+  const showAlert = (user: any) => {
+    setUser(user);
+    setTimeout(() => {
+      setShowAlert(true);
+    }, 1000);
+  };
+
+  const hideAlert = () => {
+    setShowAlert(false);
+  };
+
+  const handleSubmit = () => {
+    hideAlert();
+    if (!input?.salary || !input?.designation) {
+      showToast(MESSAGE.FAILED_ENTER_VALID_VALUES, TYPE.INFO);
+      return;
+    }
     if (date) {
       user?.paidSalariesMonth.push({ date });
     }
@@ -61,8 +102,8 @@ const EmployeeList = (props) => {
       lastName: user?.lastName,
       email: user?.email,
       dob: user?.dob,
-      salary: input?.salary ? input?.salary : user?.salary,
-      designation: input?.designation ? input?.designation : user?.designation,
+      salary: input?.salary,
+      designation: input?.designation,
       paidSalariesMonth: user?.paidSalariesMonth,
       token: props?.user?.data?.token
     };
@@ -70,14 +111,63 @@ const EmployeeList = (props) => {
   };
 
   useEffect(() => {
-    setItems(props?.employees);
-  }, [props?.employees]);
+    if (!props.loading && props?.employees?.data?.length) {
+      const message = props?.requsted?.message;
+      const isMatch = MESSAGE.SUCCESS_USER_UPDATED_MESSAGE === message;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
+      if (!enableToast?.visible)
+        setEnableToast((prevState) => ({ ...prevState, visible: true }));
+      if (message && enableToast?.visible)
+        showToast(isMatch ? MESSAGE?.SUCCESS_SALARY_PAID : message, type);
+      setItems(props?.employees);
+    }
+  }, [props?.loading]);
+
+  const onRefresh = () => {
+    props.getEmployee({
+      role: ROLE.EMPLOYEE,
+      token: props?.user?.data?.token
+    });
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: false }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
+
+  const setState = (user: any) => {
+    setInput({ salary: user?.salary, designation: user?.designation });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={showSpiner} onRefresh={onRefresh} />
+        }
+      >
         <Separator margin={30} />
         <View style={{ padding: 30 }}>
+          <AwesomeAlert
+            show={isShowAlert}
+            showProgress={false}
+            title="Salary"
+            message="Are you sure you want to pay salary"
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={true}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="No, cancel"
+            confirmText="Yes, Pay Salary"
+            confirmButtonColor="#DD6B55"
+            onCancelPressed={hideAlert}
+            onConfirmPressed={handleSubmit}
+          />
           <Back onPress={handleNavigationPop} />
           <Text style={styles.title}>Employee List</Text>
           <Separator margin={30} />
@@ -91,81 +181,91 @@ const EmployeeList = (props) => {
             onCancel={hideDatePicker}
           />
           <Separator margin={30} />
-          {!props.loading && (
-            <List data={date ? items?.data : []}>
-              {(modalData, isModalVisible, isVisible) => {
-                const isPaid = modalData?.paidSalariesMonth.some(
-                  (ele) => ele.date === date
-                );
-                return (
-                  <Modal visible={isModalVisible} onClose={isVisible}>
-                    <UserAvatar
-                      size={70}
-                      src={modalData?.picture}
-                      key={modalData?.picture}
-                      name={`${modalData?.firstName} ${modalData?.lastName}`}
-                      style={styles.avatar}
-                    />
-                    <Separator margin={20} />
-                    <Text style={styles.title}>Designation</Text>
-                    <TextInput
-                      label="Designation"
-                      theme={{ colors: { primary: "#149dec" } }}
-                      style={styles.inputStyle}
-                      value={modalData?.designation}
+          <List
+            data={date ? items?.data : []}
+            setState={(user) => setState(user)}
+          >
+            {(modalData, isModalVisible, isVisible) => {
+              const isPaid = modalData?.paidSalariesMonth.some(
+                (ele) => ele.date === date
+              );
+              return (
+                <Modal visible={isModalVisible} onClose={isVisible}>
+                  <UserAvatar
+                    size={70}
+                    src={modalData?.picture}
+                    key={modalData?.picture}
+                    name={`${modalData?.firstName} ${modalData?.lastName}`}
+                    style={styles.avatar}
+                  />
+                  <Separator margin={20} />
+                  <Text style={styles.title}>Personal Information</Text>
+                  <Text style={styles.text}>{modalData?.email}</Text>
+                  <Text
+                    style={styles.text}
+                  >{`${modalData?.firstName} ${modalData?.lastName}`}</Text>
+                  <Text style={styles.title}>Designation</Text>
+                  <TextInput
+                    placeholder="Designation"
+                    theme={{ colors: { primary: "#149dec" } }}
+                    style={styles.inputStyle}
+                    value={input?.designation}
+                    disabled={isPaid}
+                    onChangeText={(text) =>
+                      setInput((prevState) => ({
+                        ...prevState,
+                        designation: text
+                      }))
+                    }
+                  />
+                  <Separator margin={20} />
+                  <Text style={styles.title}>Salary</Text>
+                  <TextInput
+                    placeholder="Salary"
+                    theme={{ colors: { primary: "#149dec" } }}
+                    style={styles.inputStyle}
+                    value={input?.salary}
+                    disabled={isPaid}
+                    onChangeText={(text) =>
+                      setInput((prevState) => ({
+                        ...prevState,
+                        salary: text
+                      }))
+                    }
+                    keyboardType={"numeric"}
+                  />
+                  <Separator margin={20} />
+                  {isPaid ? (
+                    <Button
+                      mode="outlined"
+                      color="red"
+                      onPress={() => {}}
                       disabled={isPaid}
-                      onChangeText={(text) =>
-                        setInput((prevState) => ({
-                          ...prevState,
-                          designation: text
-                        }))
-                      }
-                    />
-                    <Separator margin={20} />
-                    <Text style={styles.title}>Personal Information</Text>
-                    <Text style={styles.text}>{modalData?.email}</Text>
-                    <Text
-                      style={styles.text}
-                    >{`${modalData?.firstName} ${modalData?.lastName}`}</Text>
-                    <TextInput
-                      label="Salary"
-                      theme={{ colors: { primary: "#149dec" } }}
-                      style={styles.inputStyle}
-                      value={modalData?.salary}
-                      disabled={isPaid}
-                      onChangeText={(text) =>
-                        setInput((prevState) => ({
-                          ...prevState,
-                          salary: text
-                        }))
-                      }
-                      keyboardType={"numeric"}
-                    />
-                    <Separator margin={20} />
-                    {isPaid ? (
-                      <Button
-                        mode="outlined"
-                        color="red"
-                        onPress={() => {}}
-                        disabled={isPaid}
-                      >
-                        {"Salary paid"}
-                      </Button>
-                    ) : (
-                      <Button
-                        mode="outlined"
-                        color="green"
-                        onPress={() => handleSubmit(modalData)}
-                      >
-                        {"Pay Salary"}
-                      </Button>
-                    )}
-                    <Separator margin={20} />
-                  </Modal>
-                );
-              }}
-            </List>
-          )}
+                    >
+                      {"Salary paid"}
+                    </Button>
+                  ) : (
+                    <Button
+                      mode="outlined"
+                      color="green"
+                      onPress={() => {
+                        isVisible();
+                        showAlert(modalData);
+                      }}
+                    >
+                      {"Pay Salary"}
+                    </Button>
+                  )}
+                  <Separator margin={20} />
+                </Modal>
+              );
+            }}
+          </List>
+          <Spinner
+            visible={props?.loading}
+            textContent={"Loading..."}
+            textStyle={styles.spinnerTextStyle}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -216,13 +316,20 @@ const styles = StyleSheet.create({
     width: "70%",
     marginLeft: 10
   },
+  zIndex: {
+    zIndex: 1
+  },
   modalText: {
     width: "80%",
     top: 20,
     textAlign: "center"
   },
+  spinnerTextStyle: {
+    color: "#fff"
+  },
   inputStyle: {
-    backgroundColor: "white"
+    backgroundColor: "white",
+    textAlign: "center"
   },
   avatar: {
     height: 70,
