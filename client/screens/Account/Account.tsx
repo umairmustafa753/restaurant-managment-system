@@ -8,14 +8,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
 
 import UserAction from "../../store/Actions/user";
 import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
-import { MESSAGE, TYPE } from "../constant";
 
 import Separator from "../../components/Separator";
 
@@ -23,9 +21,6 @@ const AccountScreen = (props) => {
   const navigator = useNavigation();
 
   const [image, setImage] = useState("");
-  const [enableToast, setEnableToast] = useState({
-    visible: false
-  });
 
   const navigate = (to) => {
     navigator.navigate(to);
@@ -52,42 +47,14 @@ const AccountScreen = (props) => {
     });
   };
 
-  const showToast = (msg: string, type: string) => {
-    Toast.show({
-      type: `${type}`,
-      position: "top",
-      text1: `${msg}`,
-      autoHide: false,
-      topOffset: 50
-    });
-  };
-
   useEffect(() => {
-    if (!props.loading && enableToast?.visible) {
+    if (!props.loading) {
       setImage(props?.user?.data?.user?.picture);
-      const requstedMessage = props?.requsted?.message;
-      const successMessage = props?.user?.message;
-      const isMatch = MESSAGE.SUCCESS_USER_FETCHED_MESSAGE === successMessage;
-      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
-      showToast(isMatch ? successMessage : requstedMessage, type);
     }
   }, [props.loading]);
 
-  useEffect(() => {
-    const unsubscribeFocus = navigator.addListener("focus", () => {
-      setEnableToast((prevState) => ({ ...prevState, visible: true }));
-    });
-
-    const unsubscribeBlur = navigator.addListener("blur", () => {
-      setEnableToast((prevState) => ({ ...prevState, visible: false }));
-    });
-
-    return unsubscribeFocus && unsubscribeBlur;
-  }, [navigator]);
-
   return (
     <SafeAreaView style={styles.container}>
-      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={

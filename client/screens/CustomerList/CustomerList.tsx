@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { connect } from "react-redux";
-import Toast from "react-native-toast-message";
 import UserAvatar from "react-native-user-avatar";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -17,15 +16,12 @@ import { Modal } from "../../components/Modal";
 import Separator from "../../components/Separator";
 import List from "../../components/FlatList";
 import Back from "../../components/Back";
-import { MESSAGE, TYPE, ROLE } from "../constant";
+import { ROLE } from "../constant";
 
 const CustomerList = (props) => {
   const navigator = useNavigation();
   const [items, setItems] = useState<any>([]);
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
-  const [enableToast, setEnableToast] = useState({
-    visible: false
-  });
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
@@ -38,16 +34,6 @@ const CustomerList = (props) => {
     });
   }, []);
 
-  const showToast = (msg: string, type: string) => {
-    Toast.show({
-      type: `${type}`,
-      position: "top",
-      text1: `${msg}`,
-      autoHide: false,
-      topOffset: 50
-    });
-  };
-
   const onRefresh = () => {
     props.getCustomers({
       role: ROLE.CUSTOMER,
@@ -56,26 +42,13 @@ const CustomerList = (props) => {
   };
 
   useEffect(() => {
-    if (!props.loading && enableToast?.visible) {
-      const message = props?.customers?.message;
-      const isMatch = MESSAGE.SUCCESS_CUSTOMER_FOUND_MESSAGE === message;
-      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
-      showToast(message, type);
+    if (!props.loading) {
       setItems(props?.customers);
     }
   }, [props.loading]);
 
-  useEffect(() => {
-    const unsubscribe = navigator.addListener("focus", () => {
-      setEnableToast((prevState) => ({ ...prevState, visible: true }));
-    });
-
-    return unsubscribe;
-  }, [navigator]);
-
   return (
     <SafeAreaView style={styles.container}>
-      <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -90,7 +63,11 @@ const CustomerList = (props) => {
           {!props.loading && (
             <List data={items?.data}>
               {(modalData, isModalVisible, isVisible) => (
-                <Modal visible={isModalVisible} onClose={isVisible}>
+                <Modal
+                  visible={isModalVisible}
+                  onClose={isVisible}
+                  style={styles.modelView}
+                >
                   <UserAvatar
                     size={70}
                     src={modalData?.picture}
@@ -144,8 +121,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white"
   },
-  zIndex: {
-    zIndex: 1
+  modelView: {
+    minHeight: 150
   },
   title: {
     fontSize: 20,
