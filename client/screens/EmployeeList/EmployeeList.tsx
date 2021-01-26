@@ -156,7 +156,7 @@ const EmployeeList = (props) => {
           <AwesomeAlert
             show={isShowAlert}
             showProgress={false}
-            title="Salary"
+            title="Salary Payment"
             message="Are you sure you want to pay salary"
             closeOnTouchOutside={false}
             closeOnHardwareBackPress={true}
@@ -164,7 +164,7 @@ const EmployeeList = (props) => {
             showConfirmButton={true}
             cancelText="No, cancel"
             confirmText="Yes, Pay Salary"
-            confirmButtonColor="#DD6B55"
+            confirmButtonColor="grey"
             onCancelPressed={hideAlert}
             onConfirmPressed={handleSubmit}
           />

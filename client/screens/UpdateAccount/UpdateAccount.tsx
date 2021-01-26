@@ -17,6 +17,7 @@ import CompleteFlatList from "react-native-complete-flatlist";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import Spinner from "react-native-loading-spinner-overlay";
+import { NAVIGATIONS } from "../../constants/navigator";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -117,6 +118,20 @@ const UpdateAccount = (props) => {
     }, 1000);
   };
 
+  const handleNavigate = () => {
+    navigator.reset({
+      routes: [
+        {
+          name: NAVIGATIONS.SUCCESS,
+          params: {
+            msg: MESSAGE.SUCCESS_ACCOUNT_UPDATE_MESSAGE,
+            navigateTo: NAVIGATIONS.ACCOUNT
+          }
+        }
+      ]
+    });
+  };
+
   const submit = () => {
     setDisabled(true);
     if (
@@ -163,6 +178,9 @@ const UpdateAccount = (props) => {
       showToast(message, type);
       setDisabled(false);
       updateState();
+      if (isMatch) {
+        handleNavigate();
+      }
     }
   }, [props.loading]);
 

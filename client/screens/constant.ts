@@ -10,6 +10,7 @@ export const MESSAGE = {
   SUCCESS_USER_ADDED_MESSAGE: "User added Successfully",
   SUCCESS_CUSTOMER_FOUND_MESSAGE: "customer are found",
   SUCCESS_EMPLOYEE_FOUND_MESSAGE: "employee are found",
+  SUCCESS_ACCOUNT_UPDATE_MESSAGE: "Account updated Successfully",
   SUCCESS_SALARY_PAID: "employee salary paid successfully",
   FAILED_NO_CHANGED_FOUND: "No change found",
   FAILED_ENTER_VALID_VALUES: "Please Enter valid values"
