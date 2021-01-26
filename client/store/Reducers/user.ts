@@ -58,7 +58,7 @@ function userReducer(state = INITIAL_STATE, action) {
       };
     }
 
-    case ActionTypes.GET_CUSTOMERS_REQUST: {
+    case ActionTypes.GET_USERS_REQUST: {
       return {
         ...state,
         users: action.users,
@@ -66,7 +66,7 @@ function userReducer(state = INITIAL_STATE, action) {
       };
     }
 
-    case ActionTypes.GET_CUSTOMERS: {
+    case ActionTypes.GET_USERS: {
       return {
         ...state,
         users: action.users,

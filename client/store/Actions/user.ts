@@ -237,6 +237,7 @@ const UserAction = {
           throw resposne;
         })
         .then((data) => {
+          dispatch({ type: ActionTypes.UPDATE_USER, requsted: data });
           dispatch({ type: ActionTypes.USER, payload: data });
         })
         .catch((error) => {
@@ -254,11 +255,6 @@ const UserAction = {
     return async (dispatch) => {
       dispatch({ type: ActionTypes.UPDATE_USER_REQUST, requsted: {} });
       let url = config.SERVER_ENDPOINT + "/api/updateUser";
-      if (obj.base64Image) {
-        const res = await cloudinaryUpload(obj.base64Image);
-        obj.picture = res;
-      }
-      obj.base64Image = null;
       return fetch(url, {
         method: "PUT",
         headers: {
@@ -354,7 +350,7 @@ const UserAction = {
 
   GetUsers: function (obj) {
     return (dispatch) => {
-      dispatch({ type: ActionTypes.GET_CUSTOMERS_REQUST, users: {} });
+      dispatch({ type: ActionTypes.GET_USERS_REQUST, users: {} });
       const url = config.SERVER_ENDPOINT + "/api/users/" + obj.role;
       fetch(url, {
         method: "GET",
@@ -371,7 +367,7 @@ const UserAction = {
         })
         .then((res) => {
           dispatch({
-            type: ActionTypes.GET_CUSTOMERS,
+            type: ActionTypes.GET_USERS,
             users: res
           });
         })
@@ -379,7 +375,7 @@ const UserAction = {
           if (typeof error.text === "function") {
             error.text().then((errorMessage) => {
               const obj = JSON.parse(errorMessage);
-              dispatch({ type: ActionTypes.GET_CUSTOMERS, users: obj });
+              dispatch({ type: ActionTypes.GET_USERS, users: obj });
             });
           }
         });
