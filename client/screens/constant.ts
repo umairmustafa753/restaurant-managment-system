@@ -12,8 +12,11 @@ export const MESSAGE = {
   SUCCESS_EMPLOYEE_FOUND_MESSAGE: "employee are found",
   SUCCESS_ACCOUNT_UPDATE_MESSAGE: "Account updated Successfully",
   SUCCESS_SALARY_PAID: "employee salary paid successfully",
+  SUCCESS_RESERVATION_REQUSTED: "Reservation requested Succesfully",
   FAILED_NO_CHANGED_FOUND: "No change found",
-  FAILED_ENTER_VALID_VALUES: "Please Enter valid values"
+  FAILED_NO_MENU_FOUND: "please select menu for reservation",
+  FAILED_ENTER_VALID_VALUES: "Please Enter valid values",
+  FAILED_ENTER_VALID_CARD_VALUES: "Please Enter valid card values"
 };
 
 export const TYPE = {

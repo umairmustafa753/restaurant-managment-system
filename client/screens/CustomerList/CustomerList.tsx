@@ -61,7 +61,7 @@ const CustomerList = (props) => {
           <Text style={styles.title}>Customer List</Text>
           <Separator margin={30} />
           {!props.loading && (
-            <List data={items?.data}>
+            <List data={items?.data} setState={() => {}}>
               {(modalData, isModalVisible, isVisible) => (
                 <Modal
                   visible={isModalVisible}

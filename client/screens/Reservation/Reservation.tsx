@@ -10,6 +10,9 @@ import MultiSelect from "react-native-multiple-select";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { CreditCardInput } from "react-native-input-credit-card";
 import { useNavigation, StackActions } from "@react-navigation/native";
+import Spinner from "react-native-loading-spinner-overlay";
+import { NAVIGATIONS } from "../../constants/navigator";
+import AwesomeAlert from "react-native-awesome-alerts";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -19,6 +22,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import Separator from "../../components/Separator";
 import Back from "../../components/Back";
 import Menu from "../../store/Actions/menu";
+import { MESSAGE, TYPE } from "../constant";
+import Reservation from "../../store/Actions/reservation";
 
 let MULTISELECT: MultiSelect;
 
@@ -32,10 +37,19 @@ const ReservationScreen = (props) => {
     false
   );
   const [isTimePickerVisible, setTimePickerVisible] = useState<boolean>(false);
+  const [isShowAlert, setShowAlert] = useState<boolean>(false);
   const [cardCardentials, setCardCarenditals] = useState<object>({});
-  const [date, setDate] = useState<string>("");
-  const [time, setTime] = useState<string>("");
+  const [enableToast, setEnableToast] = useState({
+    visible: false
+  });
   const [price, setPrice] = useState<number>(0);
+  const [input, setInput] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    date: "",
+    time: ""
+  });
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -54,12 +68,28 @@ const ReservationScreen = (props) => {
   };
 
   const handleDateConfirm = (date) => {
-    setDate(moment(date, "YYYY-MM-DD").format("YYYY-MM-DD"));
+    setInput((prevState) => ({
+      ...prevState,
+      date: moment(date, "YYYY-MM-DD").format("YYYY-MM-DD")
+    }));
     hideDatePicker();
   };
 
+  const showAlert = () => {
+    setTimeout(() => {
+      setShowAlert(true);
+    }, 1000);
+  };
+
+  const hideAlert = () => {
+    setShowAlert(false);
+  };
+
   const handleTimeConfirm = (time) => {
-    setTime(moment(time, "HH:mm:ss").format("hh:mm A"));
+    setInput((prevState) => ({
+      ...prevState,
+      time: moment(time, "HH:mm:ss").format("hh:mm A")
+    }));
     hideTimePciker();
   };
 
@@ -78,17 +108,55 @@ const ReservationScreen = (props) => {
     navigator.dispatch(StackActions.popToTop());
   };
 
-  console.log(selectedMenu);
-
-  const showToast = () => {
-    Toast.show({
-      type: "error",
-      position: "top",
-      text1: "Alert !",
-      text2: "This is some something 👋",
-      autoHide: false,
-      topOffset: 50
+  const handleNavigate = () => {
+    navigator.reset({
+      routes: [
+        {
+          name: NAVIGATIONS.SUCCESS,
+          params: {
+            msg: MESSAGE.SUCCESS_RESERVATION_REQUSTED,
+            navigateTo: NAVIGATIONS.ACCOUNT
+          }
+        }
+      ]
     });
+  };
+
+  const showToast = (msg: string, type: string) => {
+    if (msg) {
+      Toast.show({
+        type: `${type}`,
+        position: "top",
+        text1: `${msg}`,
+        autoHide: false,
+        topOffset: 50
+      });
+    }
+  };
+
+  const handleSubmit = () => {
+    hideAlert();
+    if (!selectedMenu.length) {
+      showToast(MESSAGE.FAILED_NO_MENU_FOUND, TYPE.ERROR);
+      return;
+    }
+    if (!cardCardentials?.valid) {
+      showToast(MESSAGE.FAILED_ENTER_VALID_CARD_VALUES, TYPE.ERROR);
+      return;
+    }
+    const obj = {
+      firstName: input?.firstName,
+      lastName: input?.lastName,
+      email: input?.email,
+      date: input?.date,
+      time: input?.time,
+      menuItems: selectedMenu,
+      fiftyPerAmount: price,
+      CardInfo: cardCardentials?.values,
+      userId: props?.user?.data?.user?._id,
+      token: props?.user?.data?.token
+    };
+    props?.createReservation(obj);
   };
 
   useEffect(() => {
@@ -98,17 +166,39 @@ const ReservationScreen = (props) => {
   useEffect(() => {
     let menuList = [{}];
     menuList.pop();
-    props?.menuItems[0]?.menu?.map((item) =>
-      item?.subCategory.map((subItem) =>
-        menuList?.push({
-          id: subItem?._id,
-          name: subItem?.val,
-          price: subItem?.price
-        })
-      )
-    );
-    setItems(menuList);
+    if (props?.menuItems?.length) {
+      props?.menuItems[0]?.menu?.map((item) =>
+        item?.subCategory.map((subItem) =>
+          menuList?.push({
+            id: subItem?._id,
+            name: subItem?.val,
+            price: subItem?.price
+          })
+        )
+      );
+      setItems(menuList);
+    }
   }, [props?.menuItems]);
+
+  useEffect(() => {
+    if (!props.loading && enableToast?.visible) {
+      const message = props?.reservation?.message;
+      const isMatch = MESSAGE.SUCCESS_RESERVATION_REQUSTED === message;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
+      showToast(isMatch ? MESSAGE.SUCCESS_USER_ADDED_MESSAGE : message, type);
+      if (isMatch) {
+        handleNavigate();
+      }
+    }
+  }, [props?.loading]);
+
+  useEffect(() => {
+    const unsubscribe = navigator.addListener("focus", () => {
+      setEnableToast((prevState) => ({ ...prevState, visible: true }));
+    });
+
+    return unsubscribe;
+  }, [navigator]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -121,33 +211,54 @@ const ReservationScreen = (props) => {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.padding}>
+            <AwesomeAlert
+              show={isShowAlert}
+              showProgress={false}
+              title="Salary Payment"
+              message="Are you sure you want to Create Reservation"
+              closeOnTouchOutside={false}
+              closeOnHardwareBackPress={true}
+              showCancelButton={true}
+              showConfirmButton={true}
+              cancelText="No, cancel"
+              confirmText="Yes, Create it"
+              confirmButtonColor="grey"
+              onCancelPressed={hideAlert}
+              onConfirmPressed={handleSubmit}
+            />
             <Back onPress={handleNavigationPop} />
             <Text style={styles.title}>Reservation Info</Text>
             <TextInput
               label="First Name"
               theme={{ colors: { primary: "#149dec" } }}
               style={styles.inputStyle}
-              value={""}
-              onChangeText={(text) => {}}
+              value={input?.firstName}
+              onChangeText={(text) =>
+                setInput((prevState) => ({ ...prevState, firstName: text }))
+              }
             />
             <TextInput
               label="Last Name"
               theme={{ colors: { primary: "#149dec" } }}
               style={styles.inputStyle}
-              value={""}
-              onChangeText={(text) => {}}
+              value={input?.lastName}
+              onChangeText={(text) =>
+                setInput((prevState) => ({ ...prevState, lastName: text }))
+              }
             />
             <TextInput
               label="Email"
               theme={{ colors: { primary: "#149dec" } }}
               style={styles.inputStyle}
-              value={""}
-              onChangeText={(text) => {}}
+              value={input?.email}
+              onChangeText={(text) =>
+                setInput((prevState) => ({ ...prevState, email: text }))
+              }
             />
             <Separator margin={20} />
             <View>
               <Button mode="outlined" color="grey" onPress={showDatePicker}>
-                {date ? date : "date"}
+                {input.date ? input.date : "date"}
               </Button>
               <DateTimePickerModal
                 isVisible={isDatePickerVisible}
@@ -157,7 +268,7 @@ const ReservationScreen = (props) => {
               />
               <Separator margin={30} />
               <Button mode="outlined" color="grey" onPress={showTimePicker}>
-                {time ? time : "time"}
+                {input?.time ? input?.time : "time"}
               </Button>
               <DateTimePickerModal
                 isVisible={isTimePickerVisible}
@@ -208,15 +319,21 @@ const ReservationScreen = (props) => {
             <Text style={styles.title}>Card Info</Text>
             <Separator margin={20} />
             <CreditCardInput
+              requiresName={true}
               onChange={(form) => {
                 setCardCarenditals(form);
               }}
             />
             <Separator margin={20} />
-            <Button mode="outlined" color="grey" onPress={showToast}>
+            <Button mode="outlined" color="grey" onPress={showAlert}>
               confirm
             </Button>
           </View>
+          <Spinner
+            visible={props?.loading}
+            textContent={"Loading..."}
+            textStyle={styles.spinnerTextStyle}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -225,6 +342,9 @@ const ReservationScreen = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.userReducer.obj,
+    reservation: state?.reservationReducer?.reservation,
+    loading: state?.reservationReducer?.loading,
     menuItems: state?.menuReducer?.menu?.MenuList
   };
 };
@@ -233,6 +353,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getFeaturedItems: () => {
       dispatch(Menu.GetMenuItems());
+    },
+    createReservation: (obj) => {
+      dispatch(Reservation.CreateReservation(obj));
     }
   };
 };
@@ -251,6 +374,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center"
+  },
+  spinnerTextStyle: {
+    color: "#fff"
   },
   padding: {
     padding: 30
