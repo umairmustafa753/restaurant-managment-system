@@ -7,7 +7,8 @@ import { Text, View } from "./Themed";
 
 const List = ({
   data,
-  children
+  children,
+  setState
 }: {
   data: Array<object>;
   children: (
@@ -15,6 +16,7 @@ const List = ({
     isModalVisible: boolean,
     isVisisble: () => void
   ) => React.ReactNode;
+  setState?: (user: any) => void;
 }) => {
   const [search, setSearch] = useState<string>("");
   const [filteredDataSource, setFilteredDataSource] = useState<Array<object>>(
@@ -40,8 +42,8 @@ const List = ({
   const searchFilterFunction = (text: string) => {
     if (text) {
       const newData = masterDataSource.filter((item: any) => {
-        const itemData = item?.title
-          ? item?.title.toUpperCase()
+        const itemData = `${item?.firstName} ${item?.lastName}`
+          ? `${item?.firstName} ${item?.lastName}`.toUpperCase()
           : "".toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
@@ -74,6 +76,7 @@ const List = ({
 
   const getItem = (item: any) => {
     setModalData(item);
+    setState(item);
     showModal();
   };
 
