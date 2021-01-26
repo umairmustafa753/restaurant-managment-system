@@ -148,24 +148,23 @@ const UpdateAccount = (props) => {
   };
 
   const showToast = (msg: string, type: string) => {
-    Toast.show({
-      type: `${type}`,
-      position: "top",
-      text1: `${msg}`,
-      autoHide: false,
-      topOffset: 50
-    });
+    if (msg) {
+      Toast.show({
+        type: `${type}`,
+        position: "top",
+        text1: `${msg}`,
+        autoHide: false,
+        topOffset: 50
+      });
+    }
   };
 
   useEffect(() => {
     if (!props.loading && enableToast?.visible) {
-      const requstedMessage = props?.requsted?.message;
-      const successMessage = props?.user?.message;
-      const isMatch =
-        MESSAGE.SUCCESS_USER_UPDATED_MESSAGE === successMessage ||
-        MESSAGE.SUCCESS_USER_FETCHED_MESSAGE === successMessage;
+      const message = props?.requsted?.message;
+      const isMatch = MESSAGE.SUCCESS_USER_UPDATED_MESSAGE === message;
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
-      showToast(isMatch ? successMessage : requstedMessage, type);
+      showToast(message, type);
       setDisabled(false);
       updateState();
     }
