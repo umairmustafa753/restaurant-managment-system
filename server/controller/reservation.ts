@@ -36,7 +36,7 @@ const ReservationController = {
       if (item) {
         return res
           .status(200)
-          .send({ data: item, message: "User updated Successfully" });
+          .send({ data: item, message: "Reservation updated Successfully" });
       }
       return res
         .status(409)
@@ -57,12 +57,12 @@ const ReservationController = {
       if (reservations.length) {
         return res.status(200).send({
           data: reservations,
-          message: `${req.params.status} reservations are found`
+          message: `${req.params.status} reservation is found`
         });
       } else {
         return res.status(404).send({
           data: reservations,
-          message: `${req.params.status} reservations are not found`
+          message: `${req.params.status} reservation is not found`
         });
       }
     } catch (error) {
