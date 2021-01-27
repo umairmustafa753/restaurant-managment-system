@@ -1,9 +1,16 @@
-import React, { useState } from "react";
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
+import Spinner from "react-native-loading-spinner-overlay";
+import { connect } from "react-redux";
 import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
@@ -11,12 +18,16 @@ import Separator from "../../components/Separator";
 import List from "../../components/FlatList";
 import Back from "../../components/Back";
 import { Modal } from "../../components/Modal";
+import Reservation from "../../store/Actions/reservation";
+import { STATUS } from "../constant";
 
-const CancelOrders = () => {
+const CancelOrders = (props) => {
   const navigator = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
+  const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [items, setItems] = useState<any>([]);
   const [date, setDate] = useState<string>("");
 
   const showDatePicker = () => {
@@ -36,9 +47,37 @@ const CancelOrders = () => {
     navigator.dispatch(StackActions.popToTop());
   };
 
+  const getAllReservations = () => {
+    if (date) {
+      props.getAllReservations({
+        status: STATUS.CANCEL,
+        token: props?.user?.data?.token,
+        date: date
+      });
+    }
+  };
+
+  useEffect(() => {
+    getAllReservations();
+  }, [date]);
+
+  useEffect(() => {
+    if (!props.loading) {
+      setItems(props?.reservations);
+    }
+  }, [props.reservations]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={showSpiner}
+            onRefresh={getAllReservations}
+          />
+        }
+      >
         <Separator margin={30} />
         <View style={{ padding: 30 }}>
           <Back onPress={handleNavigationPop} />
@@ -54,37 +93,77 @@ const CancelOrders = () => {
             onConfirm={handleDateConfirm}
             onCancel={hideDatePicker}
           />
-          <List data={[]}>
-            {(modalData, isModalVisible, isVisible) => (
-              <Modal visible={isModalVisible} onClose={isVisible}>
-                <View style={styles.row}>
-                  <UserAvatar
-                    size={70}
-                    // src={}
-                    name="Umair Mustafa"
-                    style={styles.avatar}
-                  />
-                  <Text style={styles.modalTextStyle}>
-                    Umair Mustafa Order booking date 2021-12-20 8:30 PM
+          <List data={date ? items : []} setState={() => {}}>
+            {(modalData, isModalVisible, isVisible) => {
+              return (
+                <Modal
+                  visible={isModalVisible}
+                  onClose={isVisible}
+                  style={styles.modalHeight}
+                >
+                  <View style={styles.row}>
+                    <UserAvatar
+                      size={70}
+                      src={modalData?.picture}
+                      key={modalData?.picture}
+                      name={`${modalData?.firstName} ${modalData?.lastName}`}
+                      style={styles.avatar}
+                    />
+                    <Text style={styles.modalTextStyle}>
+                      {`${modalData?.firstName} ${modalData?.lastName} Order booking date ${modalData?.date} ${modalData?.time}`}
+                    </Text>
+                  </View>
+                  <Separator margin={10} />
+                  <Text>Email</Text>
+                  <Text style={styles.modalText}>{modalData?.email}</Text>
+                  <Separator margin={10} />
+                  <Text>Menu Items</Text>
+                  <View>
+                    {modalData?.menuItems.map((item, index) => (
+                      <Text style={styles.menuText} key={index}>
+                        {item?.name}
+                      </Text>
+                    ))}
+                  </View>
+                  <Separator margin={10} />
+                  <Text>50% advance amount</Text>
+                  <Text style={styles.modalText}>
+                    {modalData?.fiftyPerAmount} Rs
                   </Text>
-                </View>
-                <Separator margin={20} />
-                <Text>Menu Items</Text>
-                <Text style={styles.modalText}>{modalData?.title}</Text>
-                <Separator margin={20} />
-                <Text>50% advance amount</Text>
-                <Text style={styles.modalText}>{modalData?.title}</Text>
-                <Separator margin={20} />
-                <Text>10% cancellation fee will be</Text>
-                <Text style={styles.modalText}>{modalData?.title}</Text>
-              </Modal>
-            )}
+                  <Separator margin={10} />
+                </Modal>
+              );
+            }}
           </List>
         </View>
+        <Spinner
+          visible={props?.loading}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer.obj,
+    reservation: state?.reservationReducer?.reservation,
+    reservations: state?.reservationReducer?.reservations?.data,
+    loading: state?.reservationReducer?.loading
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getAllReservations: (obj) => {
+      dispatch(Reservation.GetAllReservations(obj));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CancelOrders);
 
 const styles = StyleSheet.create({
   container: {
@@ -96,8 +175,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
+  modalHeight: {
+    minHeight: 350
+  },
+  zIndex: {
+    zIndex: 1
+  },
   padding: {
     padding: 30
+  },
+  menuText: {
+    marginRight: 20,
+    color: "grey",
+    marginTop: 5
+  },
+  spinnerTextStyle: {
+    color: "#fff"
   },
   row: {
     flexDirection: "row"
@@ -119,5 +212,3 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   }
 });
-
-export default CancelOrders;

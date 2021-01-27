@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   modalHeight: {
-    minHeight: 330
+    minHeight: 350
   },
   zIndex: {
     zIndex: 1
