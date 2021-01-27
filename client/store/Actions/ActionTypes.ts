@@ -14,7 +14,8 @@ const ActionTypes = {
   GET_RESERVATIONS_REQUST: "getReservationsRequst",
   GET_RESERVATIONS: "getReservations",
   UPDATE_RESERVATION_REQUST: "updateReservationResust",
-  UDPATE_RESERVATION: "updateReservation"
+  UDPATE_RESERVATION: "updateReservation",
+  RESET_RESERVATION: "resetReservation"
 };
 
 export default ActionTypes;

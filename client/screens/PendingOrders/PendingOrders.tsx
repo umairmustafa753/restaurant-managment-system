@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
 import Spinner from "react-native-loading-spinner-overlay";
-import AwesomeAlert from "react-native-awesome-alerts";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -17,18 +21,15 @@ import Back from "../../components/Back";
 import { Modal } from "../../components/Modal";
 import Reservation from "../../store/Actions/reservation";
 import { MESSAGE, TYPE, STATUS } from "../constant";
-import { State } from "react-native-gesture-handler";
 
 const PendingOrders = (props) => {
   const navigator = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
-  const [enableToast, setEnableToast] = useState({
-    visible: false
-  });
+  const [showSpiner, setShowSpiner] = useState<boolean>(false);
   const [items, setItems] = useState<any>([]);
-  const [isShowAlert, setShowAlert] = useState<boolean>(false);
+  const [id, setId] = useState<string>("");
   const [date, setDate] = useState<string>("");
 
   const showDatePicker = () => {
@@ -48,18 +49,6 @@ const PendingOrders = (props) => {
     navigator.dispatch(StackActions.popToTop());
   };
 
-  const showAlert = () => {
-    setTimeout(() => {
-      setShowAlert(true);
-    }, 1000);
-  };
-
-  const handleSubmit = () => {};
-
-  const hideAlert = () => {
-    setShowAlert(false);
-  };
-
   const showToast = (msg: string, type: string) => {
     if (msg) {
       Toast.show({
@@ -69,53 +58,75 @@ const PendingOrders = (props) => {
         autoHide: false,
         topOffset: 50
       });
+      props.ResetUpdateReservation();
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = navigator.addListener("focus", () => {
-      setEnableToast((prevState) => ({ ...prevState, visible: true }));
-    });
-
-    return unsubscribe;
-  }, [navigator]);
-
-  useEffect(() => {
-    if (date)
+  const getAllReservations = () => {
+    if (date) {
       props.getAllReservations({
         status: STATUS.PENDING,
         token: props?.user?.data?.token,
         date: date
       });
+    }
+  };
+
+  useEffect(() => {
+    getAllReservations();
   }, [date]);
 
   useEffect(() => {
     if (!props.loading) {
       setItems(props?.reservations);
     }
-  }, [props.loading]);
+  }, [props.reservations]);
+
+  useEffect(() => {
+    if (!props.loading) {
+      const message = props?.updated?.message;
+      const isMatch = MESSAGE.SUCCESS_UPDATED_RESERVATION === message;
+      const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
+      showToast(message, type);
+      if (isMatch) {
+        const filter = items?.filter((item) => item._id !== id);
+        setItems(filter);
+      }
+    }
+  }, [props.updated]);
+
+  const handleConfirm = async (id: string) => {
+    props.updateReservation({
+      status: STATUS.CONFIRM,
+      _id: id,
+      token: props?.user?.data?.token
+    });
+    setId(id);
+  };
+
+  const handleDelete = async (id: string) => {
+    props.updateReservation({
+      status: STATUS.CANCEL,
+      _id: id,
+      token: props?.user?.data?.token
+    });
+    setId(id);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={showSpiner}
+            onRefresh={getAllReservations}
+          />
+        }
+      >
         <Separator margin={30} />
         <View style={{ padding: 30 }}>
-          <AwesomeAlert
-            show={isShowAlert}
-            showProgress={false}
-            title="Create Reservation"
-            message="Are you sure you want to create reservation"
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={true}
-            showCancelButton={true}
-            showConfirmButton={true}
-            cancelText="No, cancel"
-            confirmText="Yes, Create it"
-            confirmButtonColor="grey"
-            onCancelPressed={hideAlert}
-            onConfirmPressed={handleSubmit}
-          />
           <Back onPress={handleNavigationPop} />
           <Text style={styles.title}>Pending Orders</Text>
           <Separator margin={30} />
@@ -129,7 +140,7 @@ const PendingOrders = (props) => {
             onConfirm={handleDateConfirm}
             onCancel={hideDatePicker}
           />
-          <List data={date ? items?.data : []} setState={() => {}}>
+          <List data={date ? items : []} setState={() => {}}>
             {(modalData, isModalVisible, isVisible) => {
               return (
                 <Modal
@@ -154,13 +165,11 @@ const PendingOrders = (props) => {
                   <Text style={styles.modalText}>{modalData?.email}</Text>
                   <Separator margin={10} />
                   <Text>Menu Items</Text>
-                  <View
-                    style={{
-                      flexDirection: "row"
-                    }}
-                  >
-                    {modalData?.menuItems.map((item) => (
-                      <Text style={styles.menuText}>{item?.name}</Text>
+                  <View>
+                    {modalData?.menuItems.map((item, index) => (
+                      <Text style={styles.menuText} key={index}>
+                        {item?.name}
+                      </Text>
                     ))}
                   </View>
                   <Separator margin={10} />
@@ -171,10 +180,24 @@ const PendingOrders = (props) => {
                   <Separator margin={10} />
                   {true && (
                     <View style={[styles.row, styles.spaceBetween]}>
-                      <Button mode="outlined" color="grey" onPress={showAlert}>
+                      <Button
+                        mode="outlined"
+                        color="grey"
+                        onPress={() => {
+                          isVisible();
+                          handleConfirm(modalData?._id);
+                        }}
+                      >
                         Comfrim
                       </Button>
-                      <Button mode="outlined" color="grey" onPress={showAlert}>
+                      <Button
+                        mode="outlined"
+                        color="grey"
+                        onPress={() => {
+                          isVisible();
+                          handleDelete(modalData?._id);
+                        }}
+                      >
                         Delete
                       </Button>
                     </View>
@@ -198,7 +221,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.userReducer.obj,
     reservation: state?.reservationReducer?.reservation,
-    reservations: state?.reservationReducer?.reservations,
+    reservations: state?.reservationReducer?.reservations?.data,
+    updated: state?.reservationReducer?.updated,
     loading: state?.reservationReducer?.loading
   };
 };
@@ -210,6 +234,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateReservation: (obj) => {
       dispatch(Reservation.UpdateReservation(obj));
+    },
+    ResetUpdateReservation: () => {
+      dispatch(Reservation.resetUpdateReservation());
     }
   };
 };
@@ -236,7 +263,9 @@ const styles = StyleSheet.create({
     padding: 30
   },
   menuText: {
-    marginRight: 20
+    marginRight: 20,
+    color: "grey",
+    marginTop: 5
   },
   spinnerTextStyle: {
     color: "#fff"

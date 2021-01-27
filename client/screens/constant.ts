@@ -13,6 +13,7 @@ export const MESSAGE = {
   SUCCESS_ACCOUNT_UPDATE_MESSAGE: "Account updated Successfully",
   SUCCESS_SALARY_PAID: "employee salary paid successfully",
   SUCCESS_RESERVATION_REQUSTED: "Reservation requested Succesfully",
+  SUCCESS_UPDATED_RESERVATION: "Reservation updated Successfully",
   FAILED_NO_CHANGED_FOUND: "No change found",
   FAILED_NO_MENU_FOUND: "please select menu for reservation",
   FAILED_ENTER_VALID_VALUES: "Please Enter valid values",
