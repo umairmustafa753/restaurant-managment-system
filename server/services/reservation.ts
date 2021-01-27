@@ -17,7 +17,7 @@ const Users = {
     try {
       let query;
       query = Reservation.find(obj).select(
-        "_id firstName lastName email status date time menuItems fiftyPerAmount"
+        "_id firstName lastName email status date time menuItems picture fiftyPerAmount"
       );
       return await query.exec();
     } catch (error) {

@@ -13,6 +13,7 @@ const Reservation = new mongoose.Schema(
     fiftyPerAmount: { type: Number, required: true },
     CardInfo: CardInfo,
     status: ReservationEnum,
+    picture: { type: String, required: false },
     userId: { type: String, required: true }
   },
   { timestamps: true }
