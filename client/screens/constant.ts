@@ -30,3 +30,9 @@ export const ROLE = {
   EMPLOYEE: "employee",
   OWNER: "owner"
 };
+
+export const STATUS = {
+  PENDING: "pending",
+  CANCEL: "cancel",
+  CONFIRM: "confirm"
+};

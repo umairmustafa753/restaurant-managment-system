@@ -3,7 +3,8 @@ import {
   StyleSheet,
   SafeAreaView,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ScrollView
 } from "react-native";
 import { Button, Card, Title, Paragraph, TextInput } from "react-native-paper";
 import MultiSelect from "react-native-multiple-select";
@@ -18,7 +19,6 @@ import { connect } from "react-redux";
 import moment from "moment";
 
 import { Text, View } from "../../components/Themed";
-import { ScrollView } from "react-native-gesture-handler";
 import Separator from "../../components/Separator";
 import Back from "../../components/Back";
 import Menu from "../../store/Actions/menu";
@@ -153,6 +153,7 @@ const ReservationScreen = (props) => {
       menuItems: selectedMenu,
       fiftyPerAmount: price,
       CardInfo: cardCardentials?.values,
+      picture: props?.user?.data?.user?.picture,
       userId: props?.user?.data?.user?._id,
       token: props?.user?.data?.token
     };
@@ -214,8 +215,8 @@ const ReservationScreen = (props) => {
             <AwesomeAlert
               show={isShowAlert}
               showProgress={false}
-              title="Salary Payment"
-              message="Are you sure you want to Create Reservation"
+              title="Create Reservation"
+              message="Are you sure you want to create reservation"
               closeOnTouchOutside={false}
               closeOnHardwareBackPress={true}
               showCancelButton={true}
