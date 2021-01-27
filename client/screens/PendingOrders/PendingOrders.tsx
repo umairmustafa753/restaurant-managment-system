@@ -9,6 +9,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
+import AwesomeAlert from "react-native-awesome-alerts";
 import Spinner from "react-native-loading-spinner-overlay";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
@@ -28,6 +29,8 @@ const PendingOrders = (props) => {
     false
   );
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [choice, setChoice] = useState<string>("");
+  const [isShowAlert, setShowAlert] = useState<boolean>(false);
   const [items, setItems] = useState<any>([]);
   const [id, setId] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -38,6 +41,18 @@ const PendingOrders = (props) => {
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+  };
+
+  const showAlert = (action: string, _id: string) => {
+    setId(_id);
+    setChoice(action);
+    setTimeout(() => {
+      setShowAlert(true);
+    }, 1000);
+  };
+
+  const hideAlert = () => {
+    setShowAlert(false);
   };
 
   const handleDateConfirm = (date) => {
@@ -95,22 +110,22 @@ const PendingOrders = (props) => {
     }
   }, [props.updated]);
 
-  const handleConfirm = async (id: string) => {
+  const handleConfirm = () => {
+    hideAlert();
     props.updateReservation({
       status: STATUS.CONFIRM,
       _id: id,
       token: props?.user?.data?.token
     });
-    setId(id);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = () => {
+    hideAlert();
     props.updateReservation({
       status: STATUS.CANCEL,
       _id: id,
       token: props?.user?.data?.token
     });
-    setId(id);
   };
 
   return (
@@ -127,6 +142,23 @@ const PendingOrders = (props) => {
       >
         <Separator margin={30} />
         <View style={{ padding: 30 }}>
+          <AwesomeAlert
+            show={isShowAlert}
+            showProgress={false}
+            title={`${choice}`}
+            message={`Are you sure you want to ${choice} reservation`}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={true}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="No, close"
+            confirmText={`Yes, ${choice} it`}
+            confirmButtonColor="grey"
+            onCancelPressed={hideAlert}
+            onConfirmPressed={
+              choice === STATUS.CONFIRM ? handleConfirm : handleDelete
+            }
+          />
           <Back onPress={handleNavigationPop} />
           <Text style={styles.title}>Pending Orders</Text>
           <Separator margin={30} />
@@ -178,24 +210,24 @@ const PendingOrders = (props) => {
                     {modalData?.fiftyPerAmount} Rs
                   </Text>
                   <Separator margin={10} />
-                  {true && (
+                  {modalData?.date >= moment().format("YYYY-MM-DD") && (
                     <View style={[styles.row, styles.spaceBetween]}>
                       <Button
                         mode="outlined"
-                        color="grey"
+                        color="green"
                         onPress={() => {
                           isVisible();
-                          handleConfirm(modalData?._id);
+                          showAlert(STATUS.CONFIRM, modalData?._id);
                         }}
                       >
                         Comfrim
                       </Button>
                       <Button
                         mode="outlined"
-                        color="grey"
+                        color="red"
                         onPress={() => {
                           isVisible();
-                          handleDelete(modalData?._id);
+                          showAlert(STATUS.CANCEL, modalData?._id);
                         }}
                       >
                         Delete

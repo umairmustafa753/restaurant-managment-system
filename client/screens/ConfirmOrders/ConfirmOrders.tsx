@@ -10,6 +10,7 @@ import { useNavigation, StackActions } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
 import Spinner from "react-native-loading-spinner-overlay";
+import AwesomeAlert from "react-native-awesome-alerts";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -28,6 +29,7 @@ const ConfirmOrders = (props) => {
     false
   );
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [isShowAlert, setShowAlert] = useState<boolean>(false);
   const [items, setItems] = useState<any>([]);
   const [id, setId] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -47,6 +49,17 @@ const ConfirmOrders = (props) => {
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
+  };
+
+  const hideAlert = () => {
+    setShowAlert(false);
+  };
+
+  const showAlert = (_id: string) => {
+    setId(_id);
+    setTimeout(() => {
+      setShowAlert(true);
+    }, 1000);
   };
 
   const showToast = (msg: string, type: string) => {
@@ -95,13 +108,13 @@ const ConfirmOrders = (props) => {
     }
   }, [props.updated]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = () => {
+    hideAlert();
     props.updateReservation({
       status: STATUS.CANCEL,
       _id: id,
       token: props?.user?.data?.token
     });
-    setId(id);
   };
 
   return (
@@ -118,6 +131,21 @@ const ConfirmOrders = (props) => {
       >
         <Separator margin={30} />
         <View style={{ padding: 30 }}>
+          <AwesomeAlert
+            show={isShowAlert}
+            showProgress={false}
+            title="Cancel Reservation"
+            message="Are you sure you want to cancel reservation"
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={true}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="No, close"
+            confirmText="Yes, cancel it"
+            confirmButtonColor="grey"
+            onCancelPressed={hideAlert}
+            onConfirmPressed={handleDelete}
+          />
           <Back onPress={handleNavigationPop} />
           <Text style={styles.title}>Confrim Orders</Text>
           <Separator margin={30} />
@@ -179,10 +207,10 @@ const ConfirmOrders = (props) => {
                       <View style={[styles.row, styles.spaceBetween]}>
                         <Button
                           mode="outlined"
-                          color="grey"
+                          color="red"
                           onPress={() => {
                             isVisible();
-                            handleDelete(modalData?._id);
+                            showAlert(modalData?._id);
                           }}
                         >
                           Cancel
