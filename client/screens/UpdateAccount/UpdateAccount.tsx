@@ -27,7 +27,7 @@ import UserAction from "../../store/Actions/user";
 import { Text, View } from "../../components/Themed";
 import { Modal } from "../../components/Modal";
 import Separator from "../../components/Separator";
-import { MESSAGE, TYPE } from "../constant";
+import { MESSAGE, ROLE, TYPE } from "../constant";
 
 const UpdateAccount = (props) => {
   const navigator = useNavigation();
@@ -151,6 +151,8 @@ const UpdateAccount = (props) => {
         lastName: input?.lastName,
         email: input?.email,
         dob: input?.dob,
+        salary: props?.user?.data?.user?.salary,
+        paidSalariesMonth: props?.user?.data?.user?.paidSalariesMonth,
         base64Image: image?.base64Image,
         picture: image?.uri
       };
@@ -264,7 +266,7 @@ const UpdateAccount = (props) => {
               size={80}
               key={image?.uri}
               src={image?.uri}
-              name="Umair Mustafa"
+              name={`${input?.firstName} ${input?.lastName}`}
               style={styles.avatar}
             />
             <Separator margin={10} />
@@ -326,7 +328,7 @@ const UpdateAccount = (props) => {
               Update Account
             </Button>
             <Separator margin={20} />
-            {true && (
+            {props?.user?.data?.user?.role === ROLE.EMPLOYEE && (
               <View>
                 <Card>
                   <Card.Content>

@@ -29,9 +29,6 @@ const EmployeeList = (props) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(
     false
   );
-  const [enableToast, setEnableToast] = useState({
-    visible: false
-  });
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
   const [isShowAlert, setShowAlert] = useState<boolean>(false);
   const [date, setDate] = useState<string>("");
@@ -60,13 +57,16 @@ const EmployeeList = (props) => {
   };
 
   const showToast = (msg: string, type: string) => {
-    Toast.show({
-      type: `${type}`,
-      position: "top",
-      text1: `${msg}`,
-      autoHide: false,
-      topOffset: 50
-    });
+    if (msg) {
+      Toast.show({
+        type: `${type}`,
+        position: "top",
+        text1: `${msg}`,
+        autoHide: false,
+        topOffset: 50
+      });
+      props.resetUpdateEmployee();
+    }
   };
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const EmployeeList = (props) => {
   const handleSubmit = () => {
     hideAlert();
     if (!input?.salary || !input?.designation) {
-      showToast(MESSAGE.FAILED_ENTER_VALID_VALUES, TYPE.INFO);
+      showToast(MESSAGE.FAILED_ENTER_VALID_VALUES, TYPE.ERROR);
       return;
     }
     if (date) {
@@ -111,17 +111,20 @@ const EmployeeList = (props) => {
   };
 
   useEffect(() => {
-    if (!props.loading && props?.employees?.data?.length) {
+    if (!props.loading) {
       const message = props?.requsted?.message;
       const isMatch = MESSAGE.SUCCESS_USER_UPDATED_MESSAGE === message;
       const type = isMatch ? TYPE.SUCCESS : TYPE.ERROR;
-      if (!enableToast?.visible)
-        setEnableToast((prevState) => ({ ...prevState, visible: true }));
-      if (message && enableToast?.visible)
-        showToast(isMatch ? MESSAGE?.SUCCESS_SALARY_PAID : message, type);
+      showToast(isMatch ? MESSAGE?.SUCCESS_SALARY_PAID : message, type);
       setItems(props?.employees);
     }
-  }, [props?.loading]);
+  }, [props?.requsted]);
+
+  useEffect(() => {
+    if (!props.loading) {
+      setItems(props?.employees);
+    }
+  }, [props.employees]);
 
   const onRefresh = () => {
     props.getEmployee({
@@ -129,14 +132,6 @@ const EmployeeList = (props) => {
       token: props?.user?.data?.token
     });
   };
-
-  useEffect(() => {
-    const unsubscribe = navigator.addListener("focus", () => {
-      setEnableToast((prevState) => ({ ...prevState, visible: false }));
-    });
-
-    return unsubscribe;
-  }, [navigator]);
 
   const setState = (user: any) => {
     setInput({ salary: user?.salary, designation: user?.designation });
@@ -186,7 +181,7 @@ const EmployeeList = (props) => {
             setState={(user) => setState(user)}
           >
             {(modalData, isModalVisible, isVisible) => {
-              const isPaid = modalData?.paidSalariesMonth.some(
+              const isPaid = modalData?.paidSalariesMonth?.some(
                 (ele) => ele.date === date
               );
               return (
@@ -288,6 +283,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getEmployee: (obj) => {
       dispatch(UserAction.GetUsers(obj));
+    },
+    resetUpdateEmployee: () => {
+      dispatch(UserAction.resetUpdateEmployee());
     }
   };
 };

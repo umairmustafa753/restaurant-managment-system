@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Button, TextInput, Menu } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import PasswordInputText from "react-native-hide-show-password-input";
+import { CreditCardInput } from "react-native-input-credit-card";
 import { NAVIGATIONS } from "../../constants/navigator";
-import { MESSAGE, TYPE } from "../constant";
+import { MESSAGE, ROLE, TYPE } from "../constant";
 import { connect } from "react-redux";
 import Toast from "react-native-toast-message";
 import UserAction from "../../store/Actions/user";
@@ -42,7 +43,8 @@ const AddUser = (props) => {
     dob: "",
     role: "",
     salary: "",
-    designation: ""
+    designation: "",
+    CardInfo: {} //write in capital bcz user model key is in capital have to change it
   });
 
   const showDatePicker = () => {
@@ -90,8 +92,14 @@ const AddUser = (props) => {
   };
 
   const handleSubmit = async () => {
-    setDisabled(true);
-    props.add(input);
+    if (!input?.CardInfo?.valid && input?.role === ROLE.OWNER) {
+      showToast(MESSAGE.FAILED_ENTER_VALID_CARD_VALUES, TYPE.ERROR);
+      return;
+    } else {
+      input["CardInfo"] = input?.CardInfo?.values;
+      setDisabled(true);
+      props.add(input);
+    }
   };
 
   useEffect(() => {
@@ -106,6 +114,15 @@ const AddUser = (props) => {
       setDisabled(false);
     }
   }, [props.loading]);
+
+  useEffect(() => {
+    setInput((prevState) => ({
+      ...prevState,
+      salary: "",
+      designation: "",
+      CardInfo: {}
+    }));
+  }, [input?.role]);
 
   useEffect(() => {
     const unsubscribe = navigator.addListener("focus", () => {
@@ -173,9 +190,10 @@ const AddUser = (props) => {
               >
                 <Picker.Item label="customer" value="customer" />
                 <Picker.Item label="employee" value="employee" />
+                <Picker.Item label="owner" value="owner" />
               </Picker>
               <Separator margin={20} />
-              {true && (
+              {input?.role === ROLE.EMPLOYEE && (
                 <View>
                   <TextInput
                     label="Salary"
@@ -197,6 +215,21 @@ const AddUser = (props) => {
                       setInput((prevState) => ({
                         ...prevState,
                         designation: text
+                      }))
+                    }
+                  />
+                </View>
+              )}
+              {input?.role === ROLE.OWNER && (
+                <View>
+                  <Text style={styles.title}>Card Info</Text>
+                  <Separator margin={20} />
+                  <CreditCardInput
+                    requiresName={true}
+                    onChange={(form) =>
+                      setInput((prevState) => ({
+                        ...prevState,
+                        CardInfo: form
                       }))
                     }
                   />

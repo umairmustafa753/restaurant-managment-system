@@ -283,6 +283,12 @@ const UserAction = {
     };
   },
 
+  resetUpdateEmployee: function () {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.UPDATE_USER, requsted: {} });
+    };
+  },
+
   GetUser: function (obj) {
     return (dispatch) => {
       dispatch({ type: ActionTypes.UPDATE_USER_REQUST, requsted: {} });
