@@ -11,7 +11,10 @@ const ActionTypes = {
   ADD_USER: "addUser",
   ADD_RESERVATION: "addReservation",
   ADD_RESERVATION_REQUST: "addReservationRequst",
-  GET_RESERVATION: "getReservation"
+  GET_RESERVATIONS_REQUST: "getReservationsRequst",
+  GET_RESERVATIONS: "getReservations",
+  UPDATE_RESERVATION_REQUST: "updateReservationResust",
+  UDPATE_RESERVATION: "updateReservation"
 };
 
 export default ActionTypes;
