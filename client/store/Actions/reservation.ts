@@ -106,6 +106,12 @@ const Reservation = {
           }
         });
     };
+  },
+
+  resetUpdateReservation: () => {
+    return async (dispatch) => {
+      dispatch({ type: ActionTypes.RESET_RESERVATION, updated: {} });
+    };
   }
 };
 

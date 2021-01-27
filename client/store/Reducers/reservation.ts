@@ -3,7 +3,7 @@ import ActionTypes from "../Actions/ActionTypes";
 const INITIAL_STATE = {
   reservation: {},
   reservations: [],
-  updated: [],
+  updated: {},
   loading: false
 };
 
@@ -50,6 +50,14 @@ const reservation = (state = INITIAL_STATE, action) => {
     }
 
     case ActionTypes.UDPATE_RESERVATION: {
+      return {
+        ...state,
+        updated: action.updated,
+        loading: false
+      };
+    }
+
+    case ActionTypes.RESET_RESERVATION: {
       return {
         ...state,
         updated: action.updated,
