@@ -60,23 +60,23 @@ export const UserEnum = {
 export const CardInfo = {
   cvc: {
     type: String,
-    required: true
+    required: false
   },
   expiry: {
     type: String,
-    required: true
+    required: false
   },
   number: {
     type: String,
-    required: true
+    required: false
   },
   type: {
     type: String,
-    required: true
+    required: false
   },
   name: {
     type: String,
-    required: true
+    required: false
   }
 };
 
