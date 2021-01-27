@@ -79,8 +79,16 @@ api.get("/users/:role", Authorization, User.GetUsers);
 api.get("/user/:id", Authorization, User.GetUser);
 
 // Reservation
-api.get("/reservation/:id/:status", Authorization, Reservation.GetReservation);
-api.get("/reservations/:status", Authorization, Reservation.GetReservations);
+api.get(
+  "/reservation/:id/:status/:date",
+  Authorization,
+  Reservation.GetReservation
+);
+api.get(
+  "/reservations/:status/:date",
+  Authorization,
+  Reservation.GetReservations
+);
 api.post(
   "/reservation",
   check(MODAL_KEYS.FIRST_NAME).notEmpty().withMessage(MESSAGE.FIRST_NAME),

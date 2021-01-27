@@ -51,7 +51,8 @@ const ReservationController = {
     try {
       let reservations = await ReservationFromService.getUserReservation({
         userId: req.params.id,
-        status: req.params.status
+        status: req.params.status,
+        date: req.params.date
       });
       if (reservations.length) {
         return res.status(200).send({
@@ -73,7 +74,8 @@ const ReservationController = {
   GetReservations: async (req, res) => {
     try {
       let reservations = await ReservationFromService.getReservations({
-        status: req.params.status
+        status: req.params.status,
+        date: req.params.date
       });
       if (reservations.length) {
         return res.status(200).send({
