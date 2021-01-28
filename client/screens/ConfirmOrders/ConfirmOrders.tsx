@@ -227,30 +227,44 @@ const ConfirmOrders = (props) => {
                   {modalData?.date >= moment().format("YYYY-MM-DD") &&
                     props?.user?.data?.user?.role !== ROLE.EMPLOYEE && (
                       <View>
-                        {props?.user?.data?.user?.role === ROLE.CUSTOMER && (
-                          <View>
-                            <Text>10% cancellation fee will be</Text>
-                            <Text style={styles.modalText}>
-                              {modalData?.fiftyPerAmount * 0.1} Rs
-                            </Text>
-                          </View>
-                        )}
-                        <Separator margin={10} />
                         {props?.user?.data?.user?.role === ROLE.CUSTOMER &&
                           modalData?.time >= moment().format("hh:mm A") && (
-                            <View style={[styles.row, styles.spaceBetween]}>
-                              <Button
-                                mode="outlined"
-                                color="red"
-                                onPress={() => {
-                                  isVisible();
-                                  showAlert(modalData?._id);
-                                }}
-                              >
-                                Cancel
-                              </Button>
+                            <View>
+                              <View>
+                                <Text>10% cancellation fee will be</Text>
+                                <Text style={styles.modalText}>
+                                  {modalData?.fiftyPerAmount * 0.1} Rs
+                                </Text>
+                              </View>
+                              <Separator margin={10} />
+                              <View style={[styles.row, styles.spaceBetween]}>
+                                <Button
+                                  mode="outlined"
+                                  color="red"
+                                  onPress={() => {
+                                    isVisible();
+                                    showAlert(modalData?._id);
+                                  }}
+                                >
+                                  Cancel
+                                </Button>
+                              </View>
                             </View>
                           )}
+                        {props?.user?.data?.user?.role === ROLE.OWNER && (
+                          <View style={[styles.row, styles.spaceBetween]}>
+                            <Button
+                              mode="outlined"
+                              color="red"
+                              onPress={() => {
+                                isVisible();
+                                showAlert(modalData?._id);
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </View>
+                        )}
                       </View>
                     )}
                 </Modal>
