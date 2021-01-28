@@ -3,13 +3,15 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  TouchableOpacity
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
 import Spinner from "react-native-loading-spinner-overlay";
+import ImageView from "react-native-image-viewing";
 import { connect } from "react-redux";
 import moment from "moment";
 
@@ -27,6 +29,7 @@ const CancelOrders = (props) => {
     false
   );
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [imagePrieview, setImagePrieview] = useState<boolean>(false);
   const [items, setItems] = useState<any>([]);
   const [date, setDate] = useState<string>("");
 
@@ -108,13 +111,31 @@ const CancelOrders = (props) => {
                   style={styles.modalHeight}
                 >
                   <View style={styles.row}>
-                    <UserAvatar
-                      size={70}
-                      src={modalData?.picture}
-                      key={modalData?.picture}
-                      name={`${modalData?.firstName} ${modalData?.lastName}`}
-                      style={styles.avatar}
+                    <ImageView
+                      images={[
+                        {
+                          uri: modalData?.picture
+                        }
+                      ]}
+                      imageIndex={0}
+                      presentationStyle="overFullScreen"
+                      doubleTapToZoomEnabled={true}
+                      visible={imagePrieview}
+                      onRequestClose={() => setImagePrieview(false)}
                     />
+                    <TouchableOpacity
+                      onPress={() =>
+                        modalData?.picture ? setImagePrieview(true) : {}
+                      }
+                    >
+                      <UserAvatar
+                        size={70}
+                        src={modalData?.picture}
+                        key={modalData?.picture}
+                        name={`${modalData?.firstName} ${modalData?.lastName}`}
+                        style={styles.avatar}
+                      />
+                    </TouchableOpacity>
                     <Text style={styles.modalTextStyle}>
                       {`${modalData?.firstName} ${modalData?.lastName} Order booking date ${modalData?.date} ${modalData?.time}`}
                     </Text>
