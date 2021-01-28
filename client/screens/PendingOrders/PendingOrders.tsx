@@ -198,7 +198,6 @@ const PendingOrders = (props) => {
                       ]}
                       imageIndex={0}
                       presentationStyle="overFullScreen"
-                      doubleTapToZoomEnabled={true}
                       visible={imagePrieview}
                       onRequestClose={() => setImagePrieview(false)}
                     />
