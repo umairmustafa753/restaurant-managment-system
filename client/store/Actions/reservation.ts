@@ -76,6 +76,50 @@ const Reservation = {
     };
   },
 
+  GetUserReservations: (obj) => {
+    return (dispatch) => {
+      dispatch({ type: ActionTypes.GET_RESERVATIONS_REQUST, reservations: {} });
+      const url =
+        config.SERVER_ENDPOINT +
+        "/api/reservation/" +
+        obj.id +
+        "/" +
+        obj.status +
+        "/" +
+        obj.date;
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${obj.token}`
+        }
+      })
+        .then((data) => {
+          if (data.status === 200) {
+            return data.json();
+          }
+          throw data;
+        })
+        .then((res) => {
+          dispatch({
+            type: ActionTypes.GET_RESERVATIONS,
+            reservations: res
+          });
+        })
+        .catch((error) => {
+          if (typeof error.text === "function") {
+            error.text().then((errorMessage) => {
+              const obj = JSON.parse(errorMessage);
+              dispatch({
+                type: ActionTypes.GET_RESERVATIONS,
+                reservations: obj
+              });
+            });
+          }
+        });
+    };
+  },
+
   UpdateReservation: function (obj) {
     return async (dispatch) => {
       dispatch({ type: ActionTypes.UPDATE_RESERVATION_REQUST, updated: {} });
