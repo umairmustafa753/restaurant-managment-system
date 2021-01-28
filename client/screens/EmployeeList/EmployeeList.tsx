@@ -3,7 +3,8 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  TouchableOpacity
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useNavigation, StackActions } from "@react-navigation/native";
@@ -11,6 +12,7 @@ import AwesomeAlert from "react-native-awesome-alerts";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Button, TextInput } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
+import ImageView from "react-native-image-viewing";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -31,6 +33,7 @@ const EmployeeList = (props) => {
   );
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
   const [isShowAlert, setShowAlert] = useState<boolean>(false);
+  const [imagePrieview, setImagePrieview] = useState<boolean>(false);
   const [date, setDate] = useState<string>("");
   const [items, setItems] = useState<any>([]);
   const [user, setUser] = useState<any>();
@@ -141,7 +144,7 @@ const EmployeeList = (props) => {
     <SafeAreaView style={styles.container}>
       <Toast ref={(ref) => Toast.setRef(ref)} style={styles.zIndex} />
       <ScrollView
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={showSpiner} onRefresh={onRefresh} />
         }
@@ -186,13 +189,31 @@ const EmployeeList = (props) => {
               );
               return (
                 <Modal visible={isModalVisible} onClose={isVisible}>
-                  <UserAvatar
-                    size={70}
-                    src={modalData?.picture}
-                    key={modalData?.picture}
-                    name={`${modalData?.firstName} ${modalData?.lastName}`}
-                    style={styles.avatar}
+                  <ImageView
+                    images={[
+                      {
+                        uri: modalData?.picture
+                      }
+                    ]}
+                    imageIndex={0}
+                    presentationStyle="overFullScreen"
+                    doubleTapToZoomEnabled={true}
+                    visible={imagePrieview}
+                    onRequestClose={() => setImagePrieview(false)}
                   />
+                  <TouchableOpacity
+                    onPress={() =>
+                      modalData?.picture ? setImagePrieview(true) : {}
+                    }
+                  >
+                    <UserAvatar
+                      size={70}
+                      src={modalData?.picture}
+                      key={modalData?.picture}
+                      name={`${modalData?.firstName} ${modalData?.lastName}`}
+                      style={styles.avatar}
+                    />
+                  </TouchableOpacity>
                   <Separator margin={20} />
                   <Text style={styles.title}>Personal Information</Text>
                   <Text style={styles.text}>{modalData?.email}</Text>

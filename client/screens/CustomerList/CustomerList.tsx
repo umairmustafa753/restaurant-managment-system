@@ -3,12 +3,14 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  TouchableOpacity
 } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import { connect } from "react-redux";
 import UserAvatar from "react-native-user-avatar";
 import Spinner from "react-native-loading-spinner-overlay";
+import ImageView from "react-native-image-viewing";
 
 import UserAction from "../../store/Actions/user";
 import { Text, View } from "../../components/Themed";
@@ -22,6 +24,7 @@ const CustomerList = (props) => {
   const navigator = useNavigation();
   const [items, setItems] = useState<any>([]);
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
+  const [imagePrieview, setImagePrieview] = useState<boolean>(false);
 
   const handleNavigationPop = () => {
     navigator.dispatch(StackActions.popToTop());
@@ -68,13 +71,31 @@ const CustomerList = (props) => {
                   onClose={isVisible}
                   style={styles.modelView}
                 >
-                  <UserAvatar
-                    size={70}
-                    src={modalData?.picture}
-                    key={modalData?.picture}
-                    name={`${modalData?.firstName} ${modalData?.lastName}`}
-                    style={styles.avatar}
+                  <ImageView
+                    images={[
+                      {
+                        uri: modalData?.picture
+                      }
+                    ]}
+                    imageIndex={0}
+                    presentationStyle="overFullScreen"
+                    doubleTapToZoomEnabled={true}
+                    visible={imagePrieview}
+                    onRequestClose={() => setImagePrieview(false)}
                   />
+                  <TouchableOpacity
+                    onPress={() =>
+                      modalData?.picture ? setImagePrieview(true) : {}
+                    }
+                  >
+                    <UserAvatar
+                      size={70}
+                      src={modalData?.picture}
+                      key={modalData?.picture}
+                      name={`${modalData?.firstName} ${modalData?.lastName}`}
+                      style={styles.avatar}
+                    />
+                  </TouchableOpacity>
                   <Separator margin={20} />
                   <Text style={styles.title}>Personal Information</Text>
                   <Text style={styles.text}>{modalData?.email}</Text>
