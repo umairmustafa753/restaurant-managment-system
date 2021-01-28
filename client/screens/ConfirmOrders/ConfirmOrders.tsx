@@ -236,18 +236,21 @@ const ConfirmOrders = (props) => {
                           </View>
                         )}
                         <Separator margin={10} />
-                        <View style={[styles.row, styles.spaceBetween]}>
-                          <Button
-                            mode="outlined"
-                            color="red"
-                            onPress={() => {
-                              isVisible();
-                              showAlert(modalData?._id);
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </View>
+                        {props?.user?.data?.user?.role === ROLE.CUSTOMER &&
+                          modalData?.time >= moment().format("hh:mm A") && (
+                            <View style={[styles.row, styles.spaceBetween]}>
+                              <Button
+                                mode="outlined"
+                                color="red"
+                                onPress={() => {
+                                  isVisible();
+                                  showAlert(modalData?._id);
+                                }}
+                              >
+                                Cancel
+                              </Button>
+                            </View>
+                          )}
                       </View>
                     )}
                 </Modal>
