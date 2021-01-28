@@ -14,7 +14,7 @@ import { Cell, Section, TableView } from "react-native-tableview-simple";
 import UserAction from "../../store/Actions/user";
 import { NAVIGATIONS } from "../../constants/navigator";
 import { Text, View } from "../../components/Themed";
-
+import { ROLE } from "../constant";
 import Separator from "../../components/Separator";
 
 const AccountScreen = (props) => {
@@ -84,11 +84,13 @@ const AccountScreen = (props) => {
               titleTextColor="#007AFF"
               onPress={() => navigate(NAVIGATIONS.UPDATE_ACCOUNT)}
             />
-            <Cell
-              title="Add User"
-              titleTextColor="#007AFF"
-              onPress={() => navigate(NAVIGATIONS.ADD_USER)}
-            />
+            {props?.user?.data?.user?.role === ROLE.OWNER && (
+              <Cell
+                title="Add User"
+                titleTextColor="#007AFF"
+                onPress={() => navigate(NAVIGATIONS.ADD_USER)}
+              />
+            )}
             <Cell
               title="Reservation"
               titleTextColor="#007AFF"
@@ -111,16 +113,20 @@ const AccountScreen = (props) => {
               titleTextColor="#007AFF"
               onPress={() => navigate(NAVIGATIONS.CANCEL_ORDERS)}
             />
-            <Cell
-              title="Customers List"
-              titleTextColor="#007AFF"
-              onPress={() => navigate(NAVIGATIONS.CUSTOMER_LIST)}
-            />
-            <Cell
-              title="Employees List"
-              titleTextColor="#007AFF"
-              onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
-            />
+            {props?.user?.data?.user?.role !== ROLE.CUSTOMER && (
+              <Cell
+                title="Customers List"
+                titleTextColor="#007AFF"
+                onPress={() => navigate(NAVIGATIONS.CUSTOMER_LIST)}
+              />
+            )}
+            {props?.user?.data?.user?.role === ROLE.OWNER && (
+              <Cell
+                title="Employees List"
+                titleTextColor="#007AFF"
+                onPress={() => navigate(NAVIGATIONS.EMPLOYEE_LIST)}
+              />
+            )}
             <Cell
               title="log out"
               titleTextColor="#007AFF"
