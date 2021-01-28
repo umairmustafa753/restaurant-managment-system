@@ -168,7 +168,7 @@ const ConfirmOrders = (props) => {
             onConfirm={handleDateConfirm}
             onCancel={hideDatePicker}
           />
-          <List data={date ? items : []} setState={() => {}}>
+          <List data={date && !props?.loading ? items : []} setState={() => {}}>
             {(modalData, isModalVisible, isVisible) => {
               return (
                 <Modal
@@ -225,46 +225,30 @@ const ConfirmOrders = (props) => {
                   </Text>
                   <Separator margin={10} />
                   {modalData?.date >= moment().format("YYYY-MM-DD") &&
+                    modalData?.time >= moment().format("hh:mm A") &&
                     props?.user?.data?.user?.role !== ROLE.EMPLOYEE && (
                       <View>
-                        {props?.user?.data?.user?.role === ROLE.CUSTOMER &&
-                          modalData?.time >= moment().format("hh:mm A") && (
-                            <View>
-                              <View>
-                                <Text>10% cancellation fee will be</Text>
-                                <Text style={styles.modalText}>
-                                  {modalData?.fiftyPerAmount * 0.1} Rs
-                                </Text>
-                              </View>
-                              <Separator margin={10} />
-                              <View style={[styles.row, styles.spaceBetween]}>
-                                <Button
-                                  mode="outlined"
-                                  color="red"
-                                  onPress={() => {
-                                    isVisible();
-                                    showAlert(modalData?._id);
-                                  }}
-                                >
-                                  Cancel
-                                </Button>
-                              </View>
-                            </View>
-                          )}
-                        {props?.user?.data?.user?.role === ROLE.OWNER && (
-                          <View style={[styles.row, styles.spaceBetween]}>
-                            <Button
-                              mode="outlined"
-                              color="red"
-                              onPress={() => {
-                                isVisible();
-                                showAlert(modalData?._id);
-                              }}
-                            >
-                              Cancel
-                            </Button>
+                        {props?.user?.data?.user?.role === ROLE.CUSTOMER && (
+                          <View>
+                            <Text>10% cancellation fee will be</Text>
+                            <Text style={styles.modalText}>
+                              {modalData?.fiftyPerAmount * 0.1} Rs
+                            </Text>
                           </View>
                         )}
+                        <Separator margin={10} />
+                        <View style={[styles.row, styles.spaceBetween]}>
+                          <Button
+                            mode="outlined"
+                            color="red"
+                            onPress={() => {
+                              isVisible();
+                              showAlert(modalData?._id);
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </View>
                       </View>
                     )}
                 </Modal>

@@ -181,7 +181,7 @@ const PendingOrders = (props) => {
             onConfirm={handleDateConfirm}
             onCancel={hideDatePicker}
           />
-          <List data={date ? items : []} setState={() => {}}>
+          <List data={date && !props?.loading ? items : []} setState={() => {}}>
             {(modalData, isModalVisible, isVisible) => {
               return (
                 <Modal
@@ -238,6 +238,7 @@ const PendingOrders = (props) => {
                   </Text>
                   <Separator margin={10} />
                   {modalData?.date >= moment().format("YYYY-MM-DD") &&
+                    modalData?.time >= moment().format("hh:mm A") &&
                     props?.user?.data?.user?.role !== ROLE.EMPLOYEE && (
                       <View style={[styles.row, styles.spaceBetween]}>
                         {props?.user?.data?.user?.role === ROLE.OWNER && (

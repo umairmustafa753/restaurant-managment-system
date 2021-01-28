@@ -102,7 +102,7 @@ const CancelOrders = (props) => {
             onConfirm={handleDateConfirm}
             onCancel={hideDatePicker}
           />
-          <List data={date ? items : []} setState={() => {}}>
+          <List data={date && !props?.loading ? items : []} setState={() => {}}>
             {(modalData, isModalVisible, isVisible) => {
               return (
                 <Modal
