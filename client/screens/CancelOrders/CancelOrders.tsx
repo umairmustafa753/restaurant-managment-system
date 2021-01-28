@@ -19,7 +19,7 @@ import List from "../../components/FlatList";
 import Back from "../../components/Back";
 import { Modal } from "../../components/Modal";
 import Reservation from "../../store/Actions/reservation";
-import { STATUS } from "../constant";
+import { STATUS, ROLE } from "../constant";
 
 const CancelOrders = (props) => {
   const navigator = useNavigation();
@@ -47,18 +47,27 @@ const CancelOrders = (props) => {
     navigator.dispatch(StackActions.popToTop());
   };
 
-  const getAllReservations = () => {
+  const getReservations = () => {
     if (date) {
-      props.getAllReservations({
-        status: STATUS.CANCEL,
-        token: props?.user?.data?.token,
-        date: date
-      });
+      if (props?.user?.data?.user?.role !== ROLE.CUSTOMER) {
+        props.getAllReservations({
+          status: STATUS.CANCEL,
+          token: props?.user?.data?.token,
+          date: date
+        });
+      } else {
+        props.getUserReservations({
+          status: STATUS.CANCEL,
+          id: props?.user?.data?.user?._id,
+          token: props?.user?.data?.token,
+          date: date
+        });
+      }
     }
   };
 
   useEffect(() => {
-    getAllReservations();
+    getReservations();
   }, [date]);
 
   useEffect(() => {
@@ -72,10 +81,7 @@ const CancelOrders = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl
-            refreshing={showSpiner}
-            onRefresh={getAllReservations}
-          />
+          <RefreshControl refreshing={showSpiner} onRefresh={getReservations} />
         }
       >
         <Separator margin={30} />
@@ -159,6 +165,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllReservations: (obj) => {
       dispatch(Reservation.GetAllReservations(obj));
+    },
+    getUserReservations: (obj) => {
+      dispatch(Reservation.GetUserReservations(obj));
     }
   };
 };

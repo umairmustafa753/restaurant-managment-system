@@ -21,7 +21,7 @@ import List from "../../components/FlatList";
 import Back from "../../components/Back";
 import { Modal } from "../../components/Modal";
 import Reservation from "../../store/Actions/reservation";
-import { MESSAGE, TYPE, STATUS } from "../constant";
+import { MESSAGE, TYPE, STATUS, ROLE } from "../constant";
 
 const ConfirmOrders = (props) => {
   const navigator = useNavigation();
@@ -75,18 +75,27 @@ const ConfirmOrders = (props) => {
     }
   };
 
-  const getAllReservations = () => {
+  const getReservations = () => {
     if (date) {
-      props.getAllReservations({
-        status: STATUS.CONFIRM,
-        token: props?.user?.data?.token,
-        date: date
-      });
+      if (props?.user?.data?.user?.role !== ROLE.CUSTOMER) {
+        props.getAllReservations({
+          status: STATUS.CONFIRM,
+          token: props?.user?.data?.token,
+          date: date
+        });
+      } else {
+        props.getUserReservations({
+          status: STATUS.CONFIRM,
+          id: props?.user?.data?.user?._id,
+          token: props?.user?.data?.token,
+          date: date
+        });
+      }
     }
   };
 
   useEffect(() => {
-    getAllReservations();
+    getReservations();
   }, [date]);
 
   useEffect(() => {
@@ -123,10 +132,7 @@ const ConfirmOrders = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl
-            refreshing={showSpiner}
-            onRefresh={getAllReservations}
-          />
+          <RefreshControl refreshing={showSpiner} onRefresh={getReservations} />
         }
       >
         <Separator margin={30} />
@@ -197,27 +203,32 @@ const ConfirmOrders = (props) => {
                     {modalData?.fiftyPerAmount} Rs
                   </Text>
                   <Separator margin={10} />
-                  {modalData?.date >= moment().format("YYYY-MM-DD") && (
-                    <View>
-                      <Text>10% cancellation fee will be</Text>
-                      <Text style={styles.modalText}>
-                        {modalData?.fiftyPerAmount * 0.1} Rs
-                      </Text>
-                      <Separator margin={10} />
-                      <View style={[styles.row, styles.spaceBetween]}>
-                        <Button
-                          mode="outlined"
-                          color="red"
-                          onPress={() => {
-                            isVisible();
-                            showAlert(modalData?._id);
-                          }}
-                        >
-                          Cancel
-                        </Button>
+                  {modalData?.date >= moment().format("YYYY-MM-DD") &&
+                    props?.user?.data?.user?.role !== ROLE.EMPLOYEE && (
+                      <View>
+                        {props?.user?.data?.user?.role === ROLE.CUSTOMER && (
+                          <View>
+                            <Text>10% cancellation fee will be</Text>
+                            <Text style={styles.modalText}>
+                              {modalData?.fiftyPerAmount * 0.1} Rs
+                            </Text>
+                          </View>
+                        )}
+                        <Separator margin={10} />
+                        <View style={[styles.row, styles.spaceBetween]}>
+                          <Button
+                            mode="outlined"
+                            color="red"
+                            onPress={() => {
+                              isVisible();
+                              showAlert(modalData?._id);
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </View>
                       </View>
-                    </View>
-                  )}
+                    )}
                 </Modal>
               );
             }}
@@ -247,6 +258,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllReservations: (obj) => {
       dispatch(Reservation.GetAllReservations(obj));
+    },
+    getUserReservations: (obj) => {
+      dispatch(Reservation.GetUserReservations(obj));
     },
     updateReservation: (obj) => {
       dispatch(Reservation.UpdateReservation(obj));

@@ -21,7 +21,7 @@ import List from "../../components/FlatList";
 import Back from "../../components/Back";
 import { Modal } from "../../components/Modal";
 import Reservation from "../../store/Actions/reservation";
-import { MESSAGE, TYPE, STATUS } from "../constant";
+import { MESSAGE, TYPE, STATUS, ROLE } from "../constant";
 
 const PendingOrders = (props) => {
   const navigator = useNavigation();
@@ -77,18 +77,27 @@ const PendingOrders = (props) => {
     }
   };
 
-  const getAllReservations = () => {
+  const getReservations = () => {
     if (date) {
-      props.getAllReservations({
-        status: STATUS.PENDING,
-        token: props?.user?.data?.token,
-        date: date
-      });
+      if (props?.user?.data?.user?.role !== ROLE.CUSTOMER) {
+        props.getAllReservations({
+          status: STATUS.PENDING,
+          token: props?.user?.data?.token,
+          date: date
+        });
+      } else {
+        props.getUserReservations({
+          status: STATUS.PENDING,
+          id: props?.user?.data?.user?._id,
+          token: props?.user?.data?.token,
+          date: date
+        });
+      }
     }
   };
 
   useEffect(() => {
-    getAllReservations();
+    getReservations();
   }, [date]);
 
   useEffect(() => {
@@ -134,10 +143,7 @@ const PendingOrders = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl
-            refreshing={showSpiner}
-            onRefresh={getAllReservations}
-          />
+          <RefreshControl refreshing={showSpiner} onRefresh={getReservations} />
         }
       >
         <Separator margin={30} />
@@ -210,30 +216,33 @@ const PendingOrders = (props) => {
                     {modalData?.fiftyPerAmount} Rs
                   </Text>
                   <Separator margin={10} />
-                  {modalData?.date >= moment().format("YYYY-MM-DD") && (
-                    <View style={[styles.row, styles.spaceBetween]}>
-                      <Button
-                        mode="outlined"
-                        color="green"
-                        onPress={() => {
-                          isVisible();
-                          showAlert(STATUS.CONFIRM, modalData?._id);
-                        }}
-                      >
-                        Comfrim
-                      </Button>
-                      <Button
-                        mode="outlined"
-                        color="red"
-                        onPress={() => {
-                          isVisible();
-                          showAlert(STATUS.CANCEL, modalData?._id);
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </View>
-                  )}
+                  {modalData?.date >= moment().format("YYYY-MM-DD") &&
+                    props?.user?.data?.user?.role !== ROLE.EMPLOYEE && (
+                      <View style={[styles.row, styles.spaceBetween]}>
+                        {props?.user?.data?.user?.role === ROLE.OWNER && (
+                          <Button
+                            mode="outlined"
+                            color="green"
+                            onPress={() => {
+                              isVisible();
+                              showAlert(STATUS.CONFIRM, modalData?._id);
+                            }}
+                          >
+                            Comfrim
+                          </Button>
+                        )}
+                        <Button
+                          mode="outlined"
+                          color="red"
+                          onPress={() => {
+                            isVisible();
+                            showAlert(STATUS.CANCEL, modalData?._id);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </View>
+                    )}
                 </Modal>
               );
             }}
@@ -263,6 +272,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllReservations: (obj) => {
       dispatch(Reservation.GetAllReservations(obj));
+    },
+    getUserReservations: (obj) => {
+      dispatch(Reservation.GetUserReservations(obj));
     },
     updateReservation: (obj) => {
       dispatch(Reservation.UpdateReservation(obj));
