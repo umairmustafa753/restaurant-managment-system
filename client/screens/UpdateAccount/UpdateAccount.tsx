@@ -21,6 +21,7 @@ import { NAVIGATIONS } from "../../constants/navigator";
 import Toast from "react-native-toast-message";
 import { connect } from "react-redux";
 import moment from "moment";
+import ImageView from "react-native-image-viewing";
 
 import Back from "../../components/Back";
 import UserAction from "../../store/Actions/user";
@@ -38,6 +39,7 @@ const UpdateAccount = (props) => {
   const [showSpiner, setShowSpiner] = useState<boolean>(false);
   const [visible, setVisible] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [imagePrieview, setImagePrieview] = useState<boolean>(false);
   const [image, setImage] = useState({
     uri: "",
     base64Image: ""
@@ -238,6 +240,18 @@ const UpdateAccount = (props) => {
             <RefreshControl refreshing={showSpiner} onRefresh={onRefresh} />
           }
         >
+          <ImageView
+            images={[
+              {
+                uri: image?.uri
+              }
+            ]}
+            imageIndex={0}
+            presentationStyle="overFullScreen"
+            doubleTapToZoomEnabled={true}
+            visible={imagePrieview}
+            onRequestClose={() => setImagePrieview(false)}
+          />
           <View style={styles.padding}>
             <Modal
               visible={visible}
@@ -262,13 +276,17 @@ const UpdateAccount = (props) => {
               </TouchableOpacity>
             </Modal>
             <Back onPress={handleNavigationPop} />
-            <UserAvatar
-              size={80}
-              key={image?.uri}
-              src={image?.uri}
-              name={`${input?.firstName} ${input?.lastName}`}
-              style={styles.avatar}
-            />
+            <TouchableOpacity
+              onPress={() => (image?.uri ? setImagePrieview(true) : {})}
+            >
+              <UserAvatar
+                size={80}
+                key={image?.uri}
+                src={image?.uri}
+                name={`${input?.firstName} ${input?.lastName}`}
+                style={styles.avatar}
+              />
+            </TouchableOpacity>
             <Separator margin={10} />
             <TouchableOpacity
               style={styles.imageContainer}

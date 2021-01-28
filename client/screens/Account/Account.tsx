@@ -3,13 +3,15 @@ import {
   StyleSheet,
   SafeAreaView,
   RefreshControl,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import UserAvatar from "react-native-user-avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import { Cell, Section, TableView } from "react-native-tableview-simple";
+import ImageView from "react-native-image-viewing";
 
 import UserAction from "../../store/Actions/user";
 import { NAVIGATIONS } from "../../constants/navigator";
@@ -21,6 +23,7 @@ const AccountScreen = (props) => {
   const navigator = useNavigation();
 
   const [image, setImage] = useState("");
+  const [imagePrieview, setImagePrieview] = useState<boolean>(false);
 
   const navigate = (to) => {
     navigator.navigate(to);
@@ -61,6 +64,18 @@ const AccountScreen = (props) => {
           <RefreshControl refreshing={props.loading} onRefresh={onRefresh} />
         }
       >
+        <ImageView
+          images={[
+            {
+              uri: props?.user?.data?.user?.picture
+            }
+          ]}
+          imageIndex={0}
+          presentationStyle="overFullScreen"
+          doubleTapToZoomEnabled={true}
+          visible={imagePrieview}
+          onRequestClose={() => setImagePrieview(false)}
+        />
         <View style={styles.row}>
           <View style={styles.colounm}>
             <Text style={styles.title}>
@@ -68,13 +83,19 @@ const AccountScreen = (props) => {
             </Text>
             <Text style={styles.subTitle}>{props?.user?.data?.user?.role}</Text>
           </View>
-          <UserAvatar
-            size={50}
-            key={image}
-            src={image}
-            name={`${props?.user?.data?.user?.firstName} ${props?.user?.data?.user?.lastName}`}
-            style={styles.avatar}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              props?.user?.data?.user?.picture ? setImagePrieview(true) : {}
+            }
+          >
+            <UserAvatar
+              size={50}
+              key={image}
+              src={image}
+              name={`${props?.user?.data?.user?.firstName} ${props?.user?.data?.user?.lastName}`}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
         </View>
         <Separator margin={50} />
         <TableView appearance="light">
